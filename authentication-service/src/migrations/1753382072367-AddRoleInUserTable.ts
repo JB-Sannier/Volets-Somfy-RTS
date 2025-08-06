@@ -10,11 +10,12 @@ export class AddRoleInUserTable1753382072367 implements MigrationInterface {
       comment: "User Roles",
       isArray: true,
     });
-    console.log("Je rajoute la colonne roles dans la table User");
+    console.log("Adding 'roles' column in table User");
     await queryRunner.addColumn("User", column);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    console.log("Dropping 'roles' column in table User");
     queryRunner.dropColumn("User", "roles");
   }
 }

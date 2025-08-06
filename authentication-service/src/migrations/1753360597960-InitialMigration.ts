@@ -33,11 +33,12 @@ export class InitialMigration1753360597960 implements MigrationInterface {
         },
       ],
     });
-    console.log("Creation de la table User");
+    console.log("Creating table User");
     await queryRunner.createTable(table);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    console.log('Deleting table User');
     const table = new Table({ name: "User" });
     queryRunner.dropTable(table);
   }

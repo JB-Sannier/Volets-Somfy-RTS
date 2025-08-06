@@ -14,5 +14,5 @@ export default new DataSource({
     schema: process.env.DB_SCHEMA,
 
     entities: [`${__dirname}/entities/**/*{.ts,.js}`],
-    migrations: [`${__dirname}/migrations/**/*.ts`],
+    migrations: [`${__dirname}/migrations/**/*{.ts,.js}`],
 });
