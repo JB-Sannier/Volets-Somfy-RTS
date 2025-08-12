@@ -1,0 +1,42 @@
+import { Box, Grid, Typography } from "@mui/material";
+import React, { type PropsWithChildren } from "react";
+
+export const LoginLayout: React.FC<PropsWithChildren> = (props) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        placeItems: "center",
+        minWidth: "320px",
+        minHeight: "100vh",
+      }}
+    >
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ width: "100%" }}
+      >
+        <Grid>
+          <Box sx={{ width: "100%" }}>
+            <Typography variant="h2">Somfy RTS Shutters</Typography>
+          </Box>
+        </Grid>
+        <Grid>
+          <Box
+            sx={{
+              p: 3,
+              m: 3,
+              height: 200,
+              width: 500,
+              verticalAlign: "middle",
+            }}
+          >
+            {props.children}
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};

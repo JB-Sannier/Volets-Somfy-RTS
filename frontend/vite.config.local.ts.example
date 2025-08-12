@@ -1,0 +1,15 @@
+import { type ServerOptions } from "vite";
+
+/* For line 10: set the "/api" proxy to the backend URL you want.
+   For example, if you want your backend to listen on 10.0.0.1:8080 : 
+   "/api": "http://10.0.0.1:8080",
+*/
+export const server: ServerOptions = {
+  host: "192.168.1.1",
+  port: 5000,
+  allowedHosts: ["127.0.0.1", "192.168.1.1"],
+  open: true,
+  proxy: {
+    "/api": "http://192.168.1.1:3002",
+  },
+};

@@ -1,0 +1,634 @@
+openapi: 3.0.4
+info:
+  title: Somfy Shutters API
+  description: Backend permettant à des utilisateurs de programmer des volets Somfy RTS
+  termsOfService: http://jsannier.fr
+  contact:
+    email: jsannier@jsannier.fr
+  license:
+    name: Proprietary
+  version: 1.0.0
+servers:
+  - url: http://192.168.3.5:3002
+tags:
+  - name: token
+    description: Token Generation and Verification
+  - name: shutters
+    description: Shutters management
+  - name: shutterOperations
+    description: Shutter operations
+  - name: users
+    description: Operations about users
+paths:
+  /api/v1/auth/token:
+    post:
+      tags:
+        - token
+      summary: Generate a token
+      description: Generate token for the given email and password
+      operationId: generateToken
+      requestBody:
+        description: Informations about the user
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+  /api/v1/auth/tokenInfos:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - token
+      summary: Obtain the informations, given the bearer token
+      description: Obtain the token informations, given the bearer token
+      operationId: getTokenInformations
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: "example@example.com"
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                      example: ["user_role_1", "user_role_2"]
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+  /api/v1/shutter:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutters
+      summary: List all the available shutters
+      description: List all the available shutters
+      operationId: listAllShutters
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ShutterObject"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutters
+      summary: Add a shutter
+      description: Add a shutter
+      operationId: addShutter
+      requestBody:
+        description: Add a new shutter in the collection
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shutterName:
+                  type: string
+                  example: "My Shutter"
+      responses:
+        "201":
+          description: Shutter added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShutterObject"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutters
+      summary: Modify a shutter
+      description: Modify a shutter name. Indicate the shutter you want to rename (shutterId), and the new name (shutterName)
+      operationId: modifyShutter
+      requestBody:
+        description: Modify a previously created shutter
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShutterObject"
+      responses:
+        "200":
+          description: Shutter modified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShutterObject"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+  /api/v1/shutters/{shutterId}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutters
+      summary: Get informations about a shutter
+      description: Get informations about a shutter, given the shutterId
+      operationId: getShutter
+      parameters:
+        - name: shutterId
+          in: path
+          description: ID of the shutter you want to retrieve
+          required: true
+          schema:
+            type: string
+            example: "shutter:shutter-123"
+      responses:
+        "200":
+          description: Shutter informations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShutterObject"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutters
+      summary: Delete a shutter
+      description: Delete a shutter, given the shutterId
+      operationId: deleteShutter
+      parameters:
+        - name: shutterId
+          in: path
+          description: ID of the shutter you want to delete
+          required: true
+          schema:
+            type: string
+            example: "shutter:shutter-123"
+      responses:
+        "200":
+          description: Shutter informations about the deleted shutter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShutterObject"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+  /api/v1/operateShutter/raise:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutterOperations
+      summary: Raise a shutter, given the shutterId
+      description: Raise the expected shutter
+      operationId: raiseShutter
+      requestBody:
+        description: Shutter to raise
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShutterIdPayload"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+  /api/v1/operateShutter/lower:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutterOperations
+      summary: Lower a shutter, given the shutterId
+      description: Lower the expected shutter
+      operationId: lowerShutter
+      requestBody:
+        description: Shutter to lower
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShutterIdPayload"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+  /api/v1/operateShutter/stop:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutterOperations
+      summary: Stop a shutter from raising or lowering, given the shutterId
+      description: Stop the expected shutter
+      operationId: stopShutter
+      requestBody:
+        description: Shutter to stop
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShutterIdPayload"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+  /api/v1/operateShutter/program:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - shutterOperations
+      summary: Program a shutter, given the shutterId
+      description: Program the expected shutter
+      operationId: programShutter
+      requestBody:
+        description: Shutter to program
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShutterIdPayload"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "400":
+          description: Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MalformedRequest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+  /api/v1/user/:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - users
+      summary: Add a user
+      description: Add a user
+      operationId: addUser
+      requestBody:
+        description: user to add
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - roles
+              properties:
+                email:
+                  type: string
+                  example: "user@localhost"
+                password:
+                  type: string
+                  example: "SomeUltr4Compl1c4t3dP4ssw0rd()"
+                roles:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/RoleField"
+      responses:
+        "201":
+          description: Used added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "400":
+          description: User already exists / Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAlreadyExists"
+        "401":
+          description: Unauthorized or missing role
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - users
+      summary: Modify a user
+      description: Modify a user
+      operationId: modifyUser
+      requestBody:
+        description: user to add
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  example: "user@localhost"
+                password:
+                  type: string
+                  example: "SomeUltr4Compl1c4t3dP4ssw0rd()"
+                roles:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/RoleField"
+      responses:
+        "201":
+          description: Used added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "400":
+          description: Cannot modify user / Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CannotModifyUser"
+        "401":
+          description: Unauthorized or missing role
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotFound"
+  /api/v1/user/{email}:
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - users
+      summary: Delete an user
+      description: Delete an user, given the email
+      operationId: deleteUser
+      parameters:
+        - name: email
+          in: path
+          description: Email of the user you want to delete
+          required: true
+          schema:
+            type: string
+            example: "example@localhost"
+      responses:
+        "200":
+          description: User deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "400":
+          description: Cannot delete user / Malformed request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CannotDeleteUser"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    OkResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "Ok"
+    MalformedRequest:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "MALFORMED_REQUEST"
+        errorDescription:
+          type: string
+          example: "Malformed request"
+        payload:
+          type: object
+          example: {}
+    CannotModifyUser:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "CANNOT_MODIFY_USER"
+        errorDescription:
+          type: string
+          example: "Cannot modify user"
+        payload:
+          type: object
+          example: { "email": "example@example.com" }
+    CannotDeleteUser:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "CANNOT_DELETE_USER"
+        errorDescription:
+          type: string
+          example: "Cannot delete user"
+    UserNotFound:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "USER_NOT_FOUND"
+        errorDescription:
+          type: string
+          example: "User not found"
+        payload:
+          type: object
+          example: { "email": "example@example.com" }
+    UserAlreadyExists:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "USER_ALREADY_EXISTS"
+        errorDescription:
+          type: string
+          example: "User already exists"
+        payload:
+          type: object
+          example: { "email": "example@example.com" }
+    Unauthorized:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "UNAUTHORIZED"
+        errorDescription:
+          type: string
+          example: "Unauthorized"
+    ShutterObject:
+      type: object
+      properties:
+        shutterId:
+          type: string
+          example: "shutter:123"
+        shutterName:
+          type: string
+          example: "Shutter name"
+    ShutterIdPayload:
+      type: object
+      properties:
+        shutterId:
+          type: string
+          example: "shutter:123"
+    RoleField:
+      type: string
+      enum:
+        - shutters_programmer
+        - users_manager
