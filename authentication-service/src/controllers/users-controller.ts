@@ -8,6 +8,7 @@ import {
   request,
   response,
   httpDelete,
+  httpGet,
 } from "inversify-express-utils";
 import { Request, Response } from "express";
 import {
@@ -70,6 +71,16 @@ export class UsersController extends BaseHttpController {
     };
     const payload = await modifyUserValidator.validate(basePayload);
     const response = await this.userService.deleteUser(payload);
+    res.status(200).json(response);
+  }
+
+  @httpGet("/")
+  @checkUserRole(UserRole.UserManager)
+  async listUsers(
+    @request() _req: Request,
+    @response() res: Response,
+  ): Promise<void> {
+    const response = await this.userService.listUsers();
     res.status(200).json(response);
   }
 }
