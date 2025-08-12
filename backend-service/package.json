@@ -1,0 +1,43 @@
+{
+  "name": "backend-service",
+  "version": "1.0.0",
+  "description": "Publicly exposed backend",
+  "license": "ISC",
+  "author": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "ts-node-dev ./src/index.ts",
+    "test": "jest",
+    "build": "tsc && cp package*.json build/ && cd build && npm install --omit=dev",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
+    "axios": "^1.11.0",
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.0",
+    "express": "^4.21.2",
+    "inversify": "^6.2.2",
+    "inversify-binding-decorators": "^4.0.0",
+    "inversify-express-utils": "^6.5.0",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jest": "^29.0.1",
+    "eslint-plugin-prettier": "^5.5.3",
+    "jest": "^30.0.5",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
+  }
+}
