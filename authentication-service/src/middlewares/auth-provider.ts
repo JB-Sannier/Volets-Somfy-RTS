@@ -2,14 +2,16 @@ import { injectable, inject } from "inversify";
 import { interfaces } from "inversify-express-utils";
 import * as express from "express";
 import { ITokenService, tokenServiceKey } from "../services/token-service";
-import { IUser } from "../models/models";
+import { IUserResponse } from "../models/models";
 import { UserNotFoundError } from "../models/app-error";
 import { container } from "../ioc/container";
 import { IUserService, userServiceKey } from "../services/user-service";
 
-export class Principal implements interfaces.Principal<IUser | undefined> {
-  public details: IUser | undefined;
-  public constructor(details: IUser | undefined) {
+export class Principal
+  implements interfaces.Principal<IUserResponse | undefined>
+{
+  public details: IUserResponse | undefined;
+  public constructor(details: IUserResponse | undefined) {
     this.details = details;
   }
   async isAuthenticated(): Promise<boolean> {

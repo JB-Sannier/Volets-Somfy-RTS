@@ -1,7 +1,13 @@
 import { provide } from "inversify-binding-decorators";
 import { inject } from "inversify";
 import { UserEntity } from "../entities/user";
-import { IUser, toUser, UserRole } from "../models/models";
+import {
+  IUser,
+  IUserResponse,
+  toUser,
+  toUserResponse,
+  UserRole,
+} from "../models/models";
 import {
   ISqlConnectionService,
   sqlConnectionServiceKey,
@@ -16,13 +22,14 @@ export interface IUserRepository {
   addUser(user: IUser): Promise<boolean>;
   modifyUser(user: IUser): Promise<boolean>;
   deleteUser(email: string): Promise<boolean>;
+  listUsers(): Promise<IUserResponse[]>;
 }
 
 @provide(userRepositoryKey)
 export class UserRepository implements IUserRepository {
   constructor(
     @inject(sqlConnectionServiceKey)
-    private readonly connectionService: ISqlConnectionService,
+    private readonly connectionService: ISqlConnectionService
   ) {}
 
   async getUserByEmail(email: string): Promise<IUser | undefined> {
@@ -99,5 +106,12 @@ export class UserRepository implements IUserRepository {
       await dataSource.manager.delete<UserEntity>(UserEntity, entity);
     });
     return true;
+  }
+
+  async listUsers(): Promise<IUserResponse[]> {
+    const dataSource = await this.connectionService.getConnection();
+    const result = await dataSource.manager.find(UserEntity);
+    const response = result.map((r) => toUserResponse(r));
+    return response;
   }
 }

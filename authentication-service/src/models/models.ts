@@ -12,10 +12,20 @@ export interface IUser {
   roles: UserRole[];
 }
 
+export type IUserResponse = Omit<IUser, "password">;
+
 export function toUser(u: UserEntity): IUser {
   return {
     email: u.email,
     password: u.password,
+    isActive: u.isActive,
+    roles: u.roles,
+  };
+}
+
+export function toUserResponse(u: UserEntity): IUserResponse {
+  return {
+    email: u.email,
     isActive: u.isActive,
     roles: u.roles,
   };

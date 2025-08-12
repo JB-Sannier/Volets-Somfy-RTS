@@ -9,7 +9,7 @@ export class UserEntity {
   @Column({ name: "password", type: "character varying" })
   password: string;
 
-  @Column({ name: "is_active", type: "character varying" })
+  @Column({ name: "active", type: "boolean" })
   isActive: boolean;
 
   @Column({

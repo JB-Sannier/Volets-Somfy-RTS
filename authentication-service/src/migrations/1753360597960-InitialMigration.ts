@@ -24,10 +24,10 @@ export class InitialMigration1753360597960 implements MigrationInterface {
           length: "250",
         },
         {
-          name: "is_active",
-          type: "character varying",
+          name: "active",
+          type: "boolean",
           comment: "Is the user active",
-          isNullable: true,
+          isNullable: false,
           isPrimary: false,
           isUnique: false,
         },
@@ -38,7 +38,7 @@ export class InitialMigration1753360597960 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    console.log('Deleting table User');
+    console.log("Deleting table User");
     const table = new Table({ name: "User" });
     queryRunner.dropTable(table);
   }

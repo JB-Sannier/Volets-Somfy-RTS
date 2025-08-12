@@ -7,6 +7,7 @@ import {
   IAuthenticateResponse,
   IDeleteUserRequest,
   IDeleteUserResponse,
+  IListUsersResponse,
   IModifyUserRequest,
   IModifyUserResponse,
 } from "../models/requests";
@@ -21,7 +22,7 @@ import {
   UserNotFoundError,
 } from "../models/app-error";
 import * as bcrypt from "bcryptjs";
-import { IUser, UserRole } from "../models/models";
+import { IUser, IUserResponse, UserRole } from "../models/models";
 import generatePassword from "password-generator";
 import { ITokenService, tokenServiceKey } from "./token-service";
 
@@ -34,7 +35,8 @@ export interface IUserService {
   deleteUser(user: IDeleteUserRequest): Promise<IDeleteUserResponse>;
   modifyUser(user: IModifyUserRequest): Promise<IModifyUserResponse>;
   setDefaultUserIfNeeded(): Promise<void>;
-  getUser(email: string): Promise<IUser>;
+  getUser(email: string): Promise<IUserResponse>;
+  listUsers(): Promise<IListUsersResponse>;
 }
 
 @provide(userServiceKey)
@@ -154,7 +156,7 @@ export class UserService implements IUserService {
     }
   }
 
-  async getUser(email: string): Promise<IUser> {
+  async getUser(email: string): Promise<IUserResponse> {
     if (this.defaultUser && this.defaultUser.email === email) {
       return this.defaultUser;
     }
@@ -162,6 +164,15 @@ export class UserService implements IUserService {
     if (!userFound) {
       throw new UserNotFoundError(email);
     }
-    return userFound;
+    return {
+      email: userFound.email,
+      roles: userFound.roles,
+      isActive: userFound.isActive,
+    };
+  }
+
+  async listUsers(): Promise<IListUsersResponse> {
+    const response = await this.userRepository.listUsers();
+    return response;
   }
 }

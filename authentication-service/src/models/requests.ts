@@ -1,4 +1,4 @@
-import { UserRole } from "./models";
+import { IUserResponse, UserRole } from "./models";
 
 export interface IAddUserRequest {
   email: string;
@@ -38,3 +38,5 @@ export interface IAuthenticateRequest {
 export interface IAuthenticateResponse {
   token: string;
 }
+
+export type IListUsersResponse = IUserResponse[];
