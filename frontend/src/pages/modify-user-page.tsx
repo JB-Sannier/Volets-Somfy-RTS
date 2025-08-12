@@ -113,7 +113,6 @@ export const ModifyUserPage: React.FC = () => {
       roles: allRoles,
     };
     try {
-      console.log("Will update an user : ", modifyRequest);
       await modifyUser(modifyRequest);
       setSnackbarProps({
         message: "User successfully updated.",
