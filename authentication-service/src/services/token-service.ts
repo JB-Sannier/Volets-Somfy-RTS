@@ -9,7 +9,6 @@ export const tokenServiceKey = "TokenService";
 export interface ITokenInformations {
   email: string;
   roles: UserRole[];
-  expires: number;
 }
 
 export interface ITokenService {
@@ -28,7 +27,6 @@ export class TokenService implements ITokenService {
     const tokenInfos: ITokenInformations = {
       email: user.email,
       roles: user.roles,
-      expires: Math.round(Date.now() / 1000.0 + 3600),
     };
     const token = jswonwebtoken.sign(tokenInfos, TokenService.signingKey, {
       expiresIn: "1h",
@@ -59,7 +57,6 @@ export class TokenService implements ITokenService {
       }
       const tokenInfos: ITokenInformations = {
         email: payload.email,
-        expires: payload.exp,
         roles: payload.roles,
       };
       return tokenInfos;
