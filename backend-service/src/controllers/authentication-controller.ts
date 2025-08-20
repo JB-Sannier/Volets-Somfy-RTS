@@ -13,8 +13,14 @@ import {
   appConfigServiceKey,
   IAppConfigService,
 } from "../services/app-config-service";
-import { IAuthenticateRequest } from "../models/users-requests";
-import { authenticateValidator } from "../models/users-validators";
+import {
+  IAuthenticateRequest,
+  IRefreshTokenRequest,
+} from "../models/users-requests";
+import {
+  authenticateValidator,
+  refreshTokenValidator,
+} from "../models/users-validators";
 import { IUserService, userServiceKey } from "../services/user-service";
 import { checkToken } from "../middlewares/check-token-middleware";
 import { ITokenService, tokenServiceKey } from "../services/token-service";
@@ -51,6 +57,20 @@ export class AuthenticationController extends BaseHttpController {
   ): Promise<void> {
     const token = req.headers.authorization || "";
     const response = await this.tokenService.validateToken(token);
+    res.status(200).json(response);
+  }
+
+  @httpPost("/refreshToken")
+  async refreshToken(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
+    const baseRequest: IRefreshTokenRequest = {
+      refreshToken: req.body.refreshToken,
+    };
+    const refreshTokenRequest =
+      await refreshTokenValidator.validate(baseRequest);
+    const response = await this.userService.refreshToken(refreshTokenRequest);
     res.status(200).json(response);
   }
 }

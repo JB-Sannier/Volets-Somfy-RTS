@@ -28,7 +28,7 @@ export function checkToken() {
           next();
         }
       } catch (error) {
-        console.log(
+        console.warn(
           "CheckTokenMiddleware : error while trying to validate token :",
           error,
         );

@@ -12,25 +12,31 @@ export function errorHandler(
 
   if (err instanceof AppError) {
     const payload = {
-      errorCode: err.code,
+      errorCode: err.errorCode,
       description: err.description,
       payload: err.payload,
     };
-    switch (err.code) {
+    switch (err.errorCode) {
+      case ErrorCodes.SomfyProxyServiceError:
+        res.status(500).json(payload);
+        return;
       case ErrorCodes.CannotDeleteUser:
       case ErrorCodes.CannotModifyUser:
       case ErrorCodes.MalformedRequest:
       case ErrorCodes.UserAlreadyExists:
+      case ErrorCodes.ShutterAlreadyExists:
         res.status(400).json(payload);
         return;
+      case ErrorCodes.ShutterNotFound:
       case ErrorCodes.UserNotFound:
         res.status(404).json(payload);
         return;
       case ErrorCodes.Unauthorized:
+        console.log("Sending back UnauthorizedError");
         res.status(401).json(payload);
         return;
       default:
-        console.error("AppError not handled : ", err);
+        console.warn("AppError not handled : ", err);
         res.status(500).json({
           errorCode: "INTERNAL_SERVER_ERROR",
           description: "Internal Server Error",

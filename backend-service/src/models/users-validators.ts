@@ -4,6 +4,7 @@ import {
   IAuthenticateRequest,
   IDeleteUserRequest,
   IModifyUserRequest,
+  IRefreshTokenRequest,
 } from "./users-requests";
 import { UserRole } from "./models";
 
@@ -34,5 +35,11 @@ export const authenticateValidator: ObjectSchema<IAuthenticateRequest> = object(
   {
     email: string().required().email(),
     password: string().required(),
+  },
+);
+
+export const refreshTokenValidator: ObjectSchema<IRefreshTokenRequest> = object(
+  {
+    refreshToken: string().required(),
   },
 );

@@ -5,6 +5,9 @@ export enum ErrorCodes {
   UserAlreadyExists = "USER_ALREADY_EXISTS",
   Unauthorized = "UNAUTHORIZED",
   MalformedRequest = "MALFORMED_REQUEST",
+  ShutterNotFound = "SHUTTER_NOT_FOUND",
+  ShutterAlreadyExists = "SHUTTER_ALREADY_EXISTS",
+  SomfyProxyServiceError = "SOMFY_PROXY_SERVICE_ERROR",
 }
 
 export enum ErrorDescriptions {
@@ -13,20 +16,24 @@ export enum ErrorDescriptions {
   UserNotFound = "User not found",
   UserAlreadyExists = "User already exists",
   Unauthorized = "You are not authorized to access this resource",
+  ShutterNotFound = "Shutter not found",
+  ShutterAlreadyExists = "Shutter already exists",
+  SomfyProxyServiceError = "An error occured when contacting proxy.",
+
   MalformedRequest = "Malformed request",
 }
 
 export class AppError {
-  public code: ErrorCodes;
+  public errorCode: ErrorCodes;
   public description: ErrorDescriptions;
   public payload?: object;
 
   constructor(
-    code: ErrorCodes,
+    errorCode: ErrorCodes,
     description: ErrorDescriptions,
     payload?: object,
   ) {
-    this.code = code;
+    this.errorCode = errorCode;
     this.description = description;
     this.payload = payload;
   }

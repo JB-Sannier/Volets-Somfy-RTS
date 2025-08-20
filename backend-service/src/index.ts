@@ -8,6 +8,7 @@ import {
   IAppConfigService,
 } from "./services/app-config-service";
 import { errorHandler } from "./middlewares/error-middleware";
+import cors from "cors";
 
 async function init() {
   const container = setupContainer();
@@ -17,6 +18,7 @@ async function init() {
   server.setConfig((app: express.Application) => {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+    app.use(cors());
   });
   server.setErrorConfig((app) => {
     app.use(errorHandler);

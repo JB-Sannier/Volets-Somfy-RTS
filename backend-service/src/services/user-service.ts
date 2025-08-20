@@ -10,6 +10,8 @@ import {
   IListUsersResponse,
   IModifyUserRequest,
   IModifyUserResponse,
+  IRefreshTokenRequest,
+  IRefreshTokenResponse,
 } from "../models/users-requests";
 import { AppError, UnauthorizedError } from "../models/app-error";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
@@ -19,6 +21,7 @@ export const userServiceKey = "UserService";
 
 export interface IUserService {
   authenticate(request: IAuthenticateRequest): Promise<IAuthenticateResponse>;
+  refreshToken(request: IRefreshTokenRequest): Promise<IRefreshTokenResponse>;
   addUser(request: IAddUserRequest, token: string): Promise<IAddUserResponse>;
   deleteUser(
     request: IDeleteUserRequest,
@@ -44,8 +47,24 @@ export class UserService implements IUserService {
     const path = "api/v1/auth/token";
     const fullUrl = `${baseUrl}/${path}`;
     try {
-      console.log(fullUrl);
-      console.log(request);
+      const response = await axios.post<IAuthenticateResponse>(
+        fullUrl,
+        request,
+      );
+      return response.data;
+    } catch (error: unknown) {
+      this.handleError(error);
+      throw new UnauthorizedError();
+    }
+  }
+
+  async refreshToken(
+    request: IRefreshTokenRequest,
+  ): Promise<IRefreshTokenResponse> {
+    const baseUrl = this.appConfig.authenticationServiceURL();
+    const path = "api/v1/auth/refreshToken";
+    const fullUrl = `${baseUrl}/${path}`;
+    try {
       const response = await axios.post<IAuthenticateResponse>(
         fullUrl,
         request,
@@ -68,7 +87,7 @@ export class UserService implements IUserService {
       });
       return response.data;
     } catch (error) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -84,7 +103,7 @@ export class UserService implements IUserService {
       });
       return response.data;
     } catch (error) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -95,13 +114,12 @@ export class UserService implements IUserService {
   ): Promise<IModifyUserResponse> {
     const fullPath = `${this.appConfig.authenticationServiceURL()}/api/v1/user`;
     try {
-      console.log("URL : ", fullPath);
       const response = await axios.put(fullPath, request, {
         headers: { Authorization: token },
       });
       return response.data;
     } catch (error) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -109,20 +127,19 @@ export class UserService implements IUserService {
   async listUsers(token: string): Promise<IListUsersResponse> {
     const fullPath = `${this.appConfig.authenticationServiceURL()}/api/v1/user`;
     try {
-      console.log("URL : ", fullPath);
       const response = await axios.get(fullPath, {
         headers: { Authorization: token },
       });
       return response.data;
     } catch (error) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
 
-  private async handleError(error: unknown) {
+  private handleError(error: unknown) {
     if (isAxiosError(error)) {
-      console.log("Got axios error : ", {
+      console.error("Got axios error : ", {
         status: error.status,
         code: error.code,
         message: error.message,
@@ -130,18 +147,18 @@ export class UserService implements IUserService {
       });
       if (
         error.response &&
+        error.response.data &&
         error.response.data.errorCode &&
-        error.response.data.errorDescription &&
-        error.response.data.payload
+        error.response.data.description
       ) {
         throw new AppError(
           error.response.data.errorCode,
-          error.response.data.errorDescription,
+          error.response.data.description,
           error.response.data.payload,
         );
       }
     } else {
-      console.log("Got unhandled error : ", error);
+      console.error("Got unhandled error : ", error);
     }
     throw new UnauthorizedError();
   }
