@@ -3,7 +3,7 @@ import { AppError, ErrorCodes } from "../models/app-error";
 import { ValidationError } from "yup";
 
 export function errorHandler(
-  err: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+  err: unknown,
   req: express.Request,
   res: express.Response,
   next: express.NextFunction, // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -12,13 +12,22 @@ export function errorHandler(
 
   if (err instanceof AppError) {
     const payload = {
-      errorCode: err.code,
+      errorCode: err.errorCode,
       description: err.description,
       payload: err.payload,
     };
-    switch (err.code) {
+    switch (err.errorCode) {
       case ErrorCodes.Unauthorized:
         res.status(401).json(payload);
+        return;
+      case ErrorCodes.ShutterAlreadyExists:
+        res.status(400).json(payload);
+        return;
+      case ErrorCodes.ShutterNotFound:
+        res.status(404).json(payload);
+        return;
+      case ErrorCodes.SomfyProxyServiceError:
+        res.status(500).json(payload);
         return;
       default:
         console.error("AppError not handled : ", err);

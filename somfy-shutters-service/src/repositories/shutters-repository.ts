@@ -78,7 +78,11 @@ export class ShutterRepository implements IShutterRepository {
 
   async listShutters(): Promise<IShutter[]> {
     const dataSource = await this.sqlConnectionService.getConnection();
-    const result = await dataSource.manager.find(ShutterEntity);
+    const result = await dataSource.manager.find(ShutterEntity, {
+      order: {
+        shutterName: "ASC",
+      },
+    });
     return result.map((r) => r.toShutter());
   }
 }

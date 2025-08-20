@@ -13,16 +13,16 @@ export enum ErrorDescriptions {
 }
 
 export class AppError {
-  public code: ErrorCodes;
+  public errorCode: ErrorCodes;
   public description: ErrorDescriptions;
   public payload?: object;
 
   constructor(
-    code: ErrorCodes,
+    errorCode: ErrorCodes,
     description: ErrorDescriptions,
     payload?: object,
   ) {
-    this.code = code;
+    this.errorCode = errorCode;
     this.description = description;
     this.payload = payload;
   }
