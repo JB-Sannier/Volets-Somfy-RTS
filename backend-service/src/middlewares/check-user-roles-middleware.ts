@@ -7,7 +7,7 @@ import { container } from "../ioc/container";
 
 export function checkUserRole(role: UserRole) {
   return withMiddleware(
-    async (
+    (
       req: express.Request,
       res: express.Response,
       next: express.NextFunction,
@@ -20,28 +20,34 @@ export function checkUserRole(role: UserRole) {
         });
         return;
       }
-      try {
-        const tokenService = container.get<ITokenService>(tokenServiceKey);
-        const tokenInfos = await tokenService.validateToken(
-          req.headers.authorization,
-        );
-        if (!tokenInfos.roles.find((r) => r === role)) {
+
+      const tokenService = container.get<ITokenService>(tokenServiceKey);
+      tokenService
+        .validateToken(req.headers.authorization)
+        .then((tokenInfos) => {
+          if (!tokenInfos.roles.find((r) => r === role)) {
+            res.status(401).json({
+              errorCode: ErrorCodes.Unauthorized,
+              errorDescriptions: ErrorDescriptions.Unauthorized,
+              payload: {},
+            });
+            return;
+          }
+          next();
+        })
+        .catch((err: unknown) => {
+          console.log(
+            "CheckUserRole: error while trying to communicate to authentication service : ",
+            err,
+          );
+
           res.status(401).json({
             errorCode: ErrorCodes.Unauthorized,
             errorDescriptions: ErrorDescriptions.Unauthorized,
             payload: {},
           });
           return;
-        }
-        next();
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (e) {
-        res.status(401).json({
-          errorCode: ErrorCodes.Unauthorized,
-          errorDescriptions: ErrorDescriptions.Unauthorized,
-          payload: {},
         });
-      }
     },
   );
 }

@@ -76,7 +76,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
       );
       return response.data;
     } catch (error: unknown) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -94,7 +94,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
       );
       return response.data;
     } catch (error: unknown) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -111,7 +111,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
       );
       return response.data;
     } catch (error: unknown) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -126,7 +126,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
       );
       return response.data;
     } catch (error: unknown) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -144,7 +144,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
       );
       return response.data;
     } catch (error: unknown) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -162,7 +162,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
       );
       return response.data;
     } catch (error: unknown) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -180,7 +180,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
       );
       return response.data;
     } catch (error: unknown) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -198,7 +198,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
       );
       return response.data;
     } catch (error: unknown) {
-      await this.handleError(error);
+      this.handleError(error);
       throw new UnauthorizedError();
     }
   }
@@ -212,7 +212,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
     return config;
   }
 
-  async handleError(error: unknown) {
+  private handleError(error: unknown) {
     if (isAxiosError(error)) {
       console.log("Got axios error : ", {
         status: error.status,
@@ -223,12 +223,11 @@ export class ShuttersProxyService implements IShuttersProxyService {
       if (
         error.response &&
         error.response.data.errorCode &&
-        error.response.data.errorDescription &&
-        error.response.data.payload
+        error.response.data.description
       ) {
         throw new AppError(
           error.response.data.errorCode,
-          error.response.data.errorDescription,
+          error.response.data.description,
           error.response.data.payload,
         );
       }
