@@ -16,6 +16,6 @@ export class AddRoleInUserTable1753382072367 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     console.log("Dropping 'roles' column in table User");
-    queryRunner.dropColumn("User", "roles");
+    await queryRunner.dropColumn("User", "roles");
   }
 }

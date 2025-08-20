@@ -29,7 +29,7 @@ export interface IUserRepository {
 export class UserRepository implements IUserRepository {
   constructor(
     @inject(sqlConnectionServiceKey)
-    private readonly connectionService: ISqlConnectionService
+    private readonly connectionService: ISqlConnectionService,
   ) {}
 
   async getUserByEmail(email: string): Promise<IUser | undefined> {
