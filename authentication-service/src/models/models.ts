@@ -30,3 +30,9 @@ export function toUserResponse(u: UserEntity): IUserResponse {
     roles: u.roles,
   };
 }
+
+export interface IRefreshToken {
+  email: string;
+  token: string;
+  expiration: number;
+}

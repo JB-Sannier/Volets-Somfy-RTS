@@ -3,7 +3,7 @@ import { AppError, ErrorCodes } from "../models/app-error";
 import { ValidationError } from "yup";
 
 export function errorHandler(
-  err: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+  err: unknown,
   req: express.Request,
   res: express.Response,
   next: express.NextFunction, // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -12,11 +12,11 @@ export function errorHandler(
 
   if (err instanceof AppError) {
     const payload = {
-      errorCode: err.code,
+      errorCode: err.errorCode,
       description: err.description,
       payload: err.payload,
     };
-    switch (err.code) {
+    switch (err.errorCode) {
       case ErrorCodes.CannotDeleteUser:
       case ErrorCodes.CannotModifyUser:
       case ErrorCodes.UserAlreadyExists:

@@ -6,4 +6,5 @@ export interface IAppConfig {
   dbUserName: string;
   dbPassword: string;
   dbName: string;
+  refreshTokenSigningKey: string;
 }

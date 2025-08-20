@@ -1,9 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class InitialMigration1753360597960 implements MigrationInterface {
+const TABLE_NAME = "RefreshToken";
+
+export class Migrations1755530698256 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const table: Table = new Table({
-      name: "User",
+      schema: process.env.DB_SCHEMA,
+      name: TABLE_NAME,
       columns: [
         {
           name: "email",
@@ -11,35 +14,31 @@ export class InitialMigration1753360597960 implements MigrationInterface {
           comment: "Email of the username",
           isNullable: false,
           isPrimary: true,
-          isUnique: true,
+          isUnique: false,
           length: "250",
         },
         {
-          name: "password",
+          name: "refreshToken",
           type: "character varying",
-          comment: "Hashed password of the username",
+          comment: "Refresh token created",
           isNullable: false,
-          isPrimary: false,
-          isUnique: false,
+          isPrimary: true,
           length: "250",
         },
         {
-          name: "active",
-          type: "boolean",
-          comment: "Is the user active",
+          name: "expiration",
+          type: "timestamptz",
+          comment: "refresh token expiration",
           isNullable: false,
-          isPrimary: false,
-          isUnique: false,
         },
       ],
     });
-    console.log("Creating table User");
+    console.log("Creating table RefreshToken");
     await queryRunner.createTable(table);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    console.log("Deleting table User");
-    const table = new Table({ name: "User" });
-    await queryRunner.dropTable(table);
+    console.log(`Deleting table ${TABLE_NAME}`);
+    await queryRunner.dropTable(TABLE_NAME);
   }
 }

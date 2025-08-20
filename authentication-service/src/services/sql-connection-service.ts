@@ -42,6 +42,7 @@ export class SqlConnectionService implements ISqlConnectionService {
         migrations: [
           `${__dirname}/../migrations/1753360597960-InitialMigration.ts`,
           `${__dirname}/../migrations/1753382072367-AddRoleInUserTable.ts`,
+          `${__dirname}/../migrations/1755530698256-CreateRefreshTokenTable.ts`,
         ],
         migrationsRun: true,
 

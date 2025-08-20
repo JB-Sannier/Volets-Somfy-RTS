@@ -14,6 +14,7 @@ export interface IAppConfigService {
   dbPassword(): string;
   dbName(): string;
   dbSchema(): string;
+  refreshTokenSigningKey(): string;
 }
 
 @provide(appConfigServiceKey)
@@ -56,5 +57,9 @@ export class AppConfigServiceFromEnv implements IAppConfigService {
 
   dbSchema(): string {
     return process.env.DB_SCHEMA || "";
+  }
+
+  refreshTokenSigningKey(): string {
+    return process.env.REFRESH_TOKEN_SIGNING_KEY || "";
   }
 }

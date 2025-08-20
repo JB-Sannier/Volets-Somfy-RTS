@@ -37,6 +37,13 @@ export interface IAuthenticateRequest {
 
 export interface IAuthenticateResponse {
   token: string;
+  refreshToken: string;
 }
 
 export type IListUsersResponse = IUserResponse[];
+
+export interface IRefreshTokenRequest {
+  refreshToken: string;
+}
+
+export type IRefreshTokenResponse = IAuthenticateResponse;

@@ -25,6 +25,10 @@ import * as bcrypt from "bcryptjs";
 import { IUser, IUserResponse, UserRole } from "../models/models";
 import generatePassword from "password-generator";
 import { ITokenService, tokenServiceKey } from "./token-service";
+import {
+  IRefreshTokenService,
+  refreshTokenServiceKey,
+} from "./refresh-token-sevice";
 
 export const userServiceKey = "UserService";
 
@@ -46,6 +50,8 @@ export class UserService implements IUserService {
   constructor(
     @inject(userRepositoryKey) private readonly userRepository: IUserRepository,
     @inject(tokenServiceKey) private readonly tokenService: ITokenService,
+    @inject(refreshTokenServiceKey)
+    private readonly refreshTokenService: IRefreshTokenService,
   ) {
     this.defaultUser = undefined;
   }
@@ -61,6 +67,7 @@ export class UserService implements IUserService {
       const token = await this.tokenService.createToken(this.defaultUser);
       return {
         token,
+        refreshToken: "",
       };
     }
     const userFound = await this.userRepository.getUserByEmail(request.email);
@@ -75,7 +82,13 @@ export class UserService implements IUserService {
       throw new UnauthorizedError();
     }
     const token = await this.tokenService.createToken(userFound);
-    return { token };
+    const refreshToken = await this.refreshTokenService.createRefreshToken(
+      userFound.email,
+    );
+    return {
+      token,
+      refreshToken: refreshToken.token,
+    };
   }
 
   async addUser(user: IAddUserRequest): Promise<IAddUserResponse> {

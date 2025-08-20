@@ -27,6 +27,16 @@ import {
 } from "../services/token-service";
 import "../controllers/authentication-controller";
 import "../controllers/users-controller";
+import {
+  IRefreshTokenRepository,
+  RefreshTokenRepository,
+  refreshTokenRepositoryKey,
+} from "../repositories/refresh-token-repository";
+import {
+  IRefreshTokenService,
+  RefreshTokenService,
+  refreshTokenServiceKey,
+} from "../services/refresh-token-sevice";
 
 export function setupContainer(): Container {
   const c: Container = new Container();
@@ -46,7 +56,12 @@ export function setupContainer(): Container {
   c.bind<IUserService>(userServiceKey).to(UserService).inSingletonScope();
 
   c.bind<ITokenService>(tokenServiceKey).to(TokenService).inSingletonScope();
-
+  c.bind<IRefreshTokenRepository>(refreshTokenRepositoryKey)
+    .to(RefreshTokenRepository)
+    .inSingletonScope();
+  c.bind<IRefreshTokenService>(refreshTokenServiceKey)
+    .to(RefreshTokenService)
+    .inSingletonScope();
   return c;
 }
 
