@@ -1,8 +1,6 @@
 import { TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-
-const ERR_PASSWORD_EMPTY = "Password is required.";
-const ERR_PASSWORD_MISMATCH = "Passwords don't match.";
+import { useTranslation } from "react-i18next";
 
 export interface IChangePasswordProps {
   passwordUpdated: (newPassword: string, valid: boolean) => void;
@@ -11,25 +9,26 @@ export interface IChangePasswordProps {
 export const ChangePasswordComponent: React.FC<IChangePasswordProps> = (
   props,
 ) => {
+  const { t } = useTranslation("change-password-component");
   const [password1, setPassword1] = useState<string>("");
   const [password2, setPassword2] = useState<string>("");
 
   const [password1ErrorText, setPassword1ErrorText] = useState<
     string | undefined
-  >(ERR_PASSWORD_EMPTY);
+  >(t("ErrPasswordEmpty"));
   const [password2ErrorText, setPassword2ErrorText] = useState<
     string | undefined
-  >(ERR_PASSWORD_EMPTY);
+  >(t("ErrPasswordEmpty"));
 
   function updatePassword1(value: string) {
     setPassword1(value);
     if (value === "") {
-      setPassword1ErrorText(ERR_PASSWORD_EMPTY);
+      setPassword1ErrorText(t("ErrPasswordEmpty"));
       props.passwordUpdated("", false);
       return;
     } else if (value !== password2 && password2 !== "") {
-      setPassword1ErrorText(ERR_PASSWORD_MISMATCH);
-      setPassword2ErrorText(ERR_PASSWORD_MISMATCH);
+      setPassword1ErrorText(t("ErrPasswordMismatch"));
+      setPassword2ErrorText(t("ErrPasswordMismatch"));
       props.passwordUpdated("", false);
       return;
     }
@@ -45,12 +44,12 @@ export const ChangePasswordComponent: React.FC<IChangePasswordProps> = (
     setPassword2(value);
 
     if (value === "") {
-      setPassword2ErrorText(ERR_PASSWORD_EMPTY);
+      setPassword2ErrorText(t("ErrPasswordEmpty"));
       props.passwordUpdated("", false);
       return;
     } else if (value !== password1 && password1 !== "") {
-      setPassword1ErrorText(ERR_PASSWORD_MISMATCH);
-      setPassword2ErrorText(ERR_PASSWORD_MISMATCH);
+      setPassword1ErrorText(t("ErrPasswordMismatch"));
+      setPassword2ErrorText(t("ErrPasswordMismatch"));
       props.passwordUpdated("", false);
       return;
     }
@@ -64,7 +63,7 @@ export const ChangePasswordComponent: React.FC<IChangePasswordProps> = (
 
   return (
     <>
-      <Typography variant="body1">Password :</Typography>
+      <Typography variant="body1">{t("Password")}</Typography>
       <TextField
         value={password1}
         error={password1ErrorText !== undefined}
@@ -72,7 +71,7 @@ export const ChangePasswordComponent: React.FC<IChangePasswordProps> = (
         type="password"
         onChange={(e) => updatePassword1(e.target.value || "")}
       />
-      <Typography variant="body1">Confirm password :</Typography>
+      <Typography variant="body1">{t("ConfirmPassword")}</Typography>
       <TextField
         value={password2}
         error={password2ErrorText !== undefined}

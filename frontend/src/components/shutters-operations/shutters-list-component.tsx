@@ -9,17 +9,15 @@ import {
   RemoteDataStatus,
   type RemoteData,
 } from "../../services/remote-data";
-import { listShutters } from "../../services/shutters-service";
-import { Typography } from "@mui/material";
+import { useShuttersManagementApis } from "../../services/shutters-service";
 import { ShutterOperationComponent } from "./shutter-operation-component";
+import { TitleComponent } from "../title-component";
+import { useTranslation } from "react-i18next";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface IShuttersListComponent {}
+export const ShuttersListComponent: React.FC = () => {
+  const { t } = useTranslation("shutters-list-component");
+  const shuttersManagementApi = useShuttersManagementApis();
 
-export const ShuttersListComponent: React.FC<IShuttersListComponent> = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _props,
-) => {
   const [shuttersList, setShuttersList] = useState<IShutter[]>([]);
   const [listShuttersRD, setListShuttersRD] =
     useState<RemoteData<IListShuttersResponse>>(REMOTE_DATA_INIT);
@@ -27,18 +25,18 @@ export const ShuttersListComponent: React.FC<IShuttersListComponent> = (
   useEffect(() => {
     if (listShuttersRD.status === RemoteDataStatus.Init) {
       callWithRemoteData<unknown, IListShuttersResponse>(
-        listShutters,
+        shuttersManagementApi.listShutters,
         {},
         (newRd) => setListShuttersRD(newRd),
       );
     } else if (listShuttersRD.status === RemoteDataStatus.Loaded) {
       setShuttersList(listShuttersRD.payload);
     }
-  }, [listShuttersRD]);
+  }, [listShuttersRD, shuttersManagementApi.listShutters]);
 
   return (
     <>
-      <Typography variant="h5">List of shutters:</Typography>
+      <TitleComponent title={t("ShuttersList")} />
       {shuttersList.map((shutter, index) => (
         <ShutterOperationComponent shutter={shutter} key={index} />
       ))}

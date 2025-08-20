@@ -1,7 +1,10 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { type PropsWithChildren } from "react";
+import { useTranslation } from "react-i18next";
 
 export const LoginLayout: React.FC<PropsWithChildren> = (props) => {
+  const { t } = useTranslation("login-layout");
+
   return (
     <Box
       sx={{
@@ -20,7 +23,7 @@ export const LoginLayout: React.FC<PropsWithChildren> = (props) => {
       >
         <Grid>
           <Box sx={{ width: "100%" }}>
-            <Typography variant="h2">Somfy RTS Shutters</Typography>
+            <Typography variant="h2">{t("SomfyRtsShutters")}</Typography>
           </Box>
         </Grid>
         <Grid>

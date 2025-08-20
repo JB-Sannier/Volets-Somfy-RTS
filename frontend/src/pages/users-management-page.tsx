@@ -10,17 +10,20 @@ import {
   type RemoteData,
   RemoteDataStatus,
 } from "../services/remote-data";
-import { listUsers } from "../services/users-service";
+import { useUserApis } from "../services/users-service";
 import { useAuthContext } from "../contexts/auth-context.types";
 import { useNavigate } from "react-router-dom";
 import { GeneralLayout } from "../layouts/general-layout";
 import { UserComponent } from "../components/users-management/user-component";
 import { useSnackbar } from "../components/snackbar-component";
 import { TitleComponent } from "../components/title-component";
+import { useTranslation } from "react-i18next";
 
 export const UsersManagementPage: React.FC = () => {
   const authContext = useAuthContext();
   const navigate = useNavigate();
+  const userApis = useUserApis();
+  const { t } = useTranslation("user-management-page");
   const { setSnackbarProps, SnackbarComponent } = useSnackbar();
 
   const [users, setUsers] = useState<IUserResponse[]>([]);
@@ -29,13 +32,13 @@ export const UsersManagementPage: React.FC = () => {
 
   useEffect(() => {
     if (listUsersRD.status === RemoteDataStatus.Init) {
-      callWithRemoteData(listUsers, undefined, (newRd) =>
+      callWithRemoteData(userApis.listUsers, undefined, (newRd) =>
         setListUsersRD(newRd),
       );
     } else if (listUsersRD.status === RemoteDataStatus.Loaded) {
       setUsers(listUsersRD.payload);
     }
-  }, [listUsersRD]);
+  }, [listUsersRD, userApis.listUsers]);
 
   if (!authContext.hasRole(UserRole.UserManager)) {
     navigate("/");
@@ -46,7 +49,7 @@ export const UsersManagementPage: React.FC = () => {
     newUsers[index] = u;
     setUsers(newUsers);
     setSnackbarProps({
-      message: "User successfully modified.",
+      message: t("MessageUserModifiedSuccessfully"),
       severity: "success",
     });
   }
@@ -55,7 +58,7 @@ export const UsersManagementPage: React.FC = () => {
     const newUsers = [...users].filter((u) => u.email !== user.email);
     setUsers(newUsers);
     setSnackbarProps({
-      message: `The user ${user.email} has been removed.`,
+      message: t("MessageUserDeletedSuccessfully", { email: user.email }),
       severity: "success",
     });
   }
@@ -64,7 +67,7 @@ export const UsersManagementPage: React.FC = () => {
     <GeneralLayout>
       {authContext.hasRole(UserRole.UserManager) && (
         <>
-          <TitleComponent title="Users management" />
+          <TitleComponent title={t("Title")} />
           {users.map((u, index) => (
             <UserComponent
               user={u}

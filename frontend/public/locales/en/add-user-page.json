@@ -1,0 +1,20 @@
+{
+  "ErrorEmailAddressRequired": "Email address required.",
+  "ErrorEmailInvalidFormat": "Invalid email address.",
+  "ErrorPasswordEmpty": "Password cannot be empty.",
+  "ErrorPasswordMismatch": "Passwords don't match.",
+  "MessageAddUserSuccessful": "User {{email}} successfully added.",
+  "MessageAddUserFailed": "Unable to add the user {{email}} to the application.",
+  "UserEmail": "User email address:",
+  "UserPassword": "Password:",
+  "UserPasswordConfirm": "Password (confirm):",
+  "RoleShuttersManager": "Shutters Manager",
+  "RoleShuttersManagerDescription": "The Shutters Manager can rename, add and remove shutters from the application.",
+  "RoleUsersManager": "Users Manager",
+  "RoleUsersManagerDescription": "The Users Manager can add, modify and remove users.",
+  "ButtonAddUser": "Add user",
+  "ButtonCancel": "Cancel",
+  "DialogTitle": "User added",
+  "DialogContentText": "The user {{email}} has been successfully added to the application.",
+  "DialogButtonClose": "Close"
+}

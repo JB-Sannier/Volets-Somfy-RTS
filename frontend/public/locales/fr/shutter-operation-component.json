@@ -1,0 +1,8 @@
+{
+  "RaiseShutter": "Monter le volet",
+  "StopShutter": "Stopper le volet",
+  "LowerShutter": "Descendre le volet",
+  "RaisingShutter": "Montée du volet {{shutterName}}...",
+  "StoppingShutter": "Arrêt du volet {{shutterName}}...",
+  "LoweringShutter": "Descente du volet {{shutterName}}..."
+}

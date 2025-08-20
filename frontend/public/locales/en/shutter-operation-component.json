@@ -1,0 +1,8 @@
+{
+  "RaiseShutter": "Raise shutter",
+  "StopShutter": "Stop shutter",
+  "LowerShutter": "Lower shutter",
+  "RaisingShutter": "Raising shutter {{shutterName}}...",
+  "StoppingShutter": "Stopping shutter {{shutterName}}...",
+  "LoweringShutter": "Lowering shutter {{shutterName}}..."
+}

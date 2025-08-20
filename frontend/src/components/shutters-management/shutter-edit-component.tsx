@@ -3,18 +3,19 @@ import type { IShutter } from "../../services/shutters-service.types";
 import {
   Button,
   Card,
-  CardActionArea,
+  CardActions,
   CardContent,
   Grid,
   TextField,
   Typography,
 } from "@mui/material";
-import { modifyShutter } from "../../services/shutters-service";
+import { useShuttersManagementApis } from "../../services/shutters-service";
 import { useSnackbar } from "../snackbar-component";
 
 import DoneIcon from "@mui/icons-material/Done";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 
 export interface IShutterEditComponent {
   shutter: IShutter;
@@ -25,6 +26,11 @@ export interface IShutterEditComponent {
 export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
   props,
 ) => {
+  const { t } = useTranslation("shutter-edit-component", {
+    nsMode: "default",
+    useSuspense: false,
+  });
+  const shuttersManagementApi = useShuttersManagementApis();
   const [edit, setEdit] = useState<boolean>(false);
   const [currentShutter, setCurrentShutter] = useState<IShutter>(props.shutter);
   const [errorText, setErrorText] = useState<string | undefined>(undefined);
@@ -56,7 +62,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
       return;
     }
     try {
-      await modifyShutter(currentShutter);
+      await shuttersManagementApi.modifyShutter(currentShutter);
       props.shutterModified(currentShutter);
       setSnackbarProps({
         message: "Shutter renamed.",
@@ -84,7 +90,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
           {edit && (
             <>
               <Typography variant="body2" sx={{ mt: 3 }}>
-                New name:
+                {t("NewName")}
               </Typography>
               <TextField
                 value={currentShutter.shutterName}
@@ -96,7 +102,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
             </>
           )}
         </CardContent>
-        <CardActionArea>
+        <CardActions>
           {edit ? (
             <Grid>
               <Button
@@ -108,14 +114,14 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
                 }
                 color={errorText === undefined ? "success" : "error"}
               >
-                Apply
+                {t("Apply")}
               </Button>
               <Button
                 startIcon={<CloseIcon />}
                 onClick={() => setEdit(false)}
                 color="info"
               >
-                Cancel
+                {t("Cancel")}
               </Button>
             </Grid>
           ) : (
@@ -123,7 +129,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
               Modify
             </Button>
           )}
-        </CardActionArea>
+        </CardActions>
       </Card>
       <SnackbarComponent />
     </>

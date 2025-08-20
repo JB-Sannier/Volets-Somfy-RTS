@@ -7,7 +7,14 @@ export interface IAuthenticateRequest {
 
 export interface IAuthenticateResponse {
   token: string;
+  refreshToken: string;
 }
+
+export interface IRefreshTokenRequest {
+  refreshToken: string;
+}
+
+export type IRefreshTokenResponse = IAuthenticateResponse;
 
 export interface ITokenInformations {
   email: string;

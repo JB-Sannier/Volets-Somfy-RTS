@@ -5,12 +5,9 @@ import { Grid, IconButton, Paper, Typography } from "@mui/material";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import {
-  lowerShutter,
-  raiseShutter,
-  stopShutter,
-} from "../../services/shutters-operations-service";
+import { useShuttersOperationApis } from "../../services/shutters-operations-service";
 import { useSnackbar } from "../snackbar-component";
+import { useTranslation } from "react-i18next";
 
 export interface IShutterOperationProps {
   shutter: IShutter;
@@ -19,22 +16,26 @@ export interface IShutterOperationProps {
 export const ShutterOperationComponent: React.FC<IShutterOperationProps> = (
   props,
 ) => {
+  const shuttersOperationApis = useShuttersOperationApis();
+  const { t } = useTranslation("shutter-operation-component");
   const { SnackbarComponent, setSnackbarProps } = useSnackbar();
 
   function onRaiseShutter() {
     setSnackbarProps({
-      message: `Raising shutter ${props.shutter.shutterName} ...`,
+      message: t("RaisingShutter", {
+        shutterName: props.shutter.shutterName,
+      }),
       severity: "info",
     });
-    raiseShutter({ shutterId: props.shutter.shutterId });
+    shuttersOperationApis.raiseShutter({ shutterId: props.shutter.shutterId });
   }
 
   function onStopShutter() {
     setSnackbarProps({
-      message: `Stopping shutter ${props.shutter.shutterName} ...`,
+      message: t("StoppingShutter", { shutterName: props.shutter.shutterName }),
       severity: "info",
     });
-    stopShutter({ shutterId: props.shutter.shutterId });
+    shuttersOperationApis.stopShutter({ shutterId: props.shutter.shutterId });
   }
 
   function onLowerShutter() {
@@ -42,28 +43,43 @@ export const ShutterOperationComponent: React.FC<IShutterOperationProps> = (
       message: `Lowering shutter ${props.shutter.shutterName} ...`,
       severity: "info",
     });
-    lowerShutter({ shutterId: props.shutter.shutterId });
+    shuttersOperationApis.lowerShutter({ shutterId: props.shutter.shutterId });
   }
 
   return (
-    <Paper>
+    <Paper sx={{ mb: 3, pl: 2 }} elevation={6}>
       <Grid container direction="row" alignItems="center">
         <Grid flexGrow={1}>
           <Typography variant="body1">{props.shutter.shutterName}</Typography>
         </Grid>
         <Grid>
-          <IconButton onClick={onRaiseShutter} title="Raise shutter">
-            <KeyboardDoubleArrowUpIcon />
+          <IconButton
+            onClick={onRaiseShutter}
+            title={t("RaiseShutter")}
+            size="large"
+            color="primary"
+          >
+            <KeyboardDoubleArrowUpIcon fontSize="large" />
           </IconButton>
         </Grid>
         <Grid>
-          <IconButton onClick={onStopShutter} title="Raise shutter">
-            <StopCircleIcon />
+          <IconButton
+            onClick={onStopShutter}
+            title={t("StopShutter")}
+            size="large"
+            color="primary"
+          >
+            <StopCircleIcon fontSize="large" />
           </IconButton>
         </Grid>
         <Grid>
-          <IconButton onClick={onLowerShutter} title="Raise shutter">
-            <KeyboardDoubleArrowDownIcon />
+          <IconButton
+            onClick={onLowerShutter}
+            title={t("LowerShutter")}
+            size="large"
+            color="primary"
+          >
+            <KeyboardDoubleArrowDownIcon fontSize="large" />
           </IconButton>
         </Grid>
       </Grid>

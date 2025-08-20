@@ -1,0 +1,20 @@
+{
+  "ErrorEmailAddressRequired": "Adresse email nécessaire.",
+  "ErrorEmailInvalidFormat": "Adresse email invalide.",
+  "ErrorPasswordEmpty": "Le mot de passe ne peut pas être vide.",
+  "ErrorPasswordMismatch": "Les mots de passe ne concordent pas.",
+  "MessageAddUserSuccessful": "L'utilisateur {{email}} a été ajouté avec succès.",
+  "MessageAddUserFailed": "Impossible d'ajouter l'utilisateur {{email}} à l'application.",
+  "UserEmail": "Adresse mail de l'utilisateur :",
+  "UserPassword": "Mot de passe :",
+  "UserPasswordConfirm": "Confirmer le mot de passe :",
+  "RoleShuttersManager": "Gestionnaire de volets",
+  "RoleShuttersManagerDescription": "Le gestionnaire de volet peut ajouter, renommer et retirer des volets à l'application.",
+  "RoleUsersManager": "Gestionnaire des utilisateurs",
+  "RoleUsersManagerDescription": "Le gestionnaire des utilisateurs peut créer, modifier et retirer des utilisateurs de l'application.",
+  "ButtonAddUser": "Ajouter l'utilisateur",
+  "ButtonCancel": "Annuler",
+  "DialogTitle": "Utilisateur ajouté",
+  "DialogContentText": "L'utilisateur avec l'adresse mail {{email}} a été ajouté avec succès à l'application.",
+  "DialogButtonClose": "Fermer"
+}

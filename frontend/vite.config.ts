@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import { server } from "./vite.config.local.ts";
+import { server, envVariables } from "./vite.config.local.ts";
 import react from "@vitejs/plugin-react";
 /** @type {import('vite').UserConfig} */
 
@@ -11,4 +11,5 @@ export default defineConfig({
     chunkSizeWarningLimit: 2000,
   },
   server,
+  define: envVariables,
 });
