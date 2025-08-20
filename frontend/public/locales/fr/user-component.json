@@ -1,0 +1,17 @@
+{
+  "Email": "Email: {{email}}",
+  "UserIs": "L'utilisateur est",
+  "Active": "Actif",
+  "Inactive": "Inactif",
+  "ModifyUser": "Modifier l'utilisateur",
+  "DeleteUser": "Effacer l'utilisateur",
+  "ConfirmUserDeletion": "Confirmation de l'effacement de l'utilisateur",
+  "ConfirmUserDeletionContent": "Etes-vous certain(e) de vouloir effacer l'utilisateur {{email}} ?",
+  "ConfirmDeleteUserAction": "Oui, effacer l'utilisateur",
+  "CancelAction": "Annuler",
+  "RoleShutterManager": "Gestionnaire de volets",
+  "RoleUserManager": "Gestionnaire d'utilisateurs",
+  "RoleNone": "Aucun rôle attribué",
+  "MessageUserDeleted": "L'utilisateur {{email}} a été effacé de l'application.",
+  "FabTitle": "Ajouter un utilisateur"
+}

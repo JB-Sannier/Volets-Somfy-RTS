@@ -1,0 +1,18 @@
+{
+  "UserSuccessfullyUpdated": "User updated.",
+  "ErrorUpdatingUser": "An error occured while updating the user:",
+  "ModifyAUser": "Modify a user",
+  "UseEmail": "User email :",
+  "Password": "Password :",
+  "ChangePassword": "Change password",
+  "ActiveAccount": "Active account",
+  "ActiveAccountDescription": "An inactive user cannot use this aplication.",
+  "ShuttersManager": "Shutters Manager",
+  "ShuttersManagerDescription": "The Shutters Manager can rename, add and remove shutters from the application.",
+  "UsersManager": "Users Manager",
+  "UsersManagerDescription": "The Users Manager can add, modify and remove users.",
+  "UpdateUser": "Update user",
+  "UserUpdated": "User updated.",
+  "UserUpdatedDescription": "The user has been successfully updated.",
+  "ReturnToUsersManagement": "Back to Users Management"
+}

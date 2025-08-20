@@ -14,11 +14,7 @@ import { useAuthContext } from "../contexts/auth-context.types";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../services/users-service.types";
 import { GeneralLayout } from "../layouts/general-layout";
-import {
-  addShutter,
-  deleteShutter,
-  listShutters,
-} from "../services/shutters-service";
+import { useShuttersManagementApis } from "../services/shutters-service";
 import type {
   IListShuttersResponse,
   IShutter,
@@ -30,14 +26,15 @@ import {
   RemoteDataStatus,
 } from "../services/remote-data";
 import { useSnackbar } from "../components/snackbar-component";
-import { programShutter } from "../services/shutters-operations-service";
+import { useShuttersOperationApis } from "../services/shutters-operations-service";
 import { TitleComponent } from "../components/title-component";
-
-const MSG_FILL_SHUTTER_NAME = "Please, fill a shutter name.";
-const MSG_DUPLICATE_SHUTTER_NAME = "A shutter already exists with this name.";
+import { useTranslation } from "react-i18next";
 
 export const AddShutterPage: React.FC = () => {
+  const shuttersManagementApis = useShuttersManagementApis();
+  const shuttersOperationApis = useShuttersOperationApis();
   const authContext = useAuthContext();
+  const { t } = useTranslation("add-shutter-page");
   const navigate = useNavigate();
   const { setSnackbarProps, SnackbarComponent } = useSnackbar();
   useEffect(() => {
@@ -52,20 +49,22 @@ export const AddShutterPage: React.FC = () => {
 
   useEffect(() => {
     if (listShuttersRD.status === RemoteDataStatus.Init) {
-      callWithRemoteData(listShutters, undefined, (newRd) =>
-        setListShuttersRD(newRd),
+      callWithRemoteData(
+        shuttersManagementApis.listShutters,
+        undefined,
+        (newRd) => setListShuttersRD(newRd),
       );
     } else if (listShuttersRD.status === RemoteDataStatus.Loaded) {
       setAllShutters(listShuttersRD.payload);
     }
-  }, [listShuttersRD]);
+  }, [shuttersManagementApis.listShutters, listShuttersRD]);
 
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const [shutterName, setShutterName] = useState<string>("");
   const [shutterId, setShutterId] = useState<string | undefined>(undefined);
   const [errorText, setErrorText] = useState<string | undefined>(
-    MSG_FILL_SHUTTER_NAME,
+    t("MessageFillShutterName"),
   );
   const [successfulEnd, setSuccessfulEnd] = useState<boolean | undefined>(
     undefined,
@@ -75,12 +74,12 @@ export const AddShutterPage: React.FC = () => {
     setShutterName(newValue);
     for (const shutter of allShutters) {
       if (shutter.shutterName === newValue) {
-        setErrorText(MSG_DUPLICATE_SHUTTER_NAME);
+        setErrorText(t("MessageDuplicateShutterName"));
         return;
       }
     }
     if (newValue === "") {
-      setErrorText(MSG_FILL_SHUTTER_NAME);
+      setErrorText(t("MessageFillShutterName"));
       return;
     }
     setErrorText(undefined);
@@ -88,7 +87,9 @@ export const AddShutterPage: React.FC = () => {
 
   async function addNewShutter() {
     try {
-      const addShutterResponse = await addShutter({ shutterName });
+      const addShutterResponse = await shuttersManagementApis.addShutter({
+        shutterName,
+      });
       setShutterId(addShutterResponse.shutterId);
       setShutterName(addShutterResponse.shutterName);
       setCurrentStep(1);
@@ -99,8 +100,7 @@ export const AddShutterPage: React.FC = () => {
     } catch (error) {
       console.error("While trying to add a new shutter, got error : ", error);
       setSnackbarProps({
-        message:
-          "An error occured while trying to create a shutter in the application.",
+        message: t("MessageErrorCreation"),
         severity: "error",
       });
     }
@@ -113,9 +113,9 @@ export const AddShutterPage: React.FC = () => {
       );
       return;
     }
-    programShutter({ shutterId });
+    shuttersOperationApis.programShutter({ shutterId });
     setSnackbarProps({
-      message: "The program command has been sent.",
+      message: t("MessageProgramCommandSent"),
       severity: "info",
     });
   }
@@ -131,9 +131,9 @@ export const AddShutterPage: React.FC = () => {
       return;
     }
     try {
-      await deleteShutter({ shutterId });
+      await shuttersManagementApis.deleteShutter({ shutterId });
       setSnackbarProps({
-        message: "The shutter has been deleted.",
+        message: t("MessageShutterDeletedSuccessfully"),
         severity: "info",
       });
       setSuccessfulEnd(false);
@@ -144,7 +144,7 @@ export const AddShutterPage: React.FC = () => {
         error,
       );
       setSnackbarProps({
-        message: "An error occured while trying to delete the shutter...",
+        message: t("MessageShutterDeletedError"),
         severity: "error",
       });
     }
@@ -152,16 +152,16 @@ export const AddShutterPage: React.FC = () => {
 
   return (
     <GeneralLayout>
-      <TitleComponent title="Add a shutter" />
+      <TitleComponent title={t("PageTitle")} />
 
       <Grid container justifyContent="center">
-        <Grid sx={{ width: "50%", minWidth: "600px", maxWidth: "900px" }}>
+        <Grid sx={{ width: "50%", minWidth: "100px", maxWidth: "900px" }}>
           <Stepper activeStep={currentStep}>
             <Step key={1}>
-              <StepLabel>Fill the shutter name</StepLabel>
+              <StepLabel>{t("StepFillShutterName")}</StepLabel>
             </Step>
             <Step key={2}>
-              <StepLabel>Program the shutter name</StepLabel>
+              <StepLabel>{t("StepProgramShutter")}</StepLabel>
             </Step>
           </Stepper>
         </Grid>
@@ -169,14 +169,10 @@ export const AddShutterPage: React.FC = () => {
       {currentStep === 0 && (
         <>
           <Typography variant="h6" sx={{ mt: 4 }}>
-            Step 1 - Shutter name
+            {t("StepOneFillShutterName")}
           </Typography>
           <Divider sx={{ mb: 3 }} />
-          <Typography variant="body1">
-            Before associating the shutter with the application, you need to
-            fill the shutter name. Please, indicate which name you wish to use
-            in the application :
-          </Typography>
+          <Typography variant="body1">{t("StepOneInstructions1")}</Typography>
           <TextField
             sx={{ mt: 2 }}
             fullWidth
@@ -184,11 +180,9 @@ export const AddShutterPage: React.FC = () => {
             onChange={(e) => onChangeShutterName(e.target.value)}
             error={errorText !== undefined}
             helperText={errorText}
-            label="Shutter name:"
+            label={t("StepOneHelperText")}
           />
-          <Typography variant="body1">
-            Once you are ready, add the shutter using the following button :
-          </Typography>
+          <Typography variant="body1">{t("StepOneInstructions2")}</Typography>
           <Grid container justifyContent="center">
             <Grid>
               <Button
@@ -196,7 +190,7 @@ export const AddShutterPage: React.FC = () => {
                 variant="contained"
                 onClick={() => addNewShutter()}
               >
-                Add shutter
+                {t("ButtonAddShutter")}
               </Button>
             </Grid>
           </Grid>
@@ -205,29 +199,21 @@ export const AddShutterPage: React.FC = () => {
       {currentStep === 1 && (
         <>
           <Typography variant="h6" sx={{ mt: 4 }}>
-            Step 2 - Shutter programming
+            {t("Step2Title")}
           </Typography>
           <Divider sx={{ mb: 3 }} />
-          <Typography variant="body1">
-            Now, it's time to put your shutter into learning mode.
-          </Typography>
-          <Typography variant="body1">
-            Using a physical remote, press the "Program" button during 3
-            secondes.
-          </Typography>
-          <Typography variant="body1">
-            The shutter should move down, then up. If so, press the program
-            button below.
-          </Typography>
+          <Typography variant="body1">{t("Step2Instructions1")}</Typography>
+          <Typography variant="body1">{t("Step2Instructions2")}</Typography>
+          <Typography variant="body1">{t("Step2Instructions3")}</Typography>
           <Grid container justifyContent="center">
             <Grid sx={{ ml: 4, mr: 2, mt: 2 }}>
               <Button onClick={() => handleProgramEvent()} variant="contained">
-                Send the Program Command
+                {t("Step2SendProgramButton")}
               </Button>
             </Grid>
           </Grid>
           <Typography variant="body1" sx={{ mt: 5, mb: 2 }}>
-            Did the shutter move ? If not, you can retry the Program Command.
+            {t("Step2Instructions4")}
           </Typography>
           <Grid container justifyContent="center">
             <Grid sx={{ ml: 4, mr: 2 }}>
@@ -236,7 +222,7 @@ export const AddShutterPage: React.FC = () => {
                 onClick={() => finalizeAddition()}
                 variant="contained"
               >
-                Yes, it moved !
+                {t("Step2ConfirmButton")}
               </Button>
             </Grid>
             <Grid sx={{ ml: 2, mr: 4 }}>
@@ -245,7 +231,7 @@ export const AddShutterPage: React.FC = () => {
                 onClick={() => cancelAddingShutter()}
                 variant="contained"
               >
-                No, something is wrong. Cancel adding the shutter...
+                {t("Step2CancelButton")}
               </Button>
             </Grid>
           </Grid>
@@ -256,34 +242,31 @@ export const AddShutterPage: React.FC = () => {
         <>
           {successfulEnd ? (
             <>
-              <Typography variant="h5">Congrats !</Typography>
+              <Typography variant="h5">{t("FinalStepCongrats")}</Typography>
               <Divider sx={{ mb: 3 }} />
               <Typography variant="body1">
-                Your shutter should now be ready to be used by this application.
+                {t("FinalStepSuccessfulInstructions")}
               </Typography>
             </>
           ) : (
             <>
-              <Typography variant="h5">It sucks...</Typography>
+              <Typography variant="h5">{t("FinalStepFailedTitle")}</Typography>
               <Divider sx={{ mb: 3 }} />
               <Typography variant="body1">
-                It seems something went wrong, while trying to associate your
-                shutter with this application.
+                {t("FinalStepFailedInstructions1")}
               </Typography>
               <Typography variant="body1">
-                First, check if the transmitter is operational and can send
-                instructions to your shutters.
+                {t("FinalStepFailedInstructions2")}
               </Typography>
               <Typography variant="body1">
-                Remember, this application only handles Somfy RTS shutters, not
-                the IO shutters.
+                {t("FinalStepFailedInstructions3")}
               </Typography>
             </>
           )}
           <Grid container justifyContent="center">
             <Grid>
               <Button onClick={() => navigate("/")} variant="contained">
-                Home
+                {t("ButtonHome")}
               </Button>
             </Grid>
           </Grid>

@@ -3,10 +3,12 @@ import { LoginLayout } from "../layouts/login-layout";
 import { Button, Grid, Paper, TextField } from "@mui/material";
 import { useAuthContext } from "../contexts/auth-context.types";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const LoginPage: React.FC = () => {
   const authContext = useAuthContext();
   const navigate = useNavigate();
+  const { t } = useTranslation("login-page");
 
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
@@ -30,7 +32,8 @@ export const LoginPage: React.FC = () => {
               <TextField
                 value={email}
                 fullWidth
-                label="Email"
+                label={t("Email")}
+                type="email"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
@@ -39,13 +42,13 @@ export const LoginPage: React.FC = () => {
                 value={password}
                 type="password"
                 fullWidth
-                label="Password"
+                label={t("Password")}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
             <Grid size="grow" alignSelf="center">
               <Button onClick={onSubmit} variant="contained">
-                Login
+                {t("Login")}
               </Button>
             </Grid>
           </Grid>

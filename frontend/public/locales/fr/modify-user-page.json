@@ -1,0 +1,18 @@
+{
+  "UserSuccessfullyUpdated": "Utilisateur mis à jour.",
+  "ErrorUpdatingUser": "Pendant la mise à jour de l'utilisateur, une erreur est survenue :",
+  "ModifyAUser": "Modifier un utilisateur",
+  "UseEmail": "Email :",
+  "Password": "Mot de passe :",
+  "ChangePassword": "Changer le mot de passe",
+  "ActiveAccount": "Compte actif",
+  "ActiveAccountDescription": "Un utilisateur marqué comme inactif ne peut pas utiliser cette application.",
+  "ShuttersManager": "Gestionnaire des volets",
+  "ShuttersManagerDescription": "Le gestionnaire de volets peut renommer, retirer et ajouter des volets à l'application.",
+  "UsersManager": "Gestionnaire des utilisateurs",
+  "UsersManagerDescription": "Le gestionnaire des utilisateurs peur créer, modifier et effacer des utilisateurs.",
+  "UpdateUser": "Mettre à jour l'utilisateur",
+  "UserUpdated": "Utilisateur mis à jour",
+  "UserUpdatedDescription": "L'utilisateur a été mis à jour avec succès.",
+  "ReturnToUsersManagement": "Revenir à la gestion des utilisateurs"
+}

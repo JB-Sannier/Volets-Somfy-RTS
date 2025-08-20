@@ -20,17 +20,16 @@ import {
   UserRole,
   type IAddUserRequest,
 } from "../services/users-service.types";
-import { addUser } from "../services/users-service";
+import { useUserApis } from "../services/users-service";
 import { useSnackbar } from "../components/snackbar-component";
 import { TitleComponent } from "../components/title-component";
-
-const ERR_EMAIL_ADDRESS_REQUIRED = "Email address is required.";
-const ERR_EMAIL_INVALID_FORMAT = "Invalid email format.";
-const ERR_PASSWORD_EMPTY = "Password is required.";
-const ERR_PASSWORD_MISMATCH = "Passwords don't match.";
+import { useTranslation } from "react-i18next";
 
 export const AddUserPage: React.FC = () => {
   const navigate = useNavigate();
+  const userApis = useUserApis();
+
+  const { t } = useTranslation("add-user-page");
   const { setSnackbarProps, SnackbarComponent } = useSnackbar();
 
   const [email, setEmail] = useState<string>("");
@@ -40,26 +39,26 @@ export const AddUserPage: React.FC = () => {
   const [password2, setPassword2] = useState<string>("");
 
   const [emailErrorText, setEmailErrorText] = useState<string | undefined>(
-    ERR_EMAIL_ADDRESS_REQUIRED,
+    t("ErrorEmailAddressRequired"),
   );
   const [password1ErrorText, setPassword1ErrorText] = useState<
     string | undefined
-  >(ERR_PASSWORD_EMPTY);
+  >(t("ErrorPasswordEmpty"));
   const [password2ErrorText, setPassword2ErrorText] = useState<
     string | undefined
-  >(ERR_PASSWORD_EMPTY);
+  >(t("ErrorPasswordEmpty"));
 
   const [isUserAdded, setIsUserAdded] = useState<boolean>(false);
 
   function updateEmail(value: string) {
     setEmail(value);
     if (value === "") {
-      setEmailErrorText(ERR_EMAIL_ADDRESS_REQUIRED);
+      setEmailErrorText(t("ErrorEmailAddressRequired"));
       return;
     }
     const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!pattern.test(value) && !value.endsWith("@localhost")) {
-      setEmailErrorText(ERR_EMAIL_INVALID_FORMAT);
+      setEmailErrorText(t("ErrorEmailInvalidFormat"));
       return;
     }
     setEmailErrorText(undefined);
@@ -68,11 +67,11 @@ export const AddUserPage: React.FC = () => {
   function updatePassword1(value: string) {
     setPassword1(value);
     if (value === "") {
-      setPassword1ErrorText(ERR_PASSWORD_EMPTY);
+      setPassword1ErrorText(t("ErrorPasswordEmpty"));
       return;
     } else if (value !== password2 && password2 !== "") {
-      setPassword1ErrorText(ERR_PASSWORD_MISMATCH);
-      setPassword2ErrorText(ERR_PASSWORD_MISMATCH);
+      setPassword1ErrorText(t("ErrorPasswordMismatch"));
+      setPassword2ErrorText(t("ErrorPasswordMismatch"));
       return;
     }
     if (value !== "" && password2 !== "" && value === password2) {
@@ -85,11 +84,11 @@ export const AddUserPage: React.FC = () => {
     setPassword2(value);
 
     if (value === "") {
-      setPassword2ErrorText(ERR_PASSWORD_EMPTY);
+      setPassword2ErrorText(t("ErrorPasswordEmpty"));
       return;
     } else if (value !== password1 && password1 !== "") {
-      setPassword1ErrorText(ERR_PASSWORD_MISMATCH);
-      setPassword2ErrorText(ERR_PASSWORD_MISMATCH);
+      setPassword1ErrorText(t("ErrorPasswordMismatch"));
+      setPassword2ErrorText(t("ErrorPasswordMismatch"));
       return;
     }
     if (value !== "" && password1 !== "" && value === password1) {
@@ -113,9 +112,9 @@ export const AddUserPage: React.FC = () => {
       roles: roles,
     };
     try {
-      await addUser(addUserRequest);
+      await userApis.addUser(addUserRequest);
       setSnackbarProps({
-        message: `The user ${email} has been successfully added.`,
+        message: t("MessageAddUserSuccessful", { email }),
         severity: "success",
       });
       setIsUserAdded(true);
@@ -125,7 +124,7 @@ export const AddUserPage: React.FC = () => {
         error,
       );
       setSnackbarProps({
-        message: `Unable to add user ${email} into the application.`,
+        message: t("MessageAddUserFailed", { email }),
         severity: "error",
       });
     }
@@ -139,7 +138,7 @@ export const AddUserPage: React.FC = () => {
   return (
     <GeneralLayout>
       <TitleComponent title="Add a user" />
-      <Typography variant="body1">User email :</Typography>
+      <Typography variant="body1">{t("UserEmail")}</Typography>
       <TextField
         value={email}
         error={emailErrorText !== undefined}
@@ -147,7 +146,7 @@ export const AddUserPage: React.FC = () => {
         type="email"
         onChange={(e) => updateEmail(e.target.value || "")}
       />
-      <Typography variant="body1">Password :</Typography>
+      <Typography variant="body1">{t("UserPassword")}</Typography>
       <TextField
         value={password1}
         error={password1ErrorText !== undefined}
@@ -155,7 +154,7 @@ export const AddUserPage: React.FC = () => {
         type="password"
         onChange={(e) => updatePassword1(e.target.value || "")}
       />
-      <Typography variant="body1">Confirm password :</Typography>
+      <Typography variant="body1">{t("UserPasswordConfirm")}</Typography>
       <TextField
         value={password2}
         error={password2ErrorText !== undefined}
@@ -168,20 +167,19 @@ export const AddUserPage: React.FC = () => {
           control={<Switch />}
           checked={roleShutterManager}
           onChange={(_e, checked) => setRoleShutterManager(checked)}
-          label="Shutters manager"
+          label={t("RoleShuttersManager")}
         />
         <FormHelperText sx={{ ml: 3 }}>
-          The shutters manager can rename, remove and add shutters into the
-          application.
+          {t("RoleShuttersManagerDescription")}
         </FormHelperText>
         <FormControlLabel
           control={<Switch />}
           checked={roleUserManager}
           onChange={(_e, checked) => setRoleUserManager(checked)}
-          label="Users manager"
+          label={t("RoleUsersManager")}
         />
         <FormHelperText sx={{ ml: 3 }}>
-          The user manager can create, modify and delete users.
+          {t("RoleUsersManagerDescription")}
         </FormHelperText>
       </FormGroup>
       <Grid container>
@@ -191,7 +189,7 @@ export const AddUserPage: React.FC = () => {
             onClick={saveUser}
             variant="contained"
           >
-            Add user
+            {t("ButtonAddUser")}
           </Button>
         </Grid>
         <Grid>
@@ -199,19 +197,21 @@ export const AddUserPage: React.FC = () => {
             onClick={() => navigate("/users-management")}
             variant="contained"
           >
-            Cancel
+            {t("ButtonCancel")}
           </Button>
         </Grid>
       </Grid>
       <Dialog open={isUserAdded}>
-        <DialogTitle>User added</DialogTitle>
+        <DialogTitle>{t("DialogTitle")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            The user {email} has been successfully added in the application.
+            {t("DialogContentText", { email })}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => navigate("/users-management")}>Close</Button>
+          <Button onClick={() => navigate("/users-management")}>
+            {t("DialogButtonClose")}
+          </Button>
         </DialogActions>
       </Dialog>
       <SnackbarComponent />

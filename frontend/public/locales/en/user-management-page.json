@@ -1,0 +1,5 @@
+{
+  "MessageUserModifiedSuccessfully": "User successfully updated.",
+  "MessageUserDeletedSuccessfully": "The user {{email}} has been deleted.",
+  "Title": "Users management"
+}

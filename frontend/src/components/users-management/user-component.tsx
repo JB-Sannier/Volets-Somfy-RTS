@@ -4,7 +4,7 @@ import {
   type IDeleteUserRequest,
   type IUserResponse,
 } from "../../services/users-service.types";
-import { deleteUser } from "../../services/users-service";
+import { useUserApis } from "../../services/users-service";
 import {
   Button,
   Card,
@@ -17,6 +17,7 @@ import {
   DialogContentText,
   DialogTitle,
   Fab,
+  Grid,
   Typography,
 } from "@mui/material";
 import { useSnackbar } from "../snackbar-component";
@@ -25,6 +26,7 @@ import AddIcon from "@mui/icons-material/Add";
 import PersonIcon from "@mui/icons-material/Person";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useTranslation } from "react-i18next";
 
 export interface IUserComponentProps {
   user: IUserResponse;
@@ -33,6 +35,8 @@ export interface IUserComponentProps {
 }
 
 export const UserComponent: React.FC<IUserComponentProps> = (props) => {
+  const { t } = useTranslation("user-component");
+  const userApis = useUserApis();
   const { setSnackbarProps, SnackbarComponent } = useSnackbar();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -46,13 +50,13 @@ export const UserComponent: React.FC<IUserComponentProps> = (props) => {
     const result: string[] = [];
     props.user.roles.forEach((role) => {
       if (role === UserRole.ShuttersProgrammer) {
-        result.push("shutters programmer");
+        result.push(t("RoleShutterManager"));
       } else if (role === UserRole.UserManager) {
-        result.push("user manager");
+        result.push(t("RoleUserManager"));
       }
     });
     if (result.length === 0) {
-      result.push("no role set");
+      result.push(t("RoleNone"));
     }
     return result;
   }
@@ -61,9 +65,9 @@ export const UserComponent: React.FC<IUserComponentProps> = (props) => {
     const request: IDeleteUserRequest = {
       email: props.user.email,
     };
-    await deleteUser(request);
+    await userApis.deleteUser(request);
     setSnackbarProps({
-      message: `The user ${props.user.email} has been deleted.`,
+      message: t("MessageUserDeleted", { email: props.user.email }),
       severity: "success",
     });
     props.onUserDeleted(props.user);
@@ -74,62 +78,65 @@ export const UserComponent: React.FC<IUserComponentProps> = (props) => {
       <Card sx={{ mb: 3 }} raised>
         <CardHeader
           title={
-            <>
-              <PersonIcon />
-              email: {props.user.email}
-            </>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+            >
+              <Grid>
+                <PersonIcon fontSize="large" sx={{ mt: 0 }} />
+              </Grid>
+              <Grid>{t("Email", { email: props.user.email })}</Grid>
+            </Grid>
           }
-        >
+        />
+        <CardContent sx={{ pl: 5 }}>
           <Typography variant="body1">
-            <PersonIcon />
-            Email: <b>{props.user.email}</b>
-          </Typography>
-        </CardHeader>
-        <CardContent>
-          <Typography variant="body1" sx={{ ml: 3 }}>
             Roles : <b>{toRoleStrings().join(", ")}</b>
           </Typography>
           <Typography
             variant="body1"
-            sx={{ ml: 3 }}
             color={props.user.isActive ? "success" : "warning"}
           >
             {props.user.isActive ? (
               <>
-                User is <b>active</b>
+                {t("UserIs")} <b>{t("Active")}</b>
               </>
             ) : (
               <>
-                User is <b>inactive</b>
+                {t("UserIs")} <b>{t("Inactive")}</b>
               </>
             )}
           </Typography>
         </CardContent>
         <CardActions>
           <Button onClick={modifyUser} startIcon={<EditIcon />}>
-            Modify User
+            {t("ModifyUser")}
           </Button>
           <Button
             onClick={() => setOpenModal(true)}
             color="warning"
             startIcon={<DeleteIcon />}
           >
-            Delete user
+            {t("DeleteUser")}
           </Button>
         </CardActions>
       </Card>
       <SnackbarComponent />
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-        <DialogTitle>Confirm user deletion</DialogTitle>
+        <DialogTitle>{t("ConfirmUserDeletion")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete the user {props.user.email} ?
+            {t("ConfirmUserDeletionContent", { email: props.user.email })}
           </DialogContentText>
           <DialogActions>
             <Button onClick={confirmDeletion} color="warning">
-              Yes, delete the user
+              {t("ConfirmDeleteUserAction")}
             </Button>
-            <Button onClick={() => setOpenModal(false)}>Cancel</Button>
+            <Button onClick={() => setOpenModal(false)}>
+              {t("CancelAction")}
+            </Button>
           </DialogActions>
         </DialogContent>
       </Dialog>
@@ -137,6 +144,7 @@ export const UserComponent: React.FC<IUserComponentProps> = (props) => {
         color="primary"
         sx={{ position: "absolute", bottom: 10, right: 5 }}
         onClick={() => navigate("/users-management/add-user")}
+        title={t("FabTitle")}
       >
         <AddIcon />
       </Fab>

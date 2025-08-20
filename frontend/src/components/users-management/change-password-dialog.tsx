@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { ChangePasswordComponent } from "./change-password-component";
+import { useTranslation } from "react-i18next";
 
 export interface IChangePasswordDialogProps {
   open: boolean;
@@ -18,6 +19,7 @@ export interface IChangePasswordDialogProps {
 export const ChangePasswordDialog: React.FC<IChangePasswordDialogProps> = (
   props,
 ) => {
+  const { t } = useTranslation("change-password-dialog");
   const [password, setPassword] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(false);
 
@@ -36,18 +38,16 @@ export const ChangePasswordDialog: React.FC<IChangePasswordDialogProps> = (
 
   return (
     <Dialog open={props.open}>
-      <DialogTitle>Change password</DialogTitle>
+      <DialogTitle>{t("ChangePassword")}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Please, fill the password you want to assign for this user:
-        </DialogContentText>
+        <DialogContentText>{t("ChangePasswordInstructions")}</DialogContentText>
         <ChangePasswordComponent passwordUpdated={passwordUpdated} />
       </DialogContent>
       <DialogActions>
         <Button disabled={!isValid} onClick={onUpdatePassword}>
-          Update password
+          {t("UpdatePassword")}
         </Button>
-        <Button onClick={onCancel}>Cancel</Button>
+        <Button onClick={onCancel}>{t("Cancel")}</Button>
       </DialogActions>
     </Dialog>
   );

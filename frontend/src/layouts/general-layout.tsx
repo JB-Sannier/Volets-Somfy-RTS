@@ -8,10 +8,12 @@ import BlindsIcon from "@mui/icons-material/Blinds";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
+import { useTranslation } from "react-i18next";
 
 export const GeneralLayout: React.FC<PropsWithChildren> = (props) => {
   const navigate = useNavigate();
   const authContext = useAuthContext();
+  const { t } = useTranslation("general-layout");
 
   function handleShuttersManagementClicked() {
     navigate("/shutters-management");
@@ -31,28 +33,38 @@ export const GeneralLayout: React.FC<PropsWithChildren> = (props) => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h5" sx={{ flexGrow: 1 }}>
-            Somfy Shutters
+            {t("SomfyShutters")}
           </Typography>
-          <IconButton title="Home" onClick={() => navigate("/")}>
+          <IconButton
+            title={t("Home")}
+            onClick={() => navigate("/")}
+            color="inherit"
+          >
             <HomeIcon />
           </IconButton>
           {authContext.hasRole(UserRole.ShuttersProgrammer) && (
             <IconButton
-              title="Manage shutters"
+              title={t("ManageShutters")}
               onClick={handleShuttersManagementClicked}
+              color="inherit"
             >
               <BlindsIcon />
             </IconButton>
           )}
           {authContext.hasRole(UserRole.UserManager) && (
             <IconButton
-              title="Manage users"
+              title={t("ManageUsers")}
               onClick={handleUsersManagementClicked}
+              color="inherit"
             >
               <ManageAccountsIcon />
             </IconButton>
           )}
-          <IconButton title="Logout" onClick={logoutClicked}>
+          <IconButton
+            title={t("Logout")}
+            onClick={logoutClicked}
+            color="inherit"
+          >
             <LogoutIcon />
           </IconButton>
         </Toolbar>

@@ -1,0 +1,17 @@
+{
+  "Email": "Email: {{email}}",
+  "UserIs": "The user is:",
+  "Active": "Active",
+  "Inactive": "Inactive",
+  "ModifyUser": "Modify user",
+  "DeleteUser": "Delete user",
+  "ConfirmUserDeletion": "Confirm deleting user",
+  "ConfirmUserDeletionContent": "Are you sure you want to delete the user {{email}} ?",
+  "ConfirmDeleteUserAction": "Yes, remove this user",
+  "CancelAction": "Cancel",
+  "RoleShutterManager": "Shutters Manager",
+  "RoleUserManager": "Users Manager",
+  "RoleNone": "No role applied.",
+  "MessageUserDeleted": "The user {{email}} has been removed from the application.",
+  "FabTitle": "Add user"
+}

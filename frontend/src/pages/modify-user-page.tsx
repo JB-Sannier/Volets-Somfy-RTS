@@ -12,7 +12,7 @@ import {
   type RemoteData,
   RemoteDataStatus,
 } from "../services/remote-data";
-import { listUsers, modifyUser } from "../services/users-service";
+import { useUserApis } from "../services/users-service";
 import { GeneralLayout } from "../layouts/general-layout";
 import {
   Button,
@@ -30,8 +30,11 @@ import {
 import { useSnackbar } from "../components/snackbar-component";
 import { ChangePasswordDialog } from "../components/users-management/change-password-dialog";
 import { TitleComponent } from "../components/title-component";
+import { useTranslation } from "react-i18next";
 
 export const ModifyUserPage: React.FC = () => {
+  const { t } = useTranslation("modify-user-page");
+  const userApis = useUserApis();
   const searchParams = useParams();
   const navigate = useNavigate();
   const { setSnackbarProps, SnackbarComponent } = useSnackbar();
@@ -66,7 +69,7 @@ export const ModifyUserPage: React.FC = () => {
   } else {
     if (listUsersRD.status === RemoteDataStatus.Init) {
       callWithRemoteData<undefined, IListUsersResponse>(
-        listUsers,
+        userApis.listUsers,
         undefined,
         (newRd) => setListUsersRD(newRd),
       );
@@ -113,15 +116,15 @@ export const ModifyUserPage: React.FC = () => {
       roles: allRoles,
     };
     try {
-      await modifyUser(modifyRequest);
+      await userApis.modifyUser(modifyRequest);
       setSnackbarProps({
-        message: "User successfully updated.",
+        message: t("UserSuccessfullyUpdated"),
         severity: "success",
       });
       setShowUpdateDoneDialog(true);
     } catch (error) {
       console.error(
-        "While updating the user, got an error : ",
+        t("ErrorUpdatingUser"),
         { ...modifyRequest, password: undefined },
         error,
       );
@@ -130,14 +133,14 @@ export const ModifyUserPage: React.FC = () => {
 
   return (
     <GeneralLayout>
-      <TitleComponent title="Modify a user" />
+      <TitleComponent title={t("ModifyAUser")} />
       <Typography variant="h6">
-        Use email : <b>{userFound?.email}</b>
+        {t("UseEmail")} <b>{userFound?.email}</b>
       </Typography>
       <Typography variant="body1">
-        Password :
+        {t("Password")}
         <Button onClick={onChangePassword} variant="contained" sx={{ ml: 3 }}>
-          Change password
+          {t("ChangePassword")}
         </Button>
       </Typography>
       <FormGroup sx={{ mt: 3 }}>
@@ -145,33 +148,32 @@ export const ModifyUserPage: React.FC = () => {
           control={<Switch />}
           checked={isActive}
           onChange={(_e, checked) => setIsActive(checked)}
-          label="Active account"
+          label={t("ActiveAccount")}
         />
         <FormHelperText sx={{ ml: 3 }}>
-          An inactive account cannot use the application.
+          {t("ActiveAccountDescription")}
         </FormHelperText>
         <FormControlLabel
           control={<Switch />}
           checked={roleShutterManager}
           onChange={(_e, checked) => setRoleShutterManager(checked)}
-          label="Shutters manager"
+          label={t("ShuttersManager")}
         />
         <FormHelperText sx={{ ml: 3 }}>
-          The shutters manager can rename, remove and add shutters into the
-          application.
+          {t("ShuttersManagerDescription")}
         </FormHelperText>
         <FormControlLabel
           control={<Switch />}
           checked={roleUserManager}
           onChange={(_e, checked) => setRoleUserManager(checked)}
-          label="Users manager"
+          label={t("UsersManager")}
         />
         <FormHelperText sx={{ ml: 3 }}>
-          The user manager can create, modify and delete users.
+          {t("UsersManagerDescription")}
         </FormHelperText>
       </FormGroup>
       <Button onClick={updateUser} variant="contained" sx={{ mt: 3 }}>
-        Update user
+        {t("UpdateUser")}
       </Button>
       <SnackbarComponent />
       <ChangePasswordDialog
@@ -180,15 +182,13 @@ export const ModifyUserPage: React.FC = () => {
         passwordUpdated={passwordUpdated}
       />
       <Dialog open={showUpdateDoneDialog}>
-        <DialogTitle>Used updated</DialogTitle>
+        <DialogTitle>{t("UserUpdated")}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            The user has been successfully updated.
-          </DialogContentText>
+          <DialogContentText>{t("UserUpdatedDescription")}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => navigate("/users-management")}>
-            Return to Users Management
+            {t("ReturnToUsersManagement")}
           </Button>
         </DialogActions>
       </Dialog>

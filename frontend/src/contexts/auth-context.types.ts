@@ -6,8 +6,10 @@ import type { UserRole } from "../services/users-service.types";
 export interface IAuthContext extends PropsWithChildren {
   tokenInformations: ITokenInformations | null;
   token: string | null;
-  loginUser: (username: string, password: string) => void;
+  refreshToken: string | null;
+  loginUser: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  renewAccessToken: () => Promise<void>;
   isLoggedIn: () => boolean;
   hasRole: (userRole: UserRole) => boolean;
 }

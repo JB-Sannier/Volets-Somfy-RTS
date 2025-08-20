@@ -9,16 +9,20 @@ import {
   RemoteDataStatus,
   type RemoteData,
 } from "../services/remote-data";
-import { listShutters } from "../services/shutters-service";
+import { useShuttersManagementApis } from "../services/shutters-service";
 import { Fab } from "@mui/material";
 import { ShutterEditComponent } from "../components/shutters-management/shutter-edit-component";
 import { GeneralLayout } from "../layouts/general-layout";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { TitleComponent } from "../components/title-component";
+import { useTranslation } from "react-i18next";
 
 export const ShuttersManagementPage: React.FC = () => {
   const navigate = useNavigate();
+  const shuttersManagementApis = useShuttersManagementApis();
+  const { t } = useTranslation("shutters-management-page");
+
   const [shuttersList, setShuttersList] = useState<IShutter[]>([]);
   const [listShuttersRD, setListShuttersRD] =
     useState<RemoteData<IListShuttersResponse>>(REMOTE_DATA_INIT);
@@ -26,14 +30,14 @@ export const ShuttersManagementPage: React.FC = () => {
   useEffect(() => {
     if (listShuttersRD.status === RemoteDataStatus.Init) {
       callWithRemoteData<unknown, IListShuttersResponse>(
-        listShutters,
+        shuttersManagementApis.listShutters,
         {},
         (newRd) => setListShuttersRD(newRd),
       );
     } else if (listShuttersRD.status === RemoteDataStatus.Loaded) {
       setShuttersList(listShuttersRD.payload);
     }
-  }, [listShuttersRD]);
+  }, [listShuttersRD, shuttersManagementApis.listShutters]);
 
   function onShutterModified(newShutter: IShutter) {
     const newShuttersList: IShutter[] = [...shuttersList];
@@ -48,7 +52,7 @@ export const ShuttersManagementPage: React.FC = () => {
 
   return (
     <GeneralLayout>
-      <TitleComponent title="Shutters programmation" />
+      <TitleComponent title={t("Title")} />
 
       {shuttersList.map((shutter, index) => (
         <ShutterEditComponent
@@ -60,7 +64,8 @@ export const ShuttersManagementPage: React.FC = () => {
       ))}
       <Fab
         color="primary"
-        aria-label="New shutter"
+        aria-label={t("NewShutter")}
+        title={t("NewShutter")}
         sx={{ position: "absolute", bottom: 10, right: 5 }}
         onClick={() => navigate("/add-shutter")}
       >
