@@ -214,7 +214,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
 
   private handleError(error: unknown) {
     if (isAxiosError(error)) {
-      console.log("Got axios error : ", {
+      console.warn("Got axios error : ", {
         status: error.status,
         code: error.code,
         message: error.message,
@@ -232,7 +232,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
         );
       }
     } else {
-      console.log("Got unhandled error : ", error);
+      console.warn("Got unhandled error : ", error);
     }
   }
 }

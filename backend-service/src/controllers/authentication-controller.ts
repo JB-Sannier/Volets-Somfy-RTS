@@ -70,9 +70,7 @@ export class AuthenticationController extends BaseHttpController {
     };
     const refreshTokenRequest =
       await refreshTokenValidator.validate(baseRequest);
-    console.log("About to call userService.refreshToken..");
     const response = await this.userService.refreshToken(refreshTokenRequest);
-    console.log("Call to userService.refreshToken: done. Response :", response);
     res.status(200).json(response);
   }
 }
