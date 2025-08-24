@@ -48,10 +48,15 @@ export const ShutterOperationComponent: React.FC<IShutterOperationProps> = (
 
   return (
     <Paper sx={{ mb: 3, pl: 2 }} elevation={6}>
-      <Grid container direction="row" alignItems="center">
-        <Grid flexGrow={1}>
-          <Typography variant="body1">{props.shutter.shutterName}</Typography>
-        </Grid>
+      <Typography variant="body1">{props.shutter.shutterName}</Typography>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        size="grow"
+        alignSelf="flex-end"
+        flex={1}
+      >
         <Grid>
           <IconButton
             onClick={onRaiseShutter}

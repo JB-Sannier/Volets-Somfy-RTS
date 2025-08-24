@@ -2,5 +2,9 @@
   "NewName": "New name:",
   "Apply": "Apply",
   "Cancel": "Cancel",
-  "Modify": "Modify"
+  "Modify": "Modify",
+  "ErrorShutterNameEmpty": "Please fill a shutter name.",
+  "ErrorShutterAlreadyExists": "A shutter already exists with this name.",
+  "MsgShutterRenamed": "Shutter renamed.",
+  "MsgShutterErrorRenamed": "An error occured while renaming the shutter."
 }

@@ -32,11 +32,9 @@ export function errorHandler(
         res.status(404).json(payload);
         return;
       case ErrorCodes.Unauthorized:
-        console.log("Sending back UnauthorizedError");
         res.status(401).json(payload);
         return;
       default:
-        console.warn("AppError not handled : ", err);
         res.status(500).json({
           errorCode: "INTERNAL_SERVER_ERROR",
           description: "Internal Server Error",

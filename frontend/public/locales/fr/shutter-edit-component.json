@@ -2,5 +2,9 @@
   "NewName": "Nouveau nom:",
   "Apply": "Appliquer",
   "Cancel": "Annuler",
-  "Modify": "Modifier"
+  "Modify": "Modifier",
+  "ErrorShutterNameEmpty": "Veuillez saisir un nom pour votre volet.",
+  "ErrorShutterAlreadyExists": "Un volet existe déjà avec ce nom.",
+  "MsgShutterRenamed": "Volet renommé.",
+  "MsgShutterErrorRenamed": "Une erreur est survenue lors du renommage du volet."
 }

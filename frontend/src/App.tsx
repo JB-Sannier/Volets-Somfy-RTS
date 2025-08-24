@@ -8,6 +8,10 @@ import { theme } from "./theme/theme";
 import { Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+declare const BACKEND_URL: string;
+
+console.log("BACKEND_URL :", BACKEND_URL);
+
 const ApplicationTitleComponent: React.FC = () => {
   const { t } = useTranslation("app");
   useEffect(() => {

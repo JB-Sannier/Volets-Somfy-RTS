@@ -15,5 +15,5 @@ export const server: ServerOptions = {
 };
 
 export const envVariables: Record<string, unknown> = {
-  BACKEND_URL: JSON.stringify("192.16.1.1:5000"),
+  BACKEND_URL: JSON.stringify("192.168.1.1:3002"),
 };

@@ -7,12 +7,15 @@ import type {
 } from "./authentication-service.types";
 import axios from "axios";
 
+declare const BACKEND_URL: string;
+
 export const useAuthenticationApis = () => {
   async function authenticate(
     request: IAuthenticateRequest,
   ): Promise<IAuthenticateResponse> {
-    const url = "/api/v1/auth/token";
+    const url = `${BACKEND_URL}/api/v1/auth/token`;
     try {
+      console.log("Authenticate url : ", url);
       const response = await axios.post<IAuthenticateResponse>(url, request);
       return response.data;
     } catch (error: unknown) {
@@ -22,9 +25,10 @@ export const useAuthenticationApis = () => {
   }
 
   async function getTokenInfos(): Promise<ITokenInformations> {
-    const url = "/api/v1/auth/tokenInfos";
+    const url = `${BACKEND_URL}/api/v1/auth/tokenInfos`;
     try {
       const response = await axios.get<ITokenInformations>(url);
+      console.log("Authenticate: got response : ", response.data);
       return response.data;
     } catch (error: unknown) {
       console.error("Got error when tyring to : getTokenInfos :", error);
@@ -35,7 +39,7 @@ export const useAuthenticationApis = () => {
   async function refreshToken(
     request: IRefreshTokenRequest,
   ): Promise<IRefreshTokenResponse> {
-    const url = "api/v1/auth/refreshToken";
+    const url = `${BACKEND_URL}/api/v1/auth/refreshToken`;
     try {
       const response = await axios.post<IRefreshTokenResponse>(url, request);
       return response.data;

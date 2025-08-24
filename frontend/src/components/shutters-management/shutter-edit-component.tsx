@@ -42,7 +42,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
       shutterName: value,
     });
     if (value === "") {
-      setErrorText("Please provide a name for the shutter.");
+      setErrorText(t("ErrorShutterNameEmpty"));
       return;
     }
     for (const shutter of props.allShutters) {
@@ -50,7 +50,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
         shutter.shutterName === value &&
         shutter.shutterId !== currentShutter.shutterId
       ) {
-        setErrorText("A shutter has already this name.");
+        setErrorText(t("ErrorShutterAlreadyExists"));
         return;
       }
     }
@@ -65,7 +65,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
       await shuttersManagementApi.modifyShutter(currentShutter);
       props.shutterModified(currentShutter);
       setSnackbarProps({
-        message: "Shutter renamed.",
+        message: t("MsgShutterRenamed"),
         severity: "success",
       });
       setEdit(false);
@@ -75,7 +75,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
         error,
       });
       setSnackbarProps({
-        message: "Error renaming shutter",
+        message: t("MsgShutterErrorRenamed"),
         severity: "error",
       });
     }
@@ -126,7 +126,7 @@ export const ShutterEditComponent: React.FC<IShutterEditComponent> = (
             </Grid>
           ) : (
             <Button startIcon={<EditIcon />} onClick={() => setEdit(true)}>
-              Modify
+              {t("Modify")}
             </Button>
           )}
         </CardActions>
