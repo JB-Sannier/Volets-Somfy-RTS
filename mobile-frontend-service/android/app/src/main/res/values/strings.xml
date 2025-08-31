@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Somfy RTS Shutters</string>
+    <string name="title_activity_main">Somfy RTS Shutters</string>
+    <string name="package_name">fr.jsannier.somfy_rts_shutters</string>
+    <string name="custom_url_scheme">fr.jsannier.somfy_rts_shutters</string>
+</resources>

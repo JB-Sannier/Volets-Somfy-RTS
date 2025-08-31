@@ -11,7 +11,9 @@ import type {
   IModifyShutterResponse,
 } from "./shutters-service.types";
 
-const BASE_PATH = "/api/v1/shutter";
+declare const BACKEND_URL: string;
+
+const BASE_PATH = `${BACKEND_URL}/api/v1/shutter`;
 
 export const useShuttersManagementApis = () => {
   async function listShutters(): Promise<IListShuttersResponse> {

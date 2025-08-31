@@ -10,7 +10,6 @@ export const LoginLayout: React.FC<PropsWithChildren> = (props) => {
       sx={{
         display: "flex",
         placeItems: "center",
-        minWidth: "320px",
         minHeight: "100vh",
       }}
     >
@@ -22,7 +21,7 @@ export const LoginLayout: React.FC<PropsWithChildren> = (props) => {
         sx={{ width: "100%" }}
       >
         <Grid>
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ width: "100%", textAlign: "center" }}>
             <Typography variant="h2">{t("SomfyRtsShutters")}</Typography>
           </Box>
         </Grid>
@@ -32,7 +31,6 @@ export const LoginLayout: React.FC<PropsWithChildren> = (props) => {
               p: 3,
               m: 3,
               height: 200,
-              width: 500,
               verticalAlign: "middle",
             }}
           >

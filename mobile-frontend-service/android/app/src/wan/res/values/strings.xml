@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Somfy RTS Shutters - WAN</string>
+    <string name="title_activity_main">RTS - WAN</string>
+    <string name="package_name">fr.jsannier.somfy_rts_shutters_wan</string>
+    <string name="custom_url_scheme">fr.jsannier.somfy_rts_shutters_wan</string>
+</resources>

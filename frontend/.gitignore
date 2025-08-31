@@ -1,1 +1,6 @@
 vite.config.local.ts
+vite.config.lan-values.ts
+vite.config.wan-values.ts
+build-lan
+build-wan
+build

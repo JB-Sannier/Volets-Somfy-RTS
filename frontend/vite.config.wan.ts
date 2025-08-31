@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import { server, envVariables } from "./vite.config.local.ts";
+import { server, envVariables } from "./vite.config.wan-values.ts";
 import react from "@vitejs/plugin-react";
 /** @type {import('vite').UserConfig} */
 
@@ -7,7 +7,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: "build",
+    outDir: "build-wan",
     chunkSizeWarningLimit: 2000,
   },
   server,

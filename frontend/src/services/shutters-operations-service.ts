@@ -10,7 +10,9 @@ import type {
   IStopShutterRequest,
 } from "./shutters-operations-service.types";
 
-const BASE_PATH = "/api/v1/operateShutter";
+declare const BACKEND_URL: string;
+
+const BASE_PATH = `${BACKEND_URL}/api/v1/operateShutter`;
 
 export const useShuttersOperationApis = () => {
   async function raiseShutter(
