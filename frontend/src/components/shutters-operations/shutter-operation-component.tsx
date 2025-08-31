@@ -40,7 +40,7 @@ export const ShutterOperationComponent: React.FC<IShutterOperationProps> = (
 
   function onLowerShutter() {
     setSnackbarProps({
-      message: `Lowering shutter ${props.shutter.shutterName} ...`,
+      message: t("LoweringShutter", { shutterName: props.shutter.shutterName }),
       severity: "info",
     });
     shuttersOperationApis.lowerShutter({ shutterId: props.shutter.shutterId });
