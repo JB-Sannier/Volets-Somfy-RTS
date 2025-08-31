@@ -8,7 +8,7 @@
   "scripts": {
     "start": "ts-node-dev ./src/index.ts",
     "test": "jest",
-    "build": "tsc && cp package*.json build/ && cd build && npm install --omit=dev",
+    "build": "tsc && cp package*.json .env build/ && cd build && npm install --omit=dev",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts"
   },

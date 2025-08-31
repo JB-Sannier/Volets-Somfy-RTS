@@ -1,0 +1,12 @@
+import { type ServerOptions } from "vite";
+
+export const server: ServerOptions = {
+  host: "192.168.1.1",
+  port: 5000,
+  allowedHosts: ["127.0.0.1", "192.168.1.1"],
+  open: true,
+};
+
+export const envVariables: Record<string, unknown> = {
+  BACKEND_URL: JSON.stringify("http://shutters.yourdomain.example.com/some/path"),
+};

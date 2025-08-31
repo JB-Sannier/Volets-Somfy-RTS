@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "start:lan": "vite -c vite.config.lan.ts",
+    "start:wan": "vite -c vite.config.wan.ts",
+    "build": "tsc -b  && vite build -c vite.config.lan.ts",
+    "build:lan": "tsc --project tsconfig.lan.json && vite build -c vite.config.lan.ts",
+    "build:wan": "tsc --project tsconfig.wan.json && vite build -c vite.config.wan.ts",
+    "lint": "eslint src/",
     "preview": "vite preview",
-    "old_format": "prettier --write src/**/*.{ts,tsx,css} --config ./.prettierrc.json",
     "format": "prettier --config ./.prettierrc.json --write ./src"
   },
   "dependencies": {
