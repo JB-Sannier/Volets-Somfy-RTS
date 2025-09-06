@@ -3,7 +3,8 @@ import { inject } from "inversify";
 import { provide } from "inversify-binding-decorators";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 import { DataSource } from "typeorm";
-
+import { ShutterEntity } from "../entities/shutter-entity";
+import { InitialMigration1754473503534 } from "../migrations/1754473503534-migrations";
 export const sqlConnectionServiceKey = "SqlConnectionService";
 
 export interface ISqlConnectionService {
@@ -15,7 +16,7 @@ export class SqlConnectionService implements ISqlConnectionService {
   private dataSource: DataSource | undefined;
 
   constructor(
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService
   ) {}
 
   async getConnection(): Promise<DataSource> {
@@ -35,11 +36,8 @@ export class SqlConnectionService implements ISqlConnectionService {
         password: this.appConfig.dbPassword(),
         database: this.appConfig.dbName(),
         schema: this.appConfig.dbSchema(),
-        entities: [
-          `${__dirname}/../entities/*.ts`,
-          `${__dirname}/../entities/*.js`,
-        ],
-        migrations: [`${__dirname}/../migrations/1754473503534-migrations.ts`],
+        entities: [ShutterEntity],
+        migrations: [InitialMigration1754473503534],
         migrationsRun: true,
 
         logger: "simple-console",
