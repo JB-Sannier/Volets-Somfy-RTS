@@ -30,11 +30,11 @@ This project doesn't aim to replace Nickduino's work. If you need a webapp to co
 
 But if you prefer to add some security, users management, **and** you're not using the entire functionalities of Pi-Somfy, **and** you are hosting your own server, then this project may be for you.
 
-You can also host all these microservices on your own Raspberry Pi. I just wish you good luck when starting each micro-service, loading a wide amount of files into the node_modules directory, using a simple SD Card of your RaspBerry Pi.
+You can also host all these micro-services on your own Raspberry Pi. I just wish you good luck when starting each micro-service, loading a wide amount of files into the node_modules directory, using a simple SD Card of your RaspBerry Pi.
 
 ## Technical solutions
 
-As I'm more used to Typescript, PostgreSQL, Node.js and React, I started each micro-service by using Typescript, inversify and IOC concepts; for the frontend, I made an example using Material UI, as I tried to port the frontend to an Android application (work in progress).
+As I'm more used to Typescript, PostgreSQL, Node.js and React, I started each micro-service by using Typescript, inversify and IoC concepts; for the frontend, I made an example using Material UI, as I tried to port the frontend to an Android application (work in progress).
 
 **Somfy-shutters-service** : Will provide some means to call Nickduino's project on my RPi3, using the previously set Password. The Node.js webapp will be listening on localhost, and should not be exposed on Internet (typically, listening on 127.0.0.1 in my case)
 
