@@ -62,7 +62,7 @@ In the operateShutters.conf file, add the following line:
 
 Note the password you filled there, it'll be mandatory for somfy-shutters-service
 
-### PorgreSQL server
+### PostgreSQL server
 
 Make sure PostgreSQL can run on your 127.0.0.1 ip address (no need to expose it on Internet).
 
@@ -83,7 +83,7 @@ Adapt the values to your environment :
 
 **SOMFY_SERVER_PASSWORD**: The password you set on Nickduino's project, in the operateShutters.conf.
 
-**DB_HOSTNAME**, **DB_PORT**, **DB_USER**, **DB_PASSWORD**, **DB_NAME**, **DB_SCHEMA**: Coordinates of the Postgresql hostname, port, the user/password used to connect to the DB, the DB name itself, and the schema you have previoulsy created for this micro-service.
+**DB_HOSTNAME**, **DB_PORT**, **DB_USER**, **DB_PASSWORD**, **DB_NAME**, **DB_SCHEMA**: Coordinates of the Postgresql hostname, port, the user/password used to connect to the DB, the DB name itself, and the schema you have previously created for this micro-service.
 
 **SELF_API_KEY**: This key will be shared with the backend-service, to secure calls between the two micro-services.
 
@@ -105,7 +105,7 @@ Adapt the values to your environment:
 
 **HOST**, **POST** : Local IP address and port you want this micro-service to listen.
 
-**DB_HOSTNAME**, **DB_PORT**, **DB_USER**, **DB_PASSWORD**, **DB_NAME**, **DB_SCHEMA**: Coordinates of the Postgresql hostname, port, the user/password used to connect to the DB, the DB name itself, and the schema you have previoulsy created for this micro-service.
+**DB_HOSTNAME**, **DB_PORT**, **DB_USER**, **DB_PASSWORD**, **DB_NAME**, **DB_SCHEMA**: Coordinates of the Postgresql hostname, port, the user/password used to connect to the DB, the DB name itself, and the schema you have previously created for this micro-service.
 
 **REFRESH_TOKEN_SIGNING_KEY**: A security key, of you choice, that will be the signing key for the Refresh Token operations. Make it as long as you like. (for example, there, I created three uuids, concatenated them, remplaced every "-" into "!\_\*" characters...)
 
