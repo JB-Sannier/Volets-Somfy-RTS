@@ -2,7 +2,12 @@ import "reflect-metadata";
 import { inject } from "inversify";
 import { provide } from "inversify-binding-decorators";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
-import { DataSource } from "typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
+import { UserEntity } from "../entities/user";
+import { RefreshTokenEntity } from "../entities/refresh-token";
+import { InitialMigration1753360597960 } from "../migrations/1753360597960-InitialMigration";
+import { AddRoleInUserTable1753382072367 } from "../migrations/1753382072367-AddRoleInUserTable";
+import { Migrations1755530698256 } from "../migrations/1755530698256-CreateRefreshTokenTable";
 
 export const sqlConnectionServiceKey = "SqlConnectionService";
 
@@ -27,7 +32,7 @@ export class SqlConnectionService implements ISqlConnectionService {
 
   private async init(): Promise<DataSource> {
     if (!this.dataSource) {
-      const ds = new DataSource({
+      const connectionOptions: DataSourceOptions = {
         type: "postgres",
         host: this.appConfig.dbHostName(),
         port: this.appConfig.dbPort(),
@@ -35,21 +40,18 @@ export class SqlConnectionService implements ISqlConnectionService {
         password: this.appConfig.dbPassword(),
         database: this.appConfig.dbName(),
         schema: this.appConfig.dbSchema(),
-        entities: [
-          `${__dirname}/../entities/*.ts`,
-          `${__dirname}/../entities/*.js`,
-        ],
-        migrations: [
-          `${__dirname}/../migrations/1753360597960-InitialMigration.ts`,
-          `${__dirname}/../migrations/1753382072367-AddRoleInUserTable.ts`,
-          `${__dirname}/../migrations/1755530698256-CreateRefreshTokenTable.ts`,
-        ],
         migrationsRun: true,
-
         logger: "simple-console",
         logNotifications: true,
         logging: ["log", "migration", "warn", "query", "error"],
-      });
+        entities: [UserEntity, RefreshTokenEntity],
+        migrations: [
+          InitialMigration1753360597960,
+          AddRoleInUserTable1753382072367,
+          Migrations1755530698256,
+        ],
+      };
+      const ds = new DataSource(connectionOptions);
       await ds.initialize();
 
       if (ds.isInitialized) {

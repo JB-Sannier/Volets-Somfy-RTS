@@ -6,16 +6,15 @@
   "author": "",
   "main": "main.js",
   "scripts": {
-    "start": "ts-node-dev ./src/index.ts",
-    "test": "jest",
     "build": "tsc && cp package*.json .env build/ && cd build && npm install --omit=dev",
+    "format": "prettier --write src/**/*.ts",
     "lint": "eslint src/**/*.ts",
-    "format": "prettier --write src/**/*.ts"
+    "bundle": "webpack --mode production",
+    "start": "ts-node-dev ./src/index.ts",
+    "startBundle": "ts-node-dev ./bundle/backend-service.js",
+    "test": "jest"
   },
   "dependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
-    "@types/node": "^24.1.0",
     "axios": "^1.11.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
@@ -27,6 +26,9 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
     "@eslint/js": "^9.31.0",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
@@ -38,8 +40,14 @@
     "jest": "^30.0.5",
     "prettier": "^3.6.2",
     "ts-jest": "^29.4.0",
+    "ts-loader": "^9.5.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.38.0"
+    "typescript-eslint": "^8.38.0",
+    "@types/webpack-env": "^1.18.8",
+    "@types/webpack-node-externals": "^3.0.4",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1",
+    "webpack-node-externals": "^3.0.0"
   }
 }
