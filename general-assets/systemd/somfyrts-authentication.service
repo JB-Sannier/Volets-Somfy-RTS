@@ -1,0 +1,14 @@
+[Unit]
+Description=SomfyRTS - Authentication Service
+After=network-online.target
+
+[Service]
+User=jsannier
+ExecStart=node <PATH_TO_YOUR_AUTHENTICATION_SERVICE_BUILD_DIR>/src/index.js
+WorkingDirectory=<PATH_TO_YOUR_AUTHENTICATION_SERVICE_BUILD_DIR>
+Restart=on-failure
+Type=exec
+
+
+[Install]
+WantedBy=multi-user.target
