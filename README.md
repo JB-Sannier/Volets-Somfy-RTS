@@ -151,7 +151,9 @@ Then, as for the somfy-shutters-service and the authentication-service, run the 
 
 ## frontend-service
 
-Go into the frontend-service, duplicate the **vite.config.local.ts.example** into **vite.config.local.ts** and adapt the values.
+If you want a WAN build : Go into the frontend-service, duplicate the **vite.config.wan-values.example** into **vite.config.wan-values.ts** and adapt the values.
+
+If you want a LAN build : Go into the frontend-service, duplicate the **vite.config.lan-values.example** into **vite.config.lan-values.ts** and adapt the values.
 
 **host**: The host where your frontend-service should be reachable
 
@@ -159,9 +161,7 @@ Go into the frontend-service, duplicate the **vite.config.local.ts.example** int
 
 **allowed-hosts**: Change the array to include your backend-service
 
-**"/api"/**: Set the URL of your backend-service. (should not be used anymore...)
-
-**Line 18**: change the JSON.stringify value to your backend **HOST:PORT** coordinates.
+**Adapt lines 4 to 7**: change the JSON.stringify value to your backend **HOST:PORT** coordinates.
 
 You can open your web browser to test the frontend, fill your first username and program your shutters.
 
@@ -181,15 +181,140 @@ The frontend should be able to display itself using french or english (being the
 
 For other languages, I only speak French and English, so... feel free to propose some translations.
 
+## Local install
+
+### Authentication Service, Somfy Shutters Service, Backend:
+
+There is a Webpack build available, that you can use for every of the 3 backends.
+
+I also prepared some scripts that you can adapt, to install every micro-service on your server.
+
+For example, let's take authentication-service. After running the following commands :
+
+```
+    npm run build
+    npm run bundle
+```
+
+... you should have two directories: bundle and build. The build directory is the transpiled project into NodeJS. If you use this build, just change somfyrts-authentication.service, on line 8, and adapt only the build directory.
+But if you want to use the bundle directoy, change the following line :
+
+```
+ExecStart=node <PATH_TO_YOUR_AUTHENTICATION_SERVICE_BUNDLE_DIR>/authentication-service.js
+```
+
+You can do this to the three micro-services.
+
+Copy the service files into your OS systemd services directory. On Debian Trixie, I copied these to the following directory :
+
+```
+    /etc/systemd/system/
+```
+
+You can start the three services :
+
+```
+systemctl start somfyrts-authentication
+systemctl start somfyrts-shutters
+systemctl start somfyrts-backend
+```
+
+To enable these three services at startup :
+
+```
+systemctl enable somfyrts-authentication
+systemctl enable somfyrts-shutters
+systemctl enable somfyrts-backend
+```
+
+### Frontend:
+
+For this part, I can't help that much. I can only provide you some config files for Apache2 (see general-assets directory). You can use the shutters\*.conf files and place them in /etc/apache2/sites-available .
+Adapt the directory where you will put the build directory from the frontend. Copy also the ".htaccess" file in the general-assets/apache2 directory, to the frontend build directory. In my example, the frontend build was copied to /var/www/html/shutters directory.
+
+Then as root, use the following command :
+
+```
+a2enmod shutters
+a2enmod shutters-le-ssl
+```
+
+Don't forget to adapt the conf files to point to your local backend URL.
+
+## Mobile applications
+
+In order to build Android applications, you will need Android Studio and the ANDROID_HOME environment variable set.
+See the [Capacitor Install Documentation](https://capacitorjs.com/docs/getting-started/environment-setup).
+
+Once this is done, you will need to build the frontent variants (WAN, LAN), that you want to produce.
+
+In the frontend-service directory :
+
+### For the LAN build
+
+```
+npm install && npm run build:lan
+```
+
+### For the WAN build
+
+```
+npm install && npm run build:wan
+```
+
+Then, go to the mobile-frontend-service.
+If you want a LAN build, you will need to adapt the following file :
+mobile-frontend-service/android/app/src/main/res/xml/network_security_config.xml
+
+Adapt the IP address to the backend server's IP address
+
+```
+        <domain includeSubdomains="true">192.168.3.5</domain>
+```
+
+Then, in the mobile-frontend-service, run :
+
+```
+npm install && npm run build:lan
+```
+
+### For the WAN build
+
+```
+npm install && npm run build:wan
+```
+
+The APK packages will be located in these directories:
+mobile-frontend-service/android/app/build/outputs/apk/lan/release/app-lan-release.apk
+mobile-frontend-service/android/app/build/outputs/apk/wan/reelease/app-wan-release.apk
+
+## Simplified build tool :
+
+From the Volets-Somfy-RTS directory, you can use the following commands:
+
+### LAN only build:
+
+```
+    make build-lan
+```
+
+### WAN only build:
+
+```
+    make build-wan
+```
+
+### Both builds:
+
+```
+    make build-lan-and-wan
+```
+
 ## TODO
 
 - Write some Dockerfile for each micro-service, as well as a Dockerfile for the DB container; assemble all of these into a docker.compose.yml file.
 
 - Add some functionalities to the shutters operation, to provide more than raise/lower/stop/program commands.
-
-- Write the service to do some build of the application to be usable on Android. Make one application for LAN purpose via WiFi, and another one via Internet, if exposing the shutter application on the Net.
-
-- Optimize the build for each micro-service, to avoid getting too much node_module files for each application.
 
 ## Additional Infos
 

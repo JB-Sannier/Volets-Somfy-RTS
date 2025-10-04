@@ -16,7 +16,7 @@ export class SqlConnectionService implements ISqlConnectionService {
   private dataSource: DataSource | undefined;
 
   constructor(
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService
+    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
   ) {}
 
   async getConnection(): Promise<DataSource> {
