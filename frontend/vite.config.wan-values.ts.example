@@ -8,5 +8,5 @@ export const server: ServerOptions = {
 };
 
 export const envVariables: Record<string, unknown> = {
-  BACKEND_URL: JSON.stringify("http://shutters.yourdomain.example.com/some/path"),
+  BACKEND_URL: JSON.stringify("https://your.domain.here"),
 };
