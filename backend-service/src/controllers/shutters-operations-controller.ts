@@ -28,7 +28,7 @@ import { checkToken } from "../middlewares/check-token-middleware";
 
 @controller("/api/v1/operateShutter")
 @checkToken()
-export class SomfyProxyController extends BaseHttpController {
+export class ShuttersOperationsController extends BaseHttpController {
   constructor(
     @inject(shuttersProxyServiceKey)
     private readonly shutterService: IShuttersProxyService,
