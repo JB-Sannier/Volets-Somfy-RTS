@@ -1,5 +1,18 @@
 import { IUserResponse, UserRole } from "./models";
+import * as express from "express";
 
+// Express wrapper to put Token informations at Request Level
+// when user is authentified
+export interface ITokenInformations {
+  email: string;
+  roles: UserRole[];
+}
+
+export interface IAuthentifiedRequest extends express.Request {
+  tokenInfos: ITokenInformations;
+}
+
+// Usual Requests/Responses models
 export interface IAddUserRequest {
   email: string;
   password: string;

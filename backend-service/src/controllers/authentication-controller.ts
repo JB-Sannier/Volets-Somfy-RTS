@@ -1,13 +1,12 @@
 import "reflect-metadata";
 import { inject } from "inversify";
 import {
-  BaseHttpController,
-  controller,
-  httpGet,
-  httpPost,
-  request,
-  response,
-} from "inversify-express-utils";
+  Controller,
+  Get,
+  Post,
+  Request as request,
+  Response as response,
+} from "@inversifyjs/http-core";
 import { Request, Response } from "express";
 import {
   appConfigServiceKey,
@@ -25,20 +24,18 @@ import { IUserService, userServiceKey } from "../services/user-service";
 import { checkToken } from "../middlewares/check-token-middleware";
 import { ITokenService, tokenServiceKey } from "../services/token-service";
 
-@controller("/api/v1/auth")
-export class AuthenticationController extends BaseHttpController {
+@Controller("/api/v1/auth")
+export class AuthenticationController {
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
     @inject(tokenServiceKey) private readonly tokenService: ITokenService,
-    @inject(userServiceKey) private readonly userService: IUserService,
-  ) {
-    super();
-  }
+    @inject(userServiceKey) private readonly userService: IUserService
+  ) {}
 
-  @httpPost("/token")
+  @Post("/token")
   async authenticate(
     @request() req: Request,
-    @response() res: Response,
+    @response() res: Response
   ): Promise<void> {
     const basePayload: IAuthenticateRequest = {
       email: req.body?.email,
@@ -49,21 +46,21 @@ export class AuthenticationController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpGet("/tokenInfos")
+  @Get("/tokenInfos")
   @checkToken()
   async getUserInfos(
     @request() req: Request,
-    @response() res: Response,
+    @response() res: Response
   ): Promise<void> {
     const token = req.headers.authorization || "";
     const response = await this.tokenService.validateToken(token);
     res.status(200).json(response);
   }
 
-  @httpPost("/refreshToken")
+  @Post("/refreshToken")
   async refreshToken(
     @request() req: Request,
-    @response() res: Response,
+    @response() res: Response
   ): Promise<void> {
     const baseRequest: IRefreshTokenRequest = {
       refreshToken: req.body.refreshToken,

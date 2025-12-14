@@ -1,3 +1,4 @@
+/*
 import { injectable, inject } from "inversify";
 import { interfaces } from "inversify-express-utils";
 import * as express from "express";
@@ -49,7 +50,7 @@ export class CustomAuthProvider implements interfaces.AuthProvider {
   public async getUser(
     req: express.Request,
     res: express.Response, // eslint-disable-line @typescript-eslint/no-unused-vars
-    next: express.NextFunction, // eslint-disable-line @typescript-eslint/no-unused-vars
+    next: express.NextFunction // eslint-disable-line @typescript-eslint/no-unused-vars
   ): Promise<interfaces.Principal> {
     const token = req.headers["authorization"] as string;
     try {
@@ -65,9 +66,11 @@ export class CustomAuthProvider implements interfaces.AuthProvider {
     } catch (error) {
       console.error(
         "CustomAuthProvider: getUser: some error happened : ",
-        error,
+        error
       );
       return new Principal(undefined);
     }
   }
 }
+*/
+export const dummy = "";

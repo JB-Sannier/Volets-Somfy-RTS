@@ -1,54 +1,89 @@
 import * as express from "express";
-import { AppError, ErrorCodes } from "../models/app-error";
+import {
+  AppError,
+  UserNotFoundError,
+  CannotAddUserError,
+  CannotDeleteUserError,
+  CannotModifyUserError,
+  UnauthorizedError,
+  UserAlreadyExistsError,
+  ErrorCodes,
+} from "../models/app-error";
 import { ValidationError } from "yup";
+import { CatchError, ErrorFilter } from "@inversifyjs/http-core";
+import { Newable } from "inversify";
 
-export function errorHandler(
-  err: unknown,
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction, // eslint-disable-line @typescript-eslint/no-unused-vars
-) {
-  console.log("Error handler : ", err);
-
-  if (err instanceof AppError) {
-    const payload = {
-      errorCode: err.errorCode,
-      description: err.description,
-      payload: err.payload,
-    };
-    switch (err.errorCode) {
-      case ErrorCodes.CannotDeleteUser:
-      case ErrorCodes.CannotModifyUser:
-      case ErrorCodes.UserAlreadyExists:
-        res.status(400).json(payload);
-        return;
-      case ErrorCodes.UserNotFound:
-        res.status(404).json(payload);
-        return;
-      case ErrorCodes.Unauthorized:
-        res.status(401).json(payload);
-        return;
-      default:
-        console.error("AppError not handled : ", err);
-        res.status(500).json({
-          errorCode: "INTERNAL_SERVER_ERROR",
-          description: "Internal Server Error",
-        });
-        return;
-    }
-  }
-  if (err instanceof ValidationError) {
-    res.status(400).json({
-      errorCode: "INVALID_REQUEST",
-      description: (err as ValidationError).message,
+@CatchError(ValidationError) // ValidationError)
+export class ValidationErrorFilter implements ErrorFilter<ValidationError> {
+  catch(
+    error: ValidationError,
+    request: express.Request,
+    response: express.Response,
+  ) {
+    response.status(400).json({
+      errorCode: ErrorCodes.ValidationError,
+      description: error.message,
+      payload: error.errors,
     });
-    return;
+
   }
-
-  console.warn("ErrorMiddleware : Unhandled error : ", err);
-
-  res.status(500).json({
-    errorCode: "INTERNAL_SERVER_ERROR",
-    description: "Internal Server Error",
-  });
 }
+
+export class AppErrorFilter implements ErrorFilter<AppError> {
+  catch(error: AppError, _request: express.Request, response: express.Response) {
+    console.log('AppErrorFilter : got Error : ', error);
+
+    /*
+    throw new UnprocessableEntityHttpResponse({
+      errorCode: error.errorCode,
+      description: error.description,
+    }, error.description, undefined);
+    */
+
+    response.status(error.getHttpResponse()).send({
+      errorCode: error.errorCode,
+      description: error.description,
+    });
+
+  }
+}
+
+@CatchError(UserNotFoundError)
+export class UserNotFoundErrorFilter extends AppErrorFilter { }
+
+@CatchError(CannotAddUserError)
+export class CannotAddUserErrorFilter extends AppErrorFilter { }
+
+@CatchError(CannotDeleteUserError)
+export class CannotDeleteUserErrorFilter extends AppErrorFilter { }
+
+@CatchError(CannotModifyUserError)
+export class CannotModifyUserErrorFilter extends AppErrorFilter { }
+
+@CatchError(UnauthorizedError)
+export class UnauthorizedErrorFilter extends AppErrorFilter { }
+
+@CatchError(UserAlreadyExistsError)
+export class UserAlreadyExistsErrorFilter extends AppErrorFilter { }
+
+@CatchError(Error)
+export class FinalErrorFilter implements ErrorFilter {
+  catch(error: unknown, request: express.Request, response: express.Response) {
+    console.error("Unhandled error : ", error);
+    response.status(500).json({
+      errorCode: "INTERNAL_SERVER_ERROR",
+      description: "Internal Server Error",
+    });
+  }
+}
+
+export const errorFilterList: Newable<ErrorFilter>[] = [
+  ValidationErrorFilter,
+  UserNotFoundErrorFilter,
+  CannotAddUserErrorFilter,
+  CannotDeleteUserErrorFilter,
+  CannotModifyUserErrorFilter,
+  UnauthorizedErrorFilter,
+  UserAlreadyExistsErrorFilter,
+  FinalErrorFilter,
+];

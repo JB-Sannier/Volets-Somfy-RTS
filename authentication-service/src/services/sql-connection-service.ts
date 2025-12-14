@@ -1,6 +1,5 @@
-import "reflect-metadata";
 import { inject } from "inversify";
-import { provide } from "inversify-binding-decorators";
+import { provide } from "@inversifyjs/binding-decorators";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { UserEntity } from "../entities/user";

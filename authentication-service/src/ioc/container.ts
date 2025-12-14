@@ -9,7 +9,6 @@ import {
   SqlConnectionService,
   sqlConnectionServiceKey,
 } from "../services/sql-connection-service";
-import "../controllers/authentication-controller";
 import {
   IUserRepository,
   UserRepository,
@@ -25,8 +24,6 @@ import {
   TokenService,
   tokenServiceKey,
 } from "../services/token-service";
-import "../controllers/authentication-controller";
-import "../controllers/users-controller";
 import {
   IRefreshTokenRepository,
   RefreshTokenRepository,
@@ -37,9 +34,33 @@ import {
   RefreshTokenService,
   refreshTokenServiceKey,
 } from "../services/refresh-token-sevice";
+import "../controllers/authentication-controller";
+import "../controllers/users-controller";
+import "../middlewares/auth-provider";
+import "../middlewares/check-token-middleware";
+import "../middlewares/check-user-roles-middleware";
+import "../middlewares/error-middleware";
+
+import { AuthenticationController } from "../controllers/authentication-controller";
+import { UsersController } from "../controllers/users-controller";
+import { errorFilterList } from "../middlewares/error-middleware";
+import { CheckShutterManagerRole, checkShutterManagerRoleKey, CheckUserManagerRole, checkUserManagerRoleKey } from "../middlewares/check-user-roles-middleware";
+import { TokenCheckInterceptor, tokenCheckInterceptorKey } from "../middlewares/check-token-middleware";
 
 export function setupContainer(): Container {
   const c: Container = new Container();
+
+  c.bind(AuthenticationController).toSelf().inSingletonScope();
+  c.bind(UsersController).toSelf().inSingletonScope();
+
+  errorFilterList.forEach((efl) => {
+    console.log('Registering in container for :', efl);
+    c.bind(efl).toSelf().inSingletonScope();
+  })
+
+  c.bind<CheckUserManagerRole>(checkUserManagerRoleKey).to(CheckUserManagerRole).inSingletonScope();
+  c.bind<CheckShutterManagerRole>(checkShutterManagerRoleKey).to(CheckShutterManagerRole).inSingletonScope();
+  c.bind<TokenCheckInterceptor>(tokenCheckInterceptorKey).to(TokenCheckInterceptor).inSingletonScope();
 
   c.bind<IAppConfigService>(appConfigServiceKey)
     .to(AppConfigServiceFromEnv)
