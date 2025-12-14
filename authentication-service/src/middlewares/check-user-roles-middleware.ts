@@ -18,7 +18,7 @@ async function interceptRole(role: UserRole, req: express.Request, res: express.
   if (!tokenInfos.roles.find((r) => r === role)) {
     throw new UnauthorizedError();
   }
-  next();
+  await next();
 }
 
 @provide(checkUserManagerRoleKey)

@@ -37,7 +37,7 @@ export class TokenCheckInterceptor implements ExpressInterceptor {
     );
     if (tokenInfos) {
       (request as IAuthentifiedRequest).tokenInfos = tokenInfos;
-      next();
+      await next();
     }
   }
 }
