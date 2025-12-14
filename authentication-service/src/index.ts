@@ -1,8 +1,4 @@
 import "reflect-metadata";
-/*
-  import * as bodyParser from "body-parser";
-  import * as express from "express";
-*/
 import { container } from "./ioc/container";
 import { InversifyExpressHttpAdapter } from "@inversifyjs/http-express";
 import {
@@ -19,9 +15,6 @@ import {
 import { IUserService, userServiceKey } from "./services/user-service";
 
 async function init() {
-  console.log('Init starting...');
-
-
   const appConfig = container.get<IAppConfigService>(appConfigServiceKey);
 
   const adapter = new InversifyExpressHttpAdapter(container, {
@@ -48,28 +41,6 @@ async function init() {
 
   console.log('Container : ', container);
 
-  /*
-    server.setConfig((app: express.Application) => {
-      app.use(bodyParser.urlencoded({ extended: true }));
-      app.use(bodyParser.json());
-    });
-    server.setErrorConfig((app) => {
-      app.use(errorHandler);
-    });
-
-    const app: express.Application = server.build();
-
-    app.listen(appConfig.port(), appConfig.host(), () => {
-      console.log("Listening on : ", appConfig.host(), appConfig.port());
-    });
-
-    const sqlService = container.get<ISqlConnectionService>(
-      sqlConnectionServiceKey
-    );
-  */
-  console.log('Init finished');
-
 }
-console.log("calling init function...");
+
 init();
-console.log("init function executed.");

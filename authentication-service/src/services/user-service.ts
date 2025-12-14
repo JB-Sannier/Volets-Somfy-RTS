@@ -94,10 +94,8 @@ export class UserService implements IUserService {
   async addUser(user: IAddUserRequest): Promise<IAddUserResponse> {
     const userFound = await this.userRepository.getUserByEmail(user.email);
     if (userFound) {
-      console.log('User already exists...');
       throw new UserAlreadyExistsError(user.email);
     }
-    console.log('User not found in DB. Creating a new one..', { email: user.email });
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = bcrypt.hashSync(user.password, salt);
     const userToAdd: IUser = {
@@ -106,7 +104,6 @@ export class UserService implements IUserService {
       roles: user.roles,
       isActive: true,
     };
-    console.log('About to call userRepository.addUser...', userToAdd);
     const result = await this.userRepository.addUser(userToAdd);
     if (result && userToAdd.roles.includes(UserRole.UserManager)) {
       this.defaultUser = undefined;

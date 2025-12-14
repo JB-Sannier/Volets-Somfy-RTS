@@ -25,37 +25,39 @@ export class ValidationErrorFilter implements ErrorFilter<ValidationError> {
       description: error.message,
       payload: error.errors,
     });
-
   }
 }
 
 export class AppErrorFilter implements ErrorFilter<AppError> {
-  catch(error: AppError, _request: express.Request, response: express.Response) {
+  catch(
+    error: AppError,
+    _request: express.Request,
+    response: express.Response,
+  ) {
     response.status(error.getHttpResponse()).send({
       errorCode: error.errorCode,
       description: error.description,
     });
-
   }
 }
 
 @CatchError(UserNotFoundError)
-export class UserNotFoundErrorFilter extends AppErrorFilter { }
+export class UserNotFoundErrorFilter extends AppErrorFilter {}
 
 @CatchError(CannotAddUserError)
-export class CannotAddUserErrorFilter extends AppErrorFilter { }
+export class CannotAddUserErrorFilter extends AppErrorFilter {}
 
 @CatchError(CannotDeleteUserError)
-export class CannotDeleteUserErrorFilter extends AppErrorFilter { }
+export class CannotDeleteUserErrorFilter extends AppErrorFilter {}
 
 @CatchError(CannotModifyUserError)
-export class CannotModifyUserErrorFilter extends AppErrorFilter { }
+export class CannotModifyUserErrorFilter extends AppErrorFilter {}
 
 @CatchError(UnauthorizedError)
-export class UnauthorizedErrorFilter extends AppErrorFilter { }
+export class UnauthorizedErrorFilter extends AppErrorFilter {}
 
 @CatchError(UserAlreadyExistsError)
-export class UserAlreadyExistsErrorFilter extends AppErrorFilter { }
+export class UserAlreadyExistsErrorFilter extends AppErrorFilter {}
 
 @CatchError(Error)
 export class FinalErrorFilter implements ErrorFilter {

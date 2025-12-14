@@ -10,7 +10,7 @@ import { ExpressInterceptor } from "@inversifyjs/http-express";
 import { ITokenInformations } from "../models/requests";
 import { provide } from "@inversifyjs/binding-decorators";
 
-export const tokenCheckInterceptorKey = Symbol.for('TokenCheckInterceptor');
+export const tokenCheckInterceptorKey = Symbol.for("TokenCheckInterceptor");
 
 export interface IAuthentifiedRequest extends express.Request {
   tokenInfos: ITokenInformations;
@@ -23,11 +23,6 @@ export class TokenCheckInterceptor implements ExpressInterceptor {
     _response: express.Response,
     next: () => Promise<InterceptorTransformObject>,
   ): Promise<void> {
-    console.log("TokenCheckInterceptor: intercept()");
-    console.log(
-      "request.headers.authorization : ",
-      request.headers.authorization,
-    );
     if (!request.headers.authorization) {
       throw new UnauthorizedError();
     }
@@ -43,6 +38,5 @@ export class TokenCheckInterceptor implements ExpressInterceptor {
 }
 
 export function checkToken() {
-  console.log("CheckToken() called.");
   return UseInterceptor(tokenCheckInterceptorKey);
 }

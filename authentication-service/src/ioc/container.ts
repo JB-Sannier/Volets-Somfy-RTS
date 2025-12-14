@@ -44,8 +44,16 @@ import "../middlewares/error-middleware";
 import { AuthenticationController } from "../controllers/authentication-controller";
 import { UsersController } from "../controllers/users-controller";
 import { errorFilterList } from "../middlewares/error-middleware";
-import { CheckShutterManagerRole, checkShutterManagerRoleKey, CheckUserManagerRole, checkUserManagerRoleKey } from "../middlewares/check-user-roles-middleware";
-import { TokenCheckInterceptor, tokenCheckInterceptorKey } from "../middlewares/check-token-middleware";
+import {
+  CheckShutterManagerRole,
+  checkShutterManagerRoleKey,
+  CheckUserManagerRole,
+  checkUserManagerRoleKey,
+} from "../middlewares/check-user-roles-middleware";
+import {
+  TokenCheckInterceptor,
+  tokenCheckInterceptorKey,
+} from "../middlewares/check-token-middleware";
 
 export function setupContainer(): Container {
   const c: Container = new Container();
@@ -54,13 +62,19 @@ export function setupContainer(): Container {
   c.bind(UsersController).toSelf().inSingletonScope();
 
   errorFilterList.forEach((efl) => {
-    console.log('Registering in container for :', efl);
+    console.log("Registering in container for :", efl);
     c.bind(efl).toSelf().inSingletonScope();
-  })
+  });
 
-  c.bind<CheckUserManagerRole>(checkUserManagerRoleKey).to(CheckUserManagerRole).inSingletonScope();
-  c.bind<CheckShutterManagerRole>(checkShutterManagerRoleKey).to(CheckShutterManagerRole).inSingletonScope();
-  c.bind<TokenCheckInterceptor>(tokenCheckInterceptorKey).to(TokenCheckInterceptor).inSingletonScope();
+  c.bind<CheckUserManagerRole>(checkUserManagerRoleKey)
+    .to(CheckUserManagerRole)
+    .inSingletonScope();
+  c.bind<CheckShutterManagerRole>(checkShutterManagerRoleKey)
+    .to(CheckShutterManagerRole)
+    .inSingletonScope();
+  c.bind<TokenCheckInterceptor>(tokenCheckInterceptorKey)
+    .to(TokenCheckInterceptor)
+    .inSingletonScope();
 
   c.bind<IAppConfigService>(appConfigServiceKey)
     .to(AppConfigServiceFromEnv)

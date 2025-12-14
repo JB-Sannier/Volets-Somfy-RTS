@@ -21,9 +21,13 @@ import { addUserValidator, modifyUserValidator } from "../models/validators";
 import { IUserService, userServiceKey } from "../services/user-service";
 import { UserRole } from "../models/models";
 import { checkUserRole } from "../middlewares/check-user-roles-middleware";
-import { FinalErrorFilter, UserAlreadyExistsErrorFilter, ValidationErrorFilter } from "../middlewares/error-middleware";
+import {
+  FinalErrorFilter,
+  UserAlreadyExistsErrorFilter,
+  ValidationErrorFilter,
+} from "../middlewares/error-middleware";
 
-export const usersControllerKey = Symbol.for('UsersController');
+export const usersControllerKey = Symbol.for("UsersController");
 
 @Controller("/api/v1/user")
 @checkUserRole(UserRole.UserManager)
@@ -40,7 +44,6 @@ export class UsersController {
     @request() req: Request,
     @response() res: Response,
   ): Promise<void> {
-    console.log('UsersController: addUser : start.');
     const basePayload: IAddUserRequest = {
       email: req.body.email,
       password: req.body.password,
