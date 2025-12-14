@@ -13,7 +13,7 @@ import { ValidationError } from "yup";
 import { CatchError, ErrorFilter } from "@inversifyjs/http-core";
 import { Newable } from "inversify";
 
-@CatchError(ValidationError) // ValidationError)
+@CatchError(ValidationError)
 export class ValidationErrorFilter implements ErrorFilter<ValidationError> {
   catch(
     error: ValidationError,
@@ -31,15 +31,6 @@ export class ValidationErrorFilter implements ErrorFilter<ValidationError> {
 
 export class AppErrorFilter implements ErrorFilter<AppError> {
   catch(error: AppError, _request: express.Request, response: express.Response) {
-    console.log('AppErrorFilter : got Error : ', error);
-
-    /*
-    throw new UnprocessableEntityHttpResponse({
-      errorCode: error.errorCode,
-      description: error.description,
-    }, error.description, undefined);
-    */
-
     response.status(error.getHttpResponse()).send({
       errorCode: error.errorCode,
       description: error.description,
