@@ -38,7 +38,6 @@ export class UserNotFoundError extends AppError {
   constructor(email: string) {
     super(ErrorCodes.UserNotFound, ErrorDescriptions.UserNotFound, { email });
   }
-
   public getHttpResponse(): number {
     return 404;
   }
@@ -50,7 +49,6 @@ export class UserAlreadyExistsError extends AppError {
       email,
     });
   }
-
   public getHttpResponse(): number {
     return 400;
   }

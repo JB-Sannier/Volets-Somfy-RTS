@@ -39,8 +39,6 @@ async function init() {
   const userService = container.get<IUserService>(userServiceKey);
   userService.setDefaultUserIfNeeded();
 
-  console.log('Container : ', container);
-
 }
 
 init();

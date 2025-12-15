@@ -20,7 +20,7 @@ export class SqlConnectionService implements ISqlConnectionService {
 
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-  ) {}
+  ) { }
 
   async getConnection(): Promise<DataSource> {
     if (this.dataSource) {
@@ -42,7 +42,7 @@ export class SqlConnectionService implements ISqlConnectionService {
         migrationsRun: true,
         logger: "simple-console",
         logNotifications: true,
-        logging: ["log", "migration", "warn", "query", "error"],
+        logging: ["log", "migration", "warn", "error"],
         entities: [UserEntity, RefreshTokenEntity],
         migrations: [
           InitialMigration1753360597960,

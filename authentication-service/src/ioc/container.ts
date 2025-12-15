@@ -36,7 +36,6 @@ import {
 } from "../services/refresh-token-sevice";
 import "../controllers/authentication-controller";
 import "../controllers/users-controller";
-import "../middlewares/auth-provider";
 import "../middlewares/check-token-middleware";
 import "../middlewares/check-user-roles-middleware";
 import "../middlewares/error-middleware";
@@ -62,7 +61,6 @@ export function setupContainer(): Container {
   c.bind(UsersController).toSelf().inSingletonScope();
 
   errorFilterList.forEach((efl) => {
-    console.log("Registering in container for :", efl);
     c.bind(efl).toSelf().inSingletonScope();
   });
 

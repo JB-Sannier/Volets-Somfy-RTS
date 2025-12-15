@@ -8,7 +8,6 @@ import {
   Delete,
   Request as request,
   Response as response,
-  UseErrorFilter,
 } from "@inversifyjs/http-core";
 
 import { Request, Response } from "express";
@@ -21,25 +20,17 @@ import { addUserValidator, modifyUserValidator } from "../models/validators";
 import { IUserService, userServiceKey } from "../services/user-service";
 import { UserRole } from "../models/models";
 import { checkUserRole } from "../middlewares/check-user-roles-middleware";
-import {
-  FinalErrorFilter,
-  UserAlreadyExistsErrorFilter,
-  ValidationErrorFilter,
-} from "../middlewares/error-middleware";
 
 export const usersControllerKey = Symbol.for("UsersController");
 
 @Controller("/api/v1/user")
 @checkUserRole(UserRole.UserManager)
-@UseErrorFilter(FinalErrorFilter)
 export class UsersController {
   constructor(
     @inject(userServiceKey) private readonly userService: IUserService,
-  ) { }
+  ) {}
 
   @Post("/")
-  @UseErrorFilter(UserAlreadyExistsErrorFilter)
-  @UseErrorFilter(ValidationErrorFilter)
   async addUser(
     @request() req: Request,
     @response() res: Response,

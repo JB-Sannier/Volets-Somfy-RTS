@@ -159,7 +159,7 @@ export class UserService implements IUserService {
         roles: [UserRole.UserManager],
         isActive: true,
       };
-      console.log(
+      console.info(
         "Since there is no registered user, use the following credentials :",
         {
           email: this.defaultUser.email,
