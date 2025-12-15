@@ -1,15 +1,14 @@
 import "reflect-metadata";
 import { inject } from "inversify";
 import {
-  BaseHttpController,
-  controller,
-  httpPost,
-  httpPut,
-  request,
-  response,
-  httpDelete,
-  httpGet,
-} from "inversify-express-utils";
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Request as request,
+  Response as response,
+} from "@inversifyjs/http-core";
 import { Request, Response } from "express";
 import {
   IAddShutterRequest,
@@ -29,16 +28,14 @@ import {
 } from "../services/shutters-service";
 import { checkApiKey } from "../middlewares/check-api-key-middleware";
 
-@controller("/api/v1/shutter")
+@Controller("/api/v1/shutter")
 @checkApiKey()
-export class SomfyShuttersController extends BaseHttpController {
+export class SomfyShuttersController {
   constructor(
     @inject(shutterServiceKey) private readonly shutterService: IShutterService,
-  ) {
-    super();
-  }
+  ) {}
 
-  @httpGet("/")
+  @Get("/")
   async listShutters(
     @request() req: Request,
     @response() res: Response,
@@ -47,7 +44,7 @@ export class SomfyShuttersController extends BaseHttpController {
     res.status(200).json(shutters);
   }
 
-  @httpGet("/:shutterId")
+  @Get("/:shutterId")
   async getShutter(
     @request() req: Request,
     @response() res: Response,
@@ -61,7 +58,7 @@ export class SomfyShuttersController extends BaseHttpController {
     res.status(200).json(shutter);
   }
 
-  @httpPost("/")
+  @Post("/")
   async addShutter(
     @request() req: Request,
     @response() res: Response,
@@ -74,7 +71,7 @@ export class SomfyShuttersController extends BaseHttpController {
     res.status(201).json(response);
   }
 
-  @httpPut("/")
+  @Put("/")
   async modifyUser(
     @request() req: Request,
     @response() res: Response,
@@ -88,7 +85,7 @@ export class SomfyShuttersController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpDelete("/:shutterId")
+  @Delete("/:shutterId")
   async deleteUser(
     @request() req: Request,
     @response() res: Response,
