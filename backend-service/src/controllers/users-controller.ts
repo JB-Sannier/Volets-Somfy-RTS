@@ -27,13 +27,13 @@ import { checkUserRole } from "../middlewares/check-user-roles-middleware";
 @checkUserRole(UserRole.UserManager)
 export class UsersController {
   constructor(
-    @inject(userServiceKey) private readonly userService: IUserService
+    @inject(userServiceKey) private readonly userService: IUserService,
   ) {}
 
   @Post("/")
   async addUser(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const token = req.headers.authorization || "";
     const basePayload: IAddUserRequest = {
@@ -49,7 +49,7 @@ export class UsersController {
   @Put("/")
   async modifyUser(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const token = req.headers.authorization || "";
     const basePayload: IModifyUserRequest = {
@@ -66,7 +66,7 @@ export class UsersController {
   @Delete("/:email")
   async deleteUser(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const token = req.headers.authorization || "";
     const basePayload: IDeleteUserRequest = {
@@ -80,7 +80,7 @@ export class UsersController {
   @Get("/")
   async listUsers(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const token = req.headers.authorization || "";
     const users = await this.userService.listUsers(token);

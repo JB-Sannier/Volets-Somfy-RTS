@@ -1,5 +1,5 @@
 import { inject } from "inversify";
-import { provide } from "inversify-binding-decorators";
+import { provide } from "@inversifyjs/binding-decorators";
 import {
   IAddShutterRequest,
   IAddShutterResponse,
@@ -20,7 +20,7 @@ import {
   IStopShutterResponse,
 } from "../models/shutters-requests";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
-import { AppError, UnauthorizedError } from "../models/app-error";
+import { SomfyProxyError, UnauthorizedError } from "../models/app-error";
 import axios, { AxiosRequestConfig, isAxiosError } from "axios";
 
 export const shuttersProxyServiceKey = Symbol.for("ShuttersProxyService");
@@ -225,11 +225,11 @@ export class ShuttersProxyService implements IShuttersProxyService {
         error.response.data.errorCode &&
         error.response.data.description
       ) {
-        throw new AppError(
-          error.response.data.errorCode,
-          error.response.data.description,
-          error.response.data.payload,
-        );
+        throw new SomfyProxyError({
+          errorCode: error.response.data.errorCode,
+          errorDescription: error.response.data.description,
+          payload: error.response.data.payload,
+        });
       }
     } else {
       console.warn("Got unhandled error : ", error);

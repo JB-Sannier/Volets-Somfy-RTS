@@ -31,13 +31,13 @@ import { checkToken } from "../middlewares/check-token-middleware";
 export class ShuttersOperationsController {
   constructor(
     @inject(shuttersProxyServiceKey)
-    private readonly shutterService: IShuttersProxyService
+    private readonly shutterService: IShuttersProxyService,
   ) {}
 
   @Post("/raise")
   async raiseShutter(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const baseRequest: IRaiseShutterRequest = {
       shutterId: req.body?.shutterId,
@@ -50,7 +50,7 @@ export class ShuttersOperationsController {
   @Post("/lower")
   async lowerShutter(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const baseRequest: ILowerShutterRequest = {
       shutterId: req.body?.shutterId,
@@ -63,7 +63,7 @@ export class ShuttersOperationsController {
   @Post("/stop")
   async stopShutter(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const baseRequest: IStopShutterRequest = {
       shutterId: req.body?.shutterId,
@@ -76,7 +76,7 @@ export class ShuttersOperationsController {
   @Post("/program")
   async programShutter(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const baseRequest: IProgramShutterRequest = {
       shutterId: req.body?.shutterId,

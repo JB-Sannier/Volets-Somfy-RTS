@@ -29,13 +29,13 @@ export class AuthenticationController {
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
     @inject(tokenServiceKey) private readonly tokenService: ITokenService,
-    @inject(userServiceKey) private readonly userService: IUserService
+    @inject(userServiceKey) private readonly userService: IUserService,
   ) {}
 
   @Post("/token")
   async authenticate(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const basePayload: IAuthenticateRequest = {
       email: req.body?.email,
@@ -50,7 +50,7 @@ export class AuthenticationController {
   @checkToken()
   async getUserInfos(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const token = req.headers.authorization || "";
     const response = await this.tokenService.validateToken(token);
@@ -60,7 +60,7 @@ export class AuthenticationController {
   @Post("/refreshToken")
   async refreshToken(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const baseRequest: IRefreshTokenRequest = {
       refreshToken: req.body.refreshToken,

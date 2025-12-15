@@ -1,6 +1,6 @@
-import { provide } from "inversify-binding-decorators";
 import * as process from "process";
 import * as dotenv from "dotenv";
+import { provide } from "@inversifyjs/binding-decorators";
 
 export const appConfigServiceKey = "AppConfigService";
 

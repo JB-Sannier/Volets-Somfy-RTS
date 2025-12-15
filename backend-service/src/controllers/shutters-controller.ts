@@ -37,14 +37,14 @@ import { checkToken } from "../middlewares/check-token-middleware";
 export class ShuttersController {
   constructor(
     @inject(shuttersProxyServiceKey)
-    private readonly shutterService: IShuttersProxyService
+    private readonly shutterService: IShuttersProxyService,
   ) {}
 
   @Get("/")
   @checkToken()
   async listShutters(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const shutters = await this.shutterService.listShutters();
     res.status(200).json(shutters);
@@ -54,7 +54,7 @@ export class ShuttersController {
   @checkToken()
   async getShutter(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const requestPayload: IGetShutterRequest = {
       shutterId: req.params.shutterId,
@@ -69,7 +69,7 @@ export class ShuttersController {
   @checkUserRole(UserRole.ShuttersProgrammer)
   async addShutter(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const basePayload: IAddShutterRequest = {
       shutterName: req.body?.shutterName,
@@ -83,7 +83,7 @@ export class ShuttersController {
   @checkUserRole(UserRole.ShuttersProgrammer)
   async modifyUser(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const basePayload: IModifyShutterRequest = {
       shutterId: req.body?.shutterId,
@@ -98,7 +98,7 @@ export class ShuttersController {
   @checkUserRole(UserRole.ShuttersProgrammer)
   async deleteUser(
     @request() req: Request,
-    @response() res: Response
+    @response() res: Response,
   ): Promise<void> {
     const basePayload: IDeleteShutterRequest = {
       shutterId: req.params.shutterId,

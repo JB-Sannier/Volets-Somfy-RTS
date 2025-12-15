@@ -24,9 +24,41 @@ import {
   ShuttersProxyService,
   shuttersProxyServiceKey,
 } from "../services/shutters-proxy-service";
+import { AuthenticationController } from "../controllers/authentication-controller";
+import { ShuttersController } from "../controllers/shutters-controller";
+import { ShuttersOperationsController } from "../controllers/shutters-operations-controller";
+import { errorFilterList } from "../middlewares/error-middleware";
+import {
+  CheckShutterManagerRole,
+  checkShutterManagerRoleKey,
+  CheckUserManagerRole,
+  checkUserManagerRoleKey,
+} from "../middlewares/check-user-roles-middleware";
+import {
+  TokenCheckInterceptor,
+  tokenCheckInterceptorKey,
+} from "../middlewares/check-token-middleware";
 
 export function setupContainer(): Container {
   const c: Container = new Container();
+
+  c.bind(AuthenticationController).toSelf().inSingletonScope();
+  c.bind(ShuttersController).toSelf().inSingletonScope();
+  c.bind(ShuttersOperationsController).toSelf().inSingletonScope();
+
+  errorFilterList.forEach((efl) => {
+    c.bind(efl).toSelf().inSingletonScope();
+  });
+
+  c.bind<CheckUserManagerRole>(checkUserManagerRoleKey)
+    .to(CheckUserManagerRole)
+    .inSingletonScope();
+  c.bind<CheckShutterManagerRole>(checkShutterManagerRoleKey)
+    .to(CheckShutterManagerRole)
+    .inSingletonScope();
+  c.bind<TokenCheckInterceptor>(tokenCheckInterceptorKey)
+    .to(TokenCheckInterceptor)
+    .inSingletonScope();
 
   c.bind<IAppConfigService>(appConfigServiceKey)
     .to(AppConfigServiceFromEnv)
