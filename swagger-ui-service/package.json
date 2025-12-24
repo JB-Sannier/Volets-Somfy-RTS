@@ -11,8 +11,8 @@
     "format": "prettier --write src/**/*.{ts,tsx,css} --config ./.prettierrc.json"
   },
   "dependencies": {
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "swagger-ui-react": "^5.31.0"
   },
   "scarfSettings": {
@@ -24,8 +24,8 @@
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.7.4",
     "@eslint/js": "^9.39.2",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^5.1.2",
     "eslint": "^9.39.2",
     "eslint-plugin-react-hooks": "^7.0.1",
