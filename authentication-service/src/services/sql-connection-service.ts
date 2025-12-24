@@ -20,7 +20,7 @@ export class SqlConnectionService implements ISqlConnectionService {
 
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-  ) { }
+  ) {}
 
   async getConnection(): Promise<DataSource> {
     if (this.dataSource) {
