@@ -47,15 +47,20 @@ export const AddShutterPage: React.FC = () => {
   const [listShuttersRD, setListShuttersRD] =
     useState<RemoteData<IListShuttersResponse>>(REMOTE_DATA_INIT);
 
+  function updateListShuttersRD(newRd: RemoteData<IListShuttersResponse>) {
+    setListShuttersRD(newRd);
+    if (newRd.status === RemoteDataStatus.Loaded) {
+      setAllShutters(newRd.payload);
+    }
+  }
+
   useEffect(() => {
     if (listShuttersRD.status === RemoteDataStatus.Init) {
       callWithRemoteData(
         shuttersManagementApis.listShutters,
         undefined,
-        (newRd) => setListShuttersRD(newRd),
+        (newRd) => updateListShuttersRD(newRd),
       );
-    } else if (listShuttersRD.status === RemoteDataStatus.Loaded) {
-      setAllShutters(listShuttersRD.payload);
     }
   }, [shuttersManagementApis.listShutters, listShuttersRD]);
 

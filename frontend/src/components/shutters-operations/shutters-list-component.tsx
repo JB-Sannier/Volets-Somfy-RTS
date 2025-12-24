@@ -22,15 +22,20 @@ export const ShuttersListComponent: React.FC = () => {
   const [listShuttersRD, setListShuttersRD] =
     useState<RemoteData<IListShuttersResponse>>(REMOTE_DATA_INIT);
 
+  function updateShuttersListRD(newRd: RemoteData<IListShuttersResponse>) {
+    setListShuttersRD(newRd);
+    if (newRd.status === RemoteDataStatus.Loaded) {
+      setShuttersList(newRd.payload);
+    }
+  }
+
   useEffect(() => {
     if (listShuttersRD.status === RemoteDataStatus.Init) {
       callWithRemoteData<unknown, IListShuttersResponse>(
         shuttersManagementApi.listShutters,
         {},
-        (newRd) => setListShuttersRD(newRd),
+        (newRd) => updateShuttersListRD(newRd),
       );
-    } else if (listShuttersRD.status === RemoteDataStatus.Loaded) {
-      setShuttersList(listShuttersRD.payload);
     }
   }, [listShuttersRD, shuttersManagementApi.listShutters]);
 

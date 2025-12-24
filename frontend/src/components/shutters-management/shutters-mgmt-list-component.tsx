@@ -25,6 +25,13 @@ export const ShuttersManagementListComponent: React.FC = () => {
   const [listShuttersRD, setListShuttersRD] =
     useState<RemoteData<IListShuttersResponse>>(REMOTE_DATA_INIT);
 
+  function updateListShuttersRD(newRd: RemoteData<IListShuttersResponse>) {
+    setListShuttersRD(newRd);
+    if (newRd.status === RemoteDataStatus.Loaded) {
+      setShuttersList(newRd.payload);
+    }
+  }
+
   useEffect(() => {
     if (!authContext.hasRole(UserRole.ShuttersProgrammer)) {
       navigate("/");
@@ -32,7 +39,7 @@ export const ShuttersManagementListComponent: React.FC = () => {
       callWithRemoteData<unknown, IListShuttersResponse>(
         shuttersManagementApis.listShutters,
         {},
-        (newRd) => setListShuttersRD(newRd),
+        (newRd) => updateListShuttersRD(newRd),
       );
     }
   }, [
@@ -49,8 +56,6 @@ export const ShuttersManagementListComponent: React.FC = () => {
         {},
         (newRd) => setListShuttersRD(newRd),
       );
-    } else if (listShuttersRD.status === RemoteDataStatus.Loaded) {
-      setShuttersList(listShuttersRD.payload);
     }
   }, [listShuttersRD, shuttersManagementApis.listShutters]);
 
