@@ -14,11 +14,11 @@
     "start:lan": "WAN_BUILD=0 npx cap run --flavor lan android"
   },
   "dependencies": {
-    "@capacitor/android": "^7.4.3",
-    "@capacitor/core": "^7.4.3"
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.4.3",
+    "@capacitor/cli": "^8.0.0",
     "@eslint/js": "^9.32.0",
     "@types/node": "^24.3.0",
     "eslint": "^9.32.0",
