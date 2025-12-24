@@ -16,14 +16,14 @@
   },
   "dependencies": {
     "@inversifyjs/binding-decorators": "^1.1.5",
-    "@inversifyjs/http-core": "^4.8.0",
-    "@inversifyjs/http-express": "^4.8.0",
+    "@inversifyjs/http-core": "^4.9.1",
+    "@inversifyjs/http-express": "^4.9.1",
     "axios": "^1.13.2",
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "inversify": "^7.10.6",
+    "inversify": "^7.10.8",
     "reflect-metadata": "^0.2.2",
     "tslib": "^2.8.1",
     "yup": "^1.7.1"
@@ -36,8 +36,7 @@
     "@types/node": "^24.10.0",
     "@types/webpack-env": "^1.18.8",
     "@types/webpack-node-externals": "^3.0.4",
-    "@typescript-eslint/eslint-plugin": "^8.50.0",
-    "@typescript-eslint/parser": "^8.50.0",
+    "@typescript-eslint/parser": "^8.50.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
@@ -47,8 +46,8 @@
     "ts-loader": "^9.5.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.50.0",
-    "webpack": "^5.103.0",
+    "typescript-eslint": "^8.50.1",
+    "webpack": "^5.104.1",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
   }

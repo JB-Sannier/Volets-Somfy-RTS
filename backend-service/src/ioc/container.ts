@@ -38,9 +38,17 @@ import {
   TokenCheckInterceptor,
   tokenCheckInterceptorKey,
 } from "../middlewares/check-token-middleware";
+import {
+  CorsMiddleware,
+  corsMiddlewareKey,
+} from "../middlewares/cors-middleware";
 
 export function setupContainer(): Container {
   const c: Container = new Container();
+
+  c.bind<CorsMiddleware>(corsMiddlewareKey)
+    .to(CorsMiddleware)
+    .inSingletonScope();
 
   c.bind(AuthenticationController).toSelf().inSingletonScope();
   c.bind(ShuttersController).toSelf().inSingletonScope();
