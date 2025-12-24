@@ -1,5 +1,5 @@
 import { Alert, Snackbar } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface ISnackbarProps {
   message: string;
@@ -12,20 +12,14 @@ export const useSnackbar = () => {
     severity: "info",
   });
 
-  const [open, setOpen] = useState<boolean>(false);
-  useEffect(() => {
-    if (snackbarProps.message !== "") {
-      setOpen(true);
-    }
-  }, [snackbarProps, setOpen]);
+  const isOpen = snackbarProps.message !== "";
 
   const SnackbarComponent: React.FC = () => {
     return (
       <Snackbar
-        open={open}
+        open={isOpen}
         autoHideDuration={2000}
         onClose={() => {
-          setOpen(false);
           setSnackbarProps({
             message: "",
             severity: "info",
@@ -34,7 +28,6 @@ export const useSnackbar = () => {
       >
         <Alert
           onClose={() => {
-            setOpen(false);
             setSnackbarProps({
               message: "",
               severity: "info",

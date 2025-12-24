@@ -1,6 +1,5 @@
-import "reflect-metadata";
 import { inject } from "inversify";
-import { provide } from "inversify-binding-decorators";
+import { provide } from "@inversifyjs/binding-decorators";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { UserEntity } from "../entities/user";
@@ -43,7 +42,7 @@ export class SqlConnectionService implements ISqlConnectionService {
         migrationsRun: true,
         logger: "simple-console",
         logNotifications: true,
-        logging: ["log", "migration", "warn", "query", "error"],
+        logging: ["log", "migration", "warn", "error"],
         entities: [UserEntity, RefreshTokenEntity],
         migrations: [
           InitialMigration1753360597960,

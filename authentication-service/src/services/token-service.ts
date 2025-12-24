@@ -1,15 +1,11 @@
-import { provide } from "inversify-binding-decorators";
-import { IUser, UserRole } from "../models/models";
+import { IUser } from "../models/models";
 import { UnauthorizedError } from "../models/app-error";
 import generatePassword from "password-generator";
 import * as jswonwebtoken from "jsonwebtoken";
+import { ITokenInformations } from "../models/requests";
+import { provide } from "@inversifyjs/binding-decorators";
 
 export const tokenServiceKey = "TokenService";
-
-export interface ITokenInformations {
-  email: string;
-  roles: UserRole[];
-}
 
 export interface ITokenService {
   validateToken(token: string): ITokenInformations;

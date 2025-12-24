@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { inject } from "inversify";
-import { provide } from "inversify-binding-decorators";
+import { provide } from "@inversifyjs/binding-decorators";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 import { DataSource } from "typeorm";
 import { ShutterEntity } from "../entities/shutter-entity";

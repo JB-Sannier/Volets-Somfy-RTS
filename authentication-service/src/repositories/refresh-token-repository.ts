@@ -1,4 +1,4 @@
-import { provide } from "inversify-binding-decorators";
+import { provide } from "@inversifyjs/binding-decorators";
 import { inject } from "inversify";
 import { RefreshTokenEntity } from "../entities/refresh-token";
 import {

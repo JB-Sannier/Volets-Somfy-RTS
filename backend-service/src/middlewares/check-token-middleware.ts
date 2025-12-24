@@ -1,38 +1,45 @@
-import { withMiddleware } from "inversify-express-utils";
 import * as express from "express";
-import { ErrorCodes, ErrorDescriptions } from "../models/app-error";
+import { UnauthorizedError } from "../models/app-error";
 import { container } from "../ioc/container";
-import { ITokenService, tokenServiceKey } from "../services/token-service";
+import {
+  ITokenInformations,
+  ITokenService,
+  tokenServiceKey,
+} from "../services/token-service";
+import { provide } from "@inversifyjs/binding-decorators";
+import {
+  InterceptorTransformObject,
+  UseInterceptor,
+} from "@inversifyjs/http-core";
+import { ExpressInterceptor } from "@inversifyjs/http-express";
+
+export const tokenCheckInterceptorKey = Symbol.for("TokenCheckInterceptor");
+
+export interface IAuthentifiedRequest extends express.Request {
+  tokenInfos: ITokenInformations;
+}
+
+@provide(tokenCheckInterceptorKey)
+export class TokenCheckInterceptor implements ExpressInterceptor {
+  public async intercept(
+    request: express.Request,
+    _response: express.Response,
+    next: () => Promise<InterceptorTransformObject>,
+  ): Promise<void> {
+    if (!request.headers.authorization) {
+      throw new UnauthorizedError();
+    }
+    const tokenService = container.get<ITokenService>(tokenServiceKey);
+    const tokenInfos = await tokenService.validateToken(
+      request.headers.authorization,
+    );
+    if (tokenInfos) {
+      (request as IAuthentifiedRequest).tokenInfos = tokenInfos;
+      await next();
+    }
+  }
+}
 
 export function checkToken() {
-  return withMiddleware(
-    async (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction,
-    ) => {
-      if (!req.headers.authorization) {
-        res.status(401).json({
-          errorCode: ErrorCodes.Unauthorized,
-          errorDescriptions: ErrorDescriptions.Unauthorized,
-          payload: {},
-        });
-        return;
-      }
-      try {
-        const tokenService = container.get<ITokenService>(tokenServiceKey);
-        const tokenInfos = await tokenService.validateToken(
-          req.headers.authorization,
-        );
-        if (tokenInfos) {
-          next();
-        }
-      } catch (error) {
-        console.warn(
-          "CheckTokenMiddleware : error while trying to validate token :",
-          error,
-        );
-      }
-    },
-  );
+  return UseInterceptor(tokenCheckInterceptorKey);
 }

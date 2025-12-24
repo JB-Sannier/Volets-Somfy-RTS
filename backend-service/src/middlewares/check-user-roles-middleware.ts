@@ -1,53 +1,67 @@
-import { withMiddleware } from "inversify-express-utils";
 import * as express from "express";
 import { UserRole } from "../models/models";
-import { ErrorCodes, ErrorDescriptions } from "../models/app-error";
+import { UnauthorizedError } from "../models/app-error";
 import { ITokenService, tokenServiceKey } from "../services/token-service";
 import { container } from "../ioc/container";
+import { provide } from "@inversifyjs/binding-decorators";
+import {
+  Interceptor,
+  InterceptorTransformObject,
+  UseInterceptor,
+} from "@inversifyjs/http-core";
 
-export function checkUserRole(role: UserRole) {
-  return withMiddleware(
-    (
-      req: express.Request,
-      res: express.Response,
-      next: express.NextFunction,
-    ) => {
-      if (!req.headers.authorization) {
-        res.status(401).json({
-          errorCode: ErrorCodes.Unauthorized,
-          errorDescriptions: ErrorDescriptions.Unauthorized,
-          payload: {},
-        });
-        return;
-      }
+export const checkUserManagerRoleKey = Symbol.for("CheckUserManagerRole");
+export const checkShutterManagerRoleKey = Symbol.for("CheckShutterManagerRole");
 
-      const tokenService = container.get<ITokenService>(tokenServiceKey);
-      tokenService
-        .validateToken(req.headers.authorization)
-        .then((tokenInfos) => {
-          if (!tokenInfos.roles.find((r) => r === role)) {
-            res.status(401).json({
-              errorCode: ErrorCodes.Unauthorized,
-              errorDescriptions: ErrorDescriptions.Unauthorized,
-              payload: {},
-            });
-            return;
-          }
-          next();
-        })
-        .catch((err: unknown) => {
-          console.log(
-            "CheckUserRole: error while trying to communicate to authentication service : ",
-            err,
-          );
-
-          res.status(401).json({
-            errorCode: ErrorCodes.Unauthorized,
-            errorDescriptions: ErrorDescriptions.Unauthorized,
-            payload: {},
-          });
-          return;
-        });
-    },
+async function interceptRole(
+  role: UserRole,
+  req: express.Request,
+  _res: express.Response,
+  next: () => Promise<InterceptorTransformObject>,
+): Promise<void> {
+  if (!req.headers.authorization) {
+    throw new UnauthorizedError();
+  }
+  const tokenService = container.get<ITokenService>(tokenServiceKey);
+  const tokenInfos = await tokenService.validateToken(
+    req.headers.authorization,
   );
+  if (!tokenInfos.roles.find((r) => r === role)) {
+    throw new UnauthorizedError();
+  }
+  await next();
+}
+
+@provide(checkUserManagerRoleKey)
+export class CheckUserManagerRole implements Interceptor {
+  async intercept(
+    req: express.Request,
+    res: express.Response,
+    next: () => Promise<InterceptorTransformObject>,
+  ): Promise<void> {
+    return interceptRole(UserRole.UserManager, req, res, next);
+  }
+}
+
+@provide(checkShutterManagerRoleKey)
+export class CheckShutterManagerRole implements Interceptor {
+  async intercept(
+    req: express.Request,
+    res: express.Response,
+    next: () => Promise<InterceptorTransformObject>,
+  ): Promise<void> {
+    return interceptRole(UserRole.ShuttersProgrammer, req, res, next);
+  }
+}
+
+export function checkUserRole(
+  role: UserRole,
+): ClassDecorator & MethodDecorator {
+  if (role === UserRole.ShuttersProgrammer) {
+    return UseInterceptor(checkShutterManagerRoleKey);
+  } else if (role === UserRole.UserManager) {
+    return UseInterceptor(checkUserManagerRoleKey);
+  } else {
+    throw new UnauthorizedError();
+  }
 }

@@ -1,15 +1,14 @@
 import "reflect-metadata";
 import { inject } from "inversify";
 import {
-  BaseHttpController,
-  controller,
-  httpPost,
-  httpPut,
-  request,
-  response,
-  httpDelete,
-  httpGet,
-} from "inversify-express-utils";
+  Controller,
+  Post,
+  Put,
+  Request as request,
+  Response as response,
+  Delete,
+  Get,
+} from "@inversifyjs/http-core";
 import { Request, Response } from "express";
 import {
   IAddUserRequest,
@@ -24,16 +23,14 @@ import { IUserService, userServiceKey } from "../services/user-service";
 import { UserRole } from "../models/models";
 import { checkUserRole } from "../middlewares/check-user-roles-middleware";
 
-@controller("/api/v1/user")
+@Controller("/api/v1/user")
 @checkUserRole(UserRole.UserManager)
-export class UsersController extends BaseHttpController {
+export class UsersController {
   constructor(
     @inject(userServiceKey) private readonly userService: IUserService,
-  ) {
-    super();
-  }
+  ) {}
 
-  @httpPost("/")
+  @Post("/")
   async addUser(
     @request() req: Request,
     @response() res: Response,
@@ -49,7 +46,7 @@ export class UsersController extends BaseHttpController {
     res.status(201).json(response);
   }
 
-  @httpPut("/")
+  @Put("/")
   async modifyUser(
     @request() req: Request,
     @response() res: Response,
@@ -66,7 +63,7 @@ export class UsersController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpDelete("/:email")
+  @Delete("/:email")
   async deleteUser(
     @request() req: Request,
     @response() res: Response,
@@ -80,7 +77,7 @@ export class UsersController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpGet("/")
+  @Get("/")
   async listUsers(
     @request() req: Request,
     @response() res: Response,

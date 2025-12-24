@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   UserRole,
@@ -64,21 +64,10 @@ export const ModifyUserPage: React.FC = () => {
     setShowPasswordDialog(false);
   }
 
-  if (!email) {
-    navigate("/users-management");
-  } else {
-    if (listUsersRD.status === RemoteDataStatus.Init) {
-      callWithRemoteData<undefined, IListUsersResponse>(
-        userApis.listUsers,
-        undefined,
-        (newRd) => setListUsersRD(newRd),
-      );
-    }
-  }
-
-  useEffect(() => {
-    if (listUsersRD.status === RemoteDataStatus.Loaded) {
-      const user = listUsersRD.payload.find((u) => u.email == email);
+  function updateListUsersRD(newRd: RemoteData<IListUsersResponse>) {
+    setListUsersRD(newRd);
+    if (newRd.status === RemoteDataStatus.Loaded) {
+      const user = newRd.payload.find((u) => u.email == email);
       if (user) {
         setUserFound(user);
         setIsActive(user.isActive);
@@ -91,7 +80,19 @@ export const ModifyUserPage: React.FC = () => {
         );
       }
     }
-  }, [listUsersRD, email]);
+  }
+
+  if (!email) {
+    navigate("/users-management");
+  } else {
+    if (listUsersRD.status === RemoteDataStatus.Init) {
+      callWithRemoteData<undefined, IListUsersResponse>(
+        userApis.listUsers,
+        undefined,
+        (newRd) => updateListUsersRD(newRd),
+      );
+    }
+  }
 
   function onChangePassword() {
     setShowPasswordDialog(true);

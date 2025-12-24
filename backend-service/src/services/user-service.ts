@@ -1,4 +1,4 @@
-import { provide } from "inversify-binding-decorators";
+import { provide } from "@inversifyjs/binding-decorators";
 import { inject } from "inversify";
 import {
   IAddUserRequest,
@@ -13,7 +13,13 @@ import {
   IRefreshTokenRequest,
   IRefreshTokenResponse,
 } from "../models/users-requests";
-import { AppError, UnauthorizedError } from "../models/app-error";
+import {
+  ErrorCodes,
+  InternalServerError,
+  UnauthorizedError,
+  UserAlreadyExistsError,
+  UserNotFoundError,
+} from "../models/app-error";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 import axios, { isAxiosError } from "axios";
 
@@ -151,11 +157,14 @@ export class UserService implements IUserService {
         error.response.data.errorCode &&
         error.response.data.description
       ) {
-        throw new AppError(
-          error.response.data.errorCode,
-          error.response.data.description,
-          error.response.data.payload,
-        );
+        if (error.response.data.errorCode === ErrorCodes.UserAlreadyExists) {
+          throw new UserAlreadyExistsError(
+            error.response.data.payload.email || "",
+          );
+        } else if (error.response.data.errorCode === ErrorCodes.UserNotFound) {
+          throw new UserNotFoundError(error.response.data.payload.email);
+        }
+        throw new InternalServerError(error.response.data.payload);
       }
     } else {
       console.error("Got unhandled error : ", error);

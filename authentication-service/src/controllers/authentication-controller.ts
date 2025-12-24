@@ -1,14 +1,13 @@
 import "reflect-metadata";
 import { inject } from "inversify";
 import {
-  BaseHttpController,
-  controller,
-  httpGet,
-  httpPost,
-  request,
-  response,
-  interfaces,
-} from "inversify-express-utils";
+  Controller,
+  Get,
+  Post,
+  Request as request,
+  Response as response,
+} from "@inversifyjs/http-core";
+
 import { Request, Response } from "express";
 import {
   appConfigServiceKey,
@@ -20,26 +19,25 @@ import {
   refreshTokenValidator,
 } from "../models/validators";
 import { IUserService, userServiceKey } from "../services/user-service";
-import { IUser } from "../models/models";
-import { checkToken } from "../middlewares/check-token-middleware";
-import { UnauthorizedError } from "../models/app-error";
+import {
+  checkToken,
+  IAuthentifiedRequest,
+} from "../middlewares/check-token-middleware";
 import {
   IRefreshTokenService,
   refreshTokenServiceKey,
 } from "../services/refresh-token-sevice";
 
-@controller("/api/v1/auth")
-export class AuthenticationController extends BaseHttpController {
+@Controller("/api/v1/auth")
+export class AuthenticationController {
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
     @inject(userServiceKey) private readonly userService: IUserService,
     @inject(refreshTokenServiceKey)
     private readonly refreshTokenService: IRefreshTokenService,
-  ) {
-    super();
-  }
+  ) {}
 
-  @httpPost("/token")
+  @Post("/token")
   async authenticate(
     @request() req: Request,
     @response() res: Response,
@@ -53,13 +51,13 @@ export class AuthenticationController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpGet("/config")
+  @Get("/config")
   @checkToken()
   async getConfig(
-    @request() req: Request,
+    @request() req: IAuthentifiedRequest,
     @response() res: Response,
   ): Promise<void> {
-    const user = this.httpContext.user as interfaces.Principal<IUser>;
+    const user = req.tokenInfos;
 
     const response = {
       dbHostname: this.appConfig.dbHostName(),
@@ -67,32 +65,27 @@ export class AuthenticationController extends BaseHttpController {
       dbUserName: this.appConfig.dbUserName(),
       dbSchema: this.appConfig.dbSchema(),
       user: {
-        email: user.details.email,
-        roles: user.details.roles,
+        email: user.email,
+        roles: user.roles,
       },
     };
     res.status(200).json(response);
   }
 
-  @httpGet("/tokenInfos")
+  @Get("/tokenInfos")
   @checkToken()
   async getUserInfos(
-    @request() req: Request,
+    @request() req: IAuthentifiedRequest,
     @response() res: Response,
   ): Promise<void> {
-    const user = this.httpContext.user as interfaces.Principal<
-      IUser | undefined
-    >;
-    if (!user.details) {
-      throw new UnauthorizedError();
-    }
+    const user = req.tokenInfos;
     res.status(200).json({
-      email: user.details.email,
-      roles: user.details.roles,
+      email: user.email,
+      roles: user.roles,
     });
   }
 
-  @httpPost("/refreshToken")
+  @Post("/refreshToken")
   async refreshToken(
     @request() req: Request,
     @response() res: Response,

@@ -26,9 +26,27 @@ import {
   ShutterRepository,
   shuttersRepositoryKey,
 } from "../repositories/shutters-repository";
+import { SomfyShuttersController } from "../controllers/somfy-shutters-controller";
+import { SomfyOperateShuttersController } from "../controllers/somfy-operate-controller";
+import { errorFilterList } from "../middlewares/error-middleware";
+import {
+  CheckApiKeyInterceptor,
+  checkApiKeyInterceptorKey,
+} from "../middlewares/check-api-key-middleware";
 
 export function setupContainer(): Container {
   const c: Container = new Container();
+
+  c.bind(SomfyShuttersController).toSelf().inSingletonScope();
+  c.bind(SomfyOperateShuttersController).toSelf().inSingletonScope();
+
+  c.bind<CheckApiKeyInterceptor>(checkApiKeyInterceptorKey)
+    .to(CheckApiKeyInterceptor)
+    .inSingletonScope();
+
+  errorFilterList.forEach((efl) => {
+    c.bind(efl).toSelf().inSingletonScope();
+  });
 
   c.bind<IAppConfigService>(appConfigServiceKey)
     .to(AppConfigServiceFromEnv)

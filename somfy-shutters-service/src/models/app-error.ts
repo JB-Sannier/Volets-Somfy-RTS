@@ -1,4 +1,5 @@
 export enum ErrorCodes {
+  ValidationError = "INVALID_REQUEST",
   Unauthorized = "UNAUTHORIZED",
   ShutterNotFound = "SHUTTER_NOT_FOUND",
   ShutterAlreadyExists = "SHUTTER_ALREADY_EXISTS",
@@ -12,16 +13,19 @@ export enum ErrorDescriptions {
   SomfyProxyServiceError = "An error occured when contacting proxy.",
 }
 
-export class AppError {
+export abstract class AppError extends Error {
   public errorCode: ErrorCodes;
   public description: ErrorDescriptions;
   public payload?: object;
+
+  public abstract getHttpResponseCode(): number;
 
   constructor(
     errorCode: ErrorCodes,
     description: ErrorDescriptions,
     payload?: object,
   ) {
+    super(description);
     this.errorCode = errorCode;
     this.description = description;
     this.payload = payload;
@@ -32,6 +36,9 @@ export class UnauthorizedError extends AppError {
   constructor() {
     super(ErrorCodes.Unauthorized, ErrorDescriptions.Unauthorized, {});
   }
+  public getHttpResponseCode(): number {
+    return 403;
+  }
 }
 
 export class ShutterNotFoundError extends AppError {
@@ -39,6 +46,9 @@ export class ShutterNotFoundError extends AppError {
     super(ErrorCodes.ShutterNotFound, ErrorDescriptions.ShutterNotFound, {
       shutterId,
     });
+  }
+  public getHttpResponseCode(): number {
+    return 404;
   }
 }
 
@@ -50,6 +60,9 @@ export class ShutterAlreadyExistsError extends AppError {
       { shutterId },
     );
   }
+  public getHttpResponseCode(): number {
+    return 400;
+  }
 }
 
 export class SomfyProxyServiceError extends AppError {
@@ -59,5 +72,8 @@ export class SomfyProxyServiceError extends AppError {
       ErrorDescriptions.SomfyProxyServiceError,
       { payload },
     );
+  }
+  public getHttpResponseCode(): number {
+    return 500;
   }
 }

@@ -1,4 +1,4 @@
-import { provide } from "inversify-binding-decorators";
+import { provide } from "@inversifyjs/binding-decorators";
 import { UserRole } from "../models/models";
 import { UnauthorizedError } from "../models/app-error";
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";

@@ -1,13 +1,12 @@
 import "reflect-metadata";
 import { inject } from "inversify";
 import {
-  BaseHttpController,
-  controller,
-  httpGet,
-  httpPost,
-  request,
-  response,
-} from "inversify-express-utils";
+  Controller,
+  Get,
+  Post,
+  Request as request,
+  Response as response,
+} from "@inversifyjs/http-core";
 import { Request, Response } from "express";
 import {
   appConfigServiceKey,
@@ -25,17 +24,15 @@ import { IUserService, userServiceKey } from "../services/user-service";
 import { checkToken } from "../middlewares/check-token-middleware";
 import { ITokenService, tokenServiceKey } from "../services/token-service";
 
-@controller("/api/v1/auth")
-export class AuthenticationController extends BaseHttpController {
+@Controller("/api/v1/auth")
+export class AuthenticationController {
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
     @inject(tokenServiceKey) private readonly tokenService: ITokenService,
     @inject(userServiceKey) private readonly userService: IUserService,
-  ) {
-    super();
-  }
+  ) {}
 
-  @httpPost("/token")
+  @Post("/token")
   async authenticate(
     @request() req: Request,
     @response() res: Response,
@@ -49,7 +46,7 @@ export class AuthenticationController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpGet("/tokenInfos")
+  @Get("/tokenInfos")
   @checkToken()
   async getUserInfos(
     @request() req: Request,
@@ -60,7 +57,7 @@ export class AuthenticationController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpPost("/refreshToken")
+  @Post("/refreshToken")
   async refreshToken(
     @request() req: Request,
     @response() res: Response,

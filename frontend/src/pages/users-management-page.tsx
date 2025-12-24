@@ -30,13 +30,18 @@ export const UsersManagementPage: React.FC = () => {
   const [listUsersRD, setListUsersRD] =
     useState<RemoteData<IListUsersResponse>>(REMOTE_DATA_INIT);
 
+  function updateListUsersRD(newRD: RemoteData<IListUsersResponse>) {
+    setListUsersRD(newRD);
+    if (newRD.status === RemoteDataStatus.Loaded) {
+      setUsers(newRD.payload);
+    }
+  }
+
   useEffect(() => {
     if (listUsersRD.status === RemoteDataStatus.Init) {
       callWithRemoteData(userApis.listUsers, undefined, (newRd) =>
-        setListUsersRD(newRd),
+        updateListUsersRD(newRd),
       );
-    } else if (listUsersRD.status === RemoteDataStatus.Loaded) {
-      setUsers(listUsersRD.payload);
     }
   }, [listUsersRD, userApis.listUsers]);
 

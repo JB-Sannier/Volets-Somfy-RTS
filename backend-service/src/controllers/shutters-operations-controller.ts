@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import { inject } from "inversify";
 import {
-  BaseHttpController,
-  controller,
-  httpPost,
-  request,
-  response,
-} from "inversify-express-utils";
+  Controller,
+  Post,
+  Request as request,
+  Response as response,
+} from "@inversifyjs/http-core";
+
 import { Request, Response } from "express";
 import {
   IShuttersProxyService,
@@ -26,17 +26,15 @@ import {
 } from "../models/shutters-validators";
 import { checkToken } from "../middlewares/check-token-middleware";
 
-@controller("/api/v1/operateShutter")
+@Controller("/api/v1/operateShutter")
 @checkToken()
-export class ShuttersOperationsController extends BaseHttpController {
+export class ShuttersOperationsController {
   constructor(
     @inject(shuttersProxyServiceKey)
     private readonly shutterService: IShuttersProxyService,
-  ) {
-    super();
-  }
+  ) {}
 
-  @httpPost("/raise")
+  @Post("/raise")
   async raiseShutter(
     @request() req: Request,
     @response() res: Response,
@@ -49,7 +47,7 @@ export class ShuttersOperationsController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpPost("/lower")
+  @Post("/lower")
   async lowerShutter(
     @request() req: Request,
     @response() res: Response,
@@ -62,7 +60,7 @@ export class ShuttersOperationsController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpPost("/stop")
+  @Post("/stop")
   async stopShutter(
     @request() req: Request,
     @response() res: Response,
@@ -75,7 +73,7 @@ export class ShuttersOperationsController extends BaseHttpController {
     res.status(200).json(response);
   }
 
-  @httpPost("/program")
+  @Post("/program")
   async programShutter(
     @request() req: Request,
     @response() res: Response,
