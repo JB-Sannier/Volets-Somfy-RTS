@@ -1,3 +1,4 @@
+import { processRequest, type IHttpEndpoint } from "./base-api-calls";
 import type {
   IAuthenticateRequest,
   IAuthenticateResponse,
@@ -5,19 +6,35 @@ import type {
   IRefreshTokenResponse,
   ITokenInformations,
 } from "./authentication-service.types";
-import axios from "axios";
 
 declare const BACKEND_URL: string;
+
+export const AUTH_ENDPOINT: IHttpEndpoint = {
+  url: `${BACKEND_URL}/api/v1/auth/token`,
+  method: 'post',
+  needsAuth: false,
+}
+
+export const GET_TOKEN_INFOS: IHttpEndpoint = {
+  url: `${BACKEND_URL}/api/v1/auth/tokenInfos`,
+  method: 'get',
+  needsAuth: true,
+}
+
+export const REFRESH_TOKEN: IHttpEndpoint = {
+  url: `${BACKEND_URL}/api/v1/auth/refreshToken`,
+  method: 'post',
+  needsAuth: false,
+}
 
 export const useAuthenticationApis = () => {
   async function authenticate(
     request: IAuthenticateRequest,
   ): Promise<IAuthenticateResponse> {
-    const url = `${BACKEND_URL}/api/v1/auth/token`;
     try {
-      console.log("Authenticate url : ", url);
-      const response = await axios.post<IAuthenticateResponse>(url, request);
-      return response.data;
+      console.log("Authenticate url : ", AUTH_ENDPOINT);
+      const response = await processRequest<IAuthenticateRequest, IAuthenticateResponse>(AUTH_ENDPOINT, request);
+      return response;
     } catch (error: unknown) {
       console.error("Got error when trying to : authenticate : ", error);
       throw error;
@@ -25,11 +42,9 @@ export const useAuthenticationApis = () => {
   }
 
   async function getTokenInfos(): Promise<ITokenInformations> {
-    const url = `${BACKEND_URL}/api/v1/auth/tokenInfos`;
     try {
-      const response = await axios.get<ITokenInformations>(url);
-      console.log("Authenticate: got response : ", response.data);
-      return response.data;
+      const response = await processRequest<void, ITokenInformations>(GET_TOKEN_INFOS);
+      return response;
     } catch (error: unknown) {
       console.error("Got error when tyring to : getTokenInfos :", error);
       throw error;
@@ -39,10 +54,9 @@ export const useAuthenticationApis = () => {
   async function refreshToken(
     request: IRefreshTokenRequest,
   ): Promise<IRefreshTokenResponse> {
-    const url = `${BACKEND_URL}/api/v1/auth/refreshToken`;
     try {
-      const response = await axios.post<IRefreshTokenResponse>(url, request);
-      return response.data;
+      const response = await processRequest<IRefreshTokenRequest, IRefreshTokenResponse>(REFRESH_TOKEN, request);
+      return response;
     } catch (error: unknown) {
       console.error("Got error while calling /refreshToken : ", error);
       throw error;

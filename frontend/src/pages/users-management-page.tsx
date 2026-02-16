@@ -18,6 +18,7 @@ import { UserComponent } from "../components/users-management/user-component";
 import { useSnackbar } from "../components/snackbar-component";
 import { TitleComponent } from "../components/title-component";
 import { useTranslation } from "react-i18next";
+import { CircularProgress } from "@mui/material";
 
 export const UsersManagementPage: React.FC = () => {
   const authContext = useAuthContext();
@@ -39,7 +40,7 @@ export const UsersManagementPage: React.FC = () => {
 
   useEffect(() => {
     if (listUsersRD.status === RemoteDataStatus.Init) {
-      callWithRemoteData(userApis.listUsers, undefined, (newRd) =>
+      callWithRemoteData<undefined, IListUsersResponse>(userApis.listUsers, undefined, (newRd) =>
         updateListUsersRD(newRd),
       );
     }
@@ -73,14 +74,24 @@ export const UsersManagementPage: React.FC = () => {
       {authContext.hasRole(UserRole.UserManager) && (
         <>
           <TitleComponent title={t("Title")} />
-          {users.map((u, index) => (
-            <UserComponent
-              user={u}
-              key={index}
-              onUserModified={(u) => changeUser(u, index)}
-              onUserDeleted={(u) => removeUser(u)}
-            />
-          ))}
+          {listUsersRD.status==='init' && ( 
+            <></>
+          )}
+          {listUsersRD.status==='loading' && (
+            <CircularProgress/>
+          )}
+          {listUsersRD.status==='loaded' && (
+            <>
+              {users.map((u, index) => (
+                <UserComponent
+                  user={u}
+                  key={index}
+                  onUserModified={(u) => changeUser(u, index)}
+                  onUserDeleted={(u) => removeUser(u)}
+                />
+              ))}
+            </>
+          )}
         </>
       )}
       <SnackbarComponent />

@@ -1,5 +1,5 @@
+import { processRequest, type IHttpEndpoint } from "./base-api-calls";
 import { type IStopShutterResponse } from "./shutters-operations-service.types";
-import axios from "axios";
 import type {
   ILowerShutterRequest,
   ILowerShutterResponse,
@@ -14,14 +14,34 @@ declare const BACKEND_URL: string;
 
 const BASE_PATH = `${BACKEND_URL}/api/v1/operateShutter`;
 
+const RAISE_SHUTTER: IHttpEndpoint = {
+  url: `${BASE_PATH}/raise`,
+  method: 'post',
+  needsAuth: true,
+}
+const LOWER_SHUTTER: IHttpEndpoint = {
+  url: `${BASE_PATH}/lower`,
+  method: 'post',
+  needsAuth: true,
+}
+const STOP_SHUTTER: IHttpEndpoint = {
+  url: `${BASE_PATH}/stop`,
+  method: 'post',
+  needsAuth: true,
+}
+const PROGRAM_SHUTTER: IHttpEndpoint = {
+  url: `${BASE_PATH}/program`,
+  method: 'post',
+  needsAuth: true,
+}
+
 export const useShuttersOperationApis = () => {
   async function raiseShutter(
     request: IRaiseShutterRequest,
   ): Promise<IRaiseShutterResponse> {
-    const url = `${BASE_PATH}/raise`;
     try {
-      const response = await axios.post(url, request);
-      return response.data;
+      const response = await processRequest<IRaiseShutterRequest, IRaiseShutterResponse>(RAISE_SHUTTER, request);
+      return response;
     } catch (error: unknown) {
       console.error(`RaiseShutter: ${request.shutterId}: Error: `, error);
       throw error;
@@ -31,10 +51,9 @@ export const useShuttersOperationApis = () => {
   async function lowerShutter(
     request: ILowerShutterRequest,
   ): Promise<ILowerShutterResponse> {
-    const url = `${BASE_PATH}/lower`;
     try {
-      const response = await axios.post(url, request);
-      return response.data;
+      const response = await processRequest<ILowerShutterRequest, ILowerShutterResponse>(LOWER_SHUTTER, request);
+      return response;
     } catch (error: unknown) {
       console.error(`LowerShutter: ${request.shutterId}: Error: `, error);
       throw error;
@@ -44,10 +63,9 @@ export const useShuttersOperationApis = () => {
   async function stopShutter(
     request: IStopShutterRequest,
   ): Promise<IStopShutterResponse> {
-    const url = `${BASE_PATH}/stop`;
     try {
-      const response = await axios.post(url, request);
-      return response.data;
+      const response = await processRequest<IStopShutterRequest, IStopShutterResponse>(STOP_SHUTTER, request);
+      return response;
     } catch (error: unknown) {
       console.error(`StopShutter: ${request.shutterId}: Error: `, error);
       throw error;
@@ -57,10 +75,9 @@ export const useShuttersOperationApis = () => {
   async function programShutter(
     request: IProgramShutterRequest,
   ): Promise<IProgramShutterResponse> {
-    const url = `${BASE_PATH}/program`;
     try {
-      const response = await axios.post(url, request);
-      return response.data;
+      const response = await processRequest<IProgramShutterRequest, IProgramShutterResponse>(PROGRAM_SHUTTER, request);
+      return response;
     } catch (error: unknown) {
       console.error(`ProgramShutter: ${request.shutterId}: Error: `, error);
       throw error;

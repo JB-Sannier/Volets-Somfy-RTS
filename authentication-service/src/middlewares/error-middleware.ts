@@ -2,7 +2,6 @@ import * as express from "express";
 import {
   AppError,
   UserNotFoundError,
-  CannotAddUserError,
   CannotDeleteUserError,
   CannotModifyUserError,
   UnauthorizedError,
@@ -37,15 +36,13 @@ export class AppErrorFilter implements ErrorFilter<AppError> {
     response.status(error.getHttpResponse()).send({
       errorCode: error.errorCode,
       description: error.description,
+      payload: error.payload,
     });
   }
 }
 
 @CatchError(UserNotFoundError)
 export class UserNotFoundErrorFilter extends AppErrorFilter {}
-
-@CatchError(CannotAddUserError)
-export class CannotAddUserErrorFilter extends AppErrorFilter {}
 
 @CatchError(CannotDeleteUserError)
 export class CannotDeleteUserErrorFilter extends AppErrorFilter {}
@@ -73,7 +70,6 @@ export class FinalErrorFilter implements ErrorFilter {
 export const errorFilterList: Newable<ErrorFilter>[] = [
   ValidationErrorFilter,
   UserNotFoundErrorFilter,
-  CannotAddUserErrorFilter,
   CannotDeleteUserErrorFilter,
   CannotModifyUserErrorFilter,
   UnauthorizedErrorFilter,

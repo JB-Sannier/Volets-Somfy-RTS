@@ -9,9 +9,7 @@ import {
   ISqlConnectionService,
   sqlConnectionServiceKey,
 } from "./services/sql-connection-service";
-import {
-  errorFilterList,
-} from "./middlewares/error-middleware";
+import { errorFilterList } from "./middlewares/error-middleware";
 import { IUserService, userServiceKey } from "./services/user-service";
 
 async function init() {
