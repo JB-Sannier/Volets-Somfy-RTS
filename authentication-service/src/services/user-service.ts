@@ -152,7 +152,7 @@ export class UserService implements IUserService {
   async setDefaultUserIfNeeded(): Promise<void> {
     const adminUsersCount = await this.userRepository.getAdminUsersCount();
     if (adminUsersCount === 0) {
-      const password = await generatePassword(10, false);
+      const password = await generatePassword(12, false);
       this.defaultUser = {
         email: "admin@localhost",
         password,
