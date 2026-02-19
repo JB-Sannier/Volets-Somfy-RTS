@@ -21,6 +21,12 @@ export interface IShutterResponse {
   shutterName: string;
 }
 
+export interface IShutter {
+  shutterId: string;
+  shutterName: string;
+  proxyShutterId: string;
+}
+
 export type IAddShutterResponse = IShutterResponse;
 export type IGetShutterResponse = IShutterResponse;
 export type IModifyShutterResponse = IShutterResponse;
@@ -46,3 +52,6 @@ export type IRaiseShutterResponse = IBaseShutterResponse;
 export type ILowerShutterResponse = IBaseShutterResponse;
 export type IStopShutterResponse = IBaseShutterResponse;
 export type IProgramShutterResponse = IBaseShutterResponse;
+
+export type IExportShutterResponse = IShutter[];
+export type IImportShuttersRequest = IExportShutterResponse;

@@ -1,3 +1,5 @@
+import { IShutter } from "../models/shutter";
+
 /* Used in somfy-shutters-controller */
 export interface IAddShutterRequest {
   shutterName: string;
@@ -46,3 +48,7 @@ export type IRaiseShutterResponse = IBaseShutterResponse;
 export type ILowerShutterResponse = IBaseShutterResponse;
 export type IStopShutterResponse = IBaseShutterResponse;
 export type IProgramShutterResponse = IBaseShutterResponse;
+
+export type IExportShutterResponse = IShutter[];
+
+export type IImportShuttersRequest = IExportShutterResponse;

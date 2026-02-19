@@ -1,13 +1,15 @@
-import { object, ObjectSchema, string } from "yup";
+import { object, ObjectSchema, string, Schema, array } from "yup";
 import {
   IAddShutterRequest,
   IBaseShutterCommand,
   IDeleteShutterRequest,
   IGetShutterRequest,
+  IImportShuttersRequest,
   ILowerShutterRequest,
   IModifyShutterRequest,
   IProgramShutterRequest,
   IRaiseShutterRequest,
+  IShutter,
   IStopShutterRequest,
 } from "./shutters-requests";
 
@@ -46,3 +48,15 @@ export const stopShutterValidator: ObjectSchema<IStopShutterRequest> =
   baseShutterCommand;
 export const programShutterValidator: ObjectSchema<IProgramShutterRequest> =
   baseShutterCommand;
+
+const exportedShutterShape: ObjectSchema<IShutter> = object({
+  shutterId: string().required(),
+  shutterName: string().required(),
+  proxyShutterId: string().required(),
+}).defined();
+
+export const importShuttersValidator: Schema<IImportShuttersRequest> = array()
+  .of(exportedShutterShape)
+  .min(1)
+  .defined()
+  .required();

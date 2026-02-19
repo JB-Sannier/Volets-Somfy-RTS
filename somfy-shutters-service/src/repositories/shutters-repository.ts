@@ -20,6 +20,11 @@ export interface IShutterRepository {
   modifyShutter(shutter: IShutter): Promise<boolean>;
   deleteShutter(shutter: IShutter): Promise<boolean>;
   listShutters(): Promise<IShutter[]>;
+  importShutter(
+    shutterId: string,
+    shutterName: string,
+    proxyShutterId: string,
+  ): Promise<boolean>;
 }
 
 @provide(shuttersRepositoryKey)
@@ -84,5 +89,21 @@ export class ShutterRepository implements IShutterRepository {
       },
     });
     return result.map((r) => r.toShutter());
+  }
+
+  async importShutter(
+    shutterId: string,
+    shutterName: string,
+    proxyShutterId: string,
+  ): Promise<boolean> {
+    const shutterEntity = new ShutterEntity();
+    shutterEntity.shutterId = shutterId;
+    shutterEntity.shutterName = shutterName;
+    shutterEntity.proxyShutterId = proxyShutterId;
+    const dataSource = await this.sqlConnectionService.getConnection();
+    await dataSource.manager.transaction(async (manager) => {
+      await manager.save(shutterEntity);
+    });
+    return true;
   }
 }

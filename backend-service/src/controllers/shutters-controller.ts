@@ -18,6 +18,7 @@ import {
   IAddShutterRequest,
   IDeleteShutterRequest,
   IGetShutterRequest,
+  IImportShuttersRequest,
   IModifyShutterRequest,
 } from "../models/shutters-requests";
 
@@ -25,6 +26,7 @@ import {
   addShutterValidator,
   deleteShutterValidator,
   getShutterValidator,
+  importShuttersValidator,
   modifyShutterValidator,
 } from "../models/shutters-validators";
 import {
@@ -91,6 +93,29 @@ export class ShuttersController {
     };
     const payload = await modifyShutterValidator.validate(basePayload);
     const response = await this.shutterService.modifyShutter(payload);
+    res.status(200).json(response);
+  }
+
+  @Post("/export")
+  @checkUserRole(UserRole.ShuttersProgrammer)
+  async exportShutters(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
+    const response = await this.shutterService.exportShutters();
+    console.log("Response:  ", response);
+    res.status(200).json(response);
+  }
+
+  @Post("/import")
+  @checkUserRole(UserRole.ShuttersProgrammer)
+  async importShutters(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
+    const payload: IImportShuttersRequest = req.body;
+    await importShuttersValidator.validate(payload);
+    const response = await this.shutterService.importShutters(payload);
     res.status(200).json(response);
   }
 

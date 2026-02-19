@@ -28,7 +28,7 @@ export const usersControllerKey = Symbol.for("UsersController");
 export class UsersController {
   constructor(
     @inject(userServiceKey) private readonly userService: IUserService,
-  ) { }
+  ) {}
 
   @Post("/")
   async addUser(
