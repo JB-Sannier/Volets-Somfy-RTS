@@ -1,0 +1,59 @@
+services:
+  authentication-service:
+    build: authentication-service
+    depends_on:
+      - docker-database
+    environment:
+      DB_HOSTNAME: docker-database
+      DB_PORT: 5432
+      DB_USERNAME: database-user-name
+      DB_PASSWORD: database-password
+      DB_NAME: database
+      DB_SCHEMA: users
+      REFRESH_TOKEN_SIGNING_KEY: ${REFRESH_TOKEN_SIGNING_KEY}
+      PORT: 3000
+      HOST: authentication-service
+  somfy-shutters-service:
+    build: somfy-shutters-service
+    depends_on:
+      - docker-database
+    environment:
+      DB_HOSTNAME: docker-database
+      DB_PORT: 5432
+      DB_USERNAME: database-user-name
+      DB_PASSWORD: database-password
+      DB_NAME: database
+      DB_SCHEMA: shutters
+      PORT: 3001
+      HOST: somfy-shutters-service
+      SELF_API_KEY: ${SELF_API_KEY}
+      SOMFY_SERVER_HOST_NAME: ${SOMFY_SERVER_HOST_NAME}
+      SOMFY_SERVER_PORT: ${SOMFY_SERVER_PORT}
+      SOMFY_SERVER_PASSWORD: ${SOMFY_SERVER_PASSWORD}
+  backend-service:
+    build: backend-service
+    depends_on:
+      - authentication-service
+      - somfy-shutters-service
+    environment:
+      HOST: backend-service
+      PORT: 3002
+      AUTHENTICATION_SERVICE_URL: http://authentication-service:3000
+      SOMFY_SHUTTERS_SERVICE_URL: http://somfy-shutters-service:3001
+      SOMFY_SHUTTERS_SERVICE_API_KEY: ${SELF_API_KEY}
+    ports:
+      - 3002:3002
+  frontend-service:
+    build: frontend
+    depends_on:
+      - backend-service
+    ports:
+      - 3000:80
+  docker-database:
+    build: docker-database
+    environment:
+      POSTGRES_USER: database-user-name
+      POSTGRES_PASSWORD: database-password
+      POSTGRES_DB: database
+    volumes:
+      - ./docker-database/data:/var/lib/postgresql:rw

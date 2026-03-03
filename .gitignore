@@ -139,3 +139,6 @@ vite.config.ts.timestamp-*
 
 build/
 .vscode/
+
+docker-database/*
+!docker-database/Dockerfile
