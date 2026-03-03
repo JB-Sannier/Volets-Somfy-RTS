@@ -19,11 +19,13 @@ export const useShuttersManagementApis = () => {
   async function listShutters(): Promise<IListShuttersResponse> {
     const listShutters: IHttpEndpoint = {
       url: BASE_PATH,
-      method: 'get',
+      method: "get",
       needsAuth: true,
-    }
+    };
     try {
-      const response = await processRequest<void, IListShuttersResponse>(listShutters);
+      const response = await processRequest<void, IListShuttersResponse>(
+        listShutters,
+      );
       return response;
     } catch (error: unknown) {
       console.error("ListShutters: Error: ", error);
@@ -36,11 +38,18 @@ export const useShuttersManagementApis = () => {
   ): Promise<IGetShutterResponse> {
     const getShutterEndpoint: IHttpEndpoint = {
       url: `${BASE_PATH}/${encodeURIComponent(request.shutterId)}`,
-      method: 'get',
+      method: "get",
       needsAuth: true,
-    }
+    };
     try {
-      const response = await processRequest<IGetShutterRequest, IGetShutterResponse>(getShutterEndpoint, undefined, `/${encodeURIComponent(request.shutterId)}`);
+      const response = await processRequest<
+        IGetShutterRequest,
+        IGetShutterResponse
+      >(
+        getShutterEndpoint,
+        undefined,
+        `/${encodeURIComponent(request.shutterId)}`,
+      );
       return response;
     } catch (error) {
       console.error(`GetShutter: ${request.shutterId} : error : `, error);
@@ -54,10 +63,13 @@ export const useShuttersManagementApis = () => {
     try {
       const addShutter: IHttpEndpoint = {
         url: BASE_PATH,
-        method: 'post',
+        method: "post",
         needsAuth: true,
-      }
-      const response = await processRequest<IAddShutterRequest, IAddShutterResponse>(addShutter, request);
+      };
+      const response = await processRequest<
+        IAddShutterRequest,
+        IAddShutterResponse
+      >(addShutter, request);
       return response;
     } catch (error: unknown) {
       console.error(`AddShutter: ${request.shutterName}: error: `, error);
@@ -71,10 +83,13 @@ export const useShuttersManagementApis = () => {
     try {
       const modifyShutterEndpoint: IHttpEndpoint = {
         url: BASE_PATH,
-        method: 'put',
+        method: "put",
         needsAuth: true,
-      }
-      const response = await processRequest<IModifyShutterRequest, IModifyShutterResponse>(modifyShutterEndpoint, request);
+      };
+      const response = await processRequest<
+        IModifyShutterRequest,
+        IModifyShutterResponse
+      >(modifyShutterEndpoint, request);
       return response;
     } catch (error: unknown) {
       console.error(
@@ -90,11 +105,13 @@ export const useShuttersManagementApis = () => {
   ): Promise<IDeleteShutterResponse> {
     const deleteShutterEndpoint: IHttpEndpoint = {
       url: `${BASE_PATH}/${encodeURIComponent(request.shutterId)}`,
-      method: 'delete',
+      method: "delete",
       needsAuth: true,
-    }
+    };
     try {
-      const response = await processRequest<void, IDeleteShutterResponse>(deleteShutterEndpoint);
+      const response = await processRequest<void, IDeleteShutterResponse>(
+        deleteShutterEndpoint,
+      );
       return response;
     } catch (error: unknown) {
       console.error(`DeleteShutter: ${request.shutterId}: Error: `, error);

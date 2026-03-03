@@ -16,11 +16,14 @@ export const useUserApis = () => {
   async function addUser(request: IAddUserRequest): Promise<IAddUserResponse> {
     const addUserEndpoint: IHttpEndpoint = {
       url: BASE_PATH,
-      method: 'post',
+      method: "post",
       needsAuth: true,
-    }
+    };
     try {
-      const response = await processRequest<IAddUserRequest, IAddUserResponse>(addUserEndpoint, request);
+      const response = await processRequest<IAddUserRequest, IAddUserResponse>(
+        addUserEndpoint,
+        request,
+      );
       return response;
     } catch (error: unknown) {
       console.error("Error occured when trying to do : addUser : ", error);
@@ -33,11 +36,14 @@ export const useUserApis = () => {
   ): Promise<IModifyUserResponse> {
     const modifyUserEndpoint: IHttpEndpoint = {
       url: BASE_PATH,
-      method: 'put',
+      method: "put",
       needsAuth: true,
-    }
+    };
     try {
-      const response = await processRequest<IModifyUserRequest, IModifyUserResponse>(modifyUserEndpoint, request);
+      const response = await processRequest<
+        IModifyUserRequest,
+        IModifyUserResponse
+      >(modifyUserEndpoint, request);
       return response;
     } catch (error: unknown) {
       console.error("Error occured when trying to do : modifyUser : ", error);
@@ -50,11 +56,13 @@ export const useUserApis = () => {
   ): Promise<IDeleteUserResponse> {
     const deleteUserEndpoint: IHttpEndpoint = {
       url: `${BASE_PATH}/${encodeURI(request.email)}`,
-      method: 'delete',
+      method: "delete",
       needsAuth: true,
-    }
+    };
     try {
-      const response = await processRequest<void, IDeleteUserResponse>(deleteUserEndpoint);
+      const response = await processRequest<void, IDeleteUserResponse>(
+        deleteUserEndpoint,
+      );
       return response;
     } catch (error: unknown) {
       console.error("Error occured when trying to do : addUser : ", error);
@@ -65,11 +73,13 @@ export const useUserApis = () => {
   async function listUsers(): Promise<IListUsersResponse> {
     const listUsersEndpoint: IHttpEndpoint = {
       url: BASE_PATH,
-      method: 'get',
+      method: "get",
       needsAuth: true,
-    }
+    };
     try {
-      const response = await processRequest<void, IListUsersResponse>(listUsersEndpoint);
+      const response = await processRequest<void, IListUsersResponse>(
+        listUsersEndpoint,
+      );
       return response;
     } catch (error: unknown) {
       console.error("Eror occured when trying to do : listUsers : ", error);

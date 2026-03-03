@@ -70,7 +70,7 @@ export class UsersController {
   ): Promise<void> {
     const token = req.headers.authorization || "";
     const basePayload: IDeleteUserRequest = {
-      email: req.params.email,
+      email: req.params.email as string,
     };
     const payload = await modifyUserValidator.validate(basePayload);
     const response = await this.userService.deleteUser(payload, token);

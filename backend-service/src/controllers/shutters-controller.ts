@@ -59,7 +59,7 @@ export class ShuttersController {
     @response() res: Response,
   ): Promise<void> {
     const requestPayload: IGetShutterRequest = {
-      shutterId: req.params.shutterId,
+      shutterId: req.params.shutterId as string,
     };
     const getShutterRequest =
       await getShutterValidator.validate(requestPayload);
@@ -126,7 +126,7 @@ export class ShuttersController {
     @response() res: Response,
   ): Promise<void> {
     const basePayload: IDeleteShutterRequest = {
-      shutterId: req.params.shutterId,
+      shutterId: req.params.shutterId as string,
     };
     const payload = await deleteShutterValidator.validate(basePayload);
     const response = await this.shutterService.deleteShutter(payload);

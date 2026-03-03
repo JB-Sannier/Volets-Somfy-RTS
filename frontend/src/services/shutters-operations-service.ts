@@ -16,31 +16,34 @@ const BASE_PATH = `${BACKEND_URL}/api/v1/operateShutter`;
 
 const RAISE_SHUTTER: IHttpEndpoint = {
   url: `${BASE_PATH}/raise`,
-  method: 'post',
+  method: "post",
   needsAuth: true,
-}
+};
 const LOWER_SHUTTER: IHttpEndpoint = {
   url: `${BASE_PATH}/lower`,
-  method: 'post',
+  method: "post",
   needsAuth: true,
-}
+};
 const STOP_SHUTTER: IHttpEndpoint = {
   url: `${BASE_PATH}/stop`,
-  method: 'post',
+  method: "post",
   needsAuth: true,
-}
+};
 const PROGRAM_SHUTTER: IHttpEndpoint = {
   url: `${BASE_PATH}/program`,
-  method: 'post',
+  method: "post",
   needsAuth: true,
-}
+};
 
 export const useShuttersOperationApis = () => {
   async function raiseShutter(
     request: IRaiseShutterRequest,
   ): Promise<IRaiseShutterResponse> {
     try {
-      const response = await processRequest<IRaiseShutterRequest, IRaiseShutterResponse>(RAISE_SHUTTER, request);
+      const response = await processRequest<
+        IRaiseShutterRequest,
+        IRaiseShutterResponse
+      >(RAISE_SHUTTER, request);
       return response;
     } catch (error: unknown) {
       console.error(`RaiseShutter: ${request.shutterId}: Error: `, error);
@@ -52,7 +55,10 @@ export const useShuttersOperationApis = () => {
     request: ILowerShutterRequest,
   ): Promise<ILowerShutterResponse> {
     try {
-      const response = await processRequest<ILowerShutterRequest, ILowerShutterResponse>(LOWER_SHUTTER, request);
+      const response = await processRequest<
+        ILowerShutterRequest,
+        ILowerShutterResponse
+      >(LOWER_SHUTTER, request);
       return response;
     } catch (error: unknown) {
       console.error(`LowerShutter: ${request.shutterId}: Error: `, error);
@@ -64,7 +70,10 @@ export const useShuttersOperationApis = () => {
     request: IStopShutterRequest,
   ): Promise<IStopShutterResponse> {
     try {
-      const response = await processRequest<IStopShutterRequest, IStopShutterResponse>(STOP_SHUTTER, request);
+      const response = await processRequest<
+        IStopShutterRequest,
+        IStopShutterResponse
+      >(STOP_SHUTTER, request);
       return response;
     } catch (error: unknown) {
       console.error(`StopShutter: ${request.shutterId}: Error: `, error);
@@ -76,7 +85,10 @@ export const useShuttersOperationApis = () => {
     request: IProgramShutterRequest,
   ): Promise<IProgramShutterResponse> {
     try {
-      const response = await processRequest<IProgramShutterRequest, IProgramShutterResponse>(PROGRAM_SHUTTER, request);
+      const response = await processRequest<
+        IProgramShutterRequest,
+        IProgramShutterResponse
+      >(PROGRAM_SHUTTER, request);
       return response;
     } catch (error: unknown) {
       console.error(`ProgramShutter: ${request.shutterId}: Error: `, error);

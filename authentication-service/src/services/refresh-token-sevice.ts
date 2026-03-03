@@ -40,7 +40,7 @@ export class RefreshTokenService implements IRefreshTokenService {
     request: IRefreshTokenRequest,
   ): Promise<IRefreshTokenResponse> {
     const signingKey = this.appConfig.refreshTokenSigningKey();
-    let email: string = "";
+    let email: string | undefined;
     try {
       const decodedToken = jsonwebtoken.verify(
         request.refreshToken,

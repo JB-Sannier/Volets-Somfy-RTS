@@ -60,4 +60,3 @@ export const importShuttersValidator: Schema<IImportShuttersRequest> = array()
   .min(1)
   .defined()
   .required();
-

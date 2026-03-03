@@ -40,8 +40,10 @@ export const UsersManagementPage: React.FC = () => {
 
   useEffect(() => {
     if (listUsersRD.status === RemoteDataStatus.Init) {
-      callWithRemoteData<undefined, IListUsersResponse>(userApis.listUsers, undefined, (newRd) =>
-        updateListUsersRD(newRd),
+      callWithRemoteData<undefined, IListUsersResponse>(
+        userApis.listUsers,
+        undefined,
+        (newRd) => updateListUsersRD(newRd),
       );
     }
   }, [listUsersRD, userApis.listUsers]);
@@ -74,13 +76,9 @@ export const UsersManagementPage: React.FC = () => {
       {authContext.hasRole(UserRole.UserManager) && (
         <>
           <TitleComponent title={t("Title")} />
-          {listUsersRD.status==='init' && ( 
-            <></>
-          )}
-          {listUsersRD.status==='loading' && (
-            <CircularProgress/>
-          )}
-          {listUsersRD.status==='loaded' && (
+          {listUsersRD.status === "init" && <></>}
+          {listUsersRD.status === "loading" && <CircularProgress />}
+          {listUsersRD.status === "loaded" && (
             <>
               {users.map((u, index) => (
                 <UserComponent
