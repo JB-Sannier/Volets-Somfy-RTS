@@ -14,12 +14,14 @@ import {
   IAddShutterRequest,
   IDeleteShutterRequest,
   IGetShutterRequest,
+  IImportShuttersRequest,
   IModifyShutterRequest,
 } from "../requests/requests";
 import {
   addShutterValidator,
   deleteShutterValidator,
   getShutterValidator,
+  importShuttersValidator,
   modifyShutterValidator,
 } from "../requests/validators";
 import {
@@ -50,7 +52,7 @@ export class SomfyShuttersController {
     @response() res: Response,
   ): Promise<void> {
     const requestPayload: IGetShutterRequest = {
-      shutterId: req.params.shutterId,
+      shutterId: req.params.shutterId as string,
     };
     const getShutterRequest =
       await getShutterValidator.validate(requestPayload);
@@ -71,8 +73,28 @@ export class SomfyShuttersController {
     res.status(201).json(response);
   }
 
+  @Post("/export")
+  async exportShutters(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
+    const response = await this.shutterService.exportShutters();
+    res.status(200).json(response);
+  }
+
+  @Post("/import")
+  async importShutters(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
+    const request: IImportShuttersRequest = req.body;
+    await importShuttersValidator.validate(request);
+    const response = await this.shutterService.importShutters(request);
+    res.status(200).json(response);
+  }
+
   @Put("/")
-  async modifyUser(
+  async modifyShutter(
     @request() req: Request,
     @response() res: Response,
   ): Promise<void> {
@@ -86,12 +108,12 @@ export class SomfyShuttersController {
   }
 
   @Delete("/:shutterId")
-  async deleteUser(
+  async deleteShutter(
     @request() req: Request,
     @response() res: Response,
   ): Promise<void> {
     const basePayload: IDeleteShutterRequest = {
-      shutterId: req.params.shutterId,
+      shutterId: req.params.shutterId as string,
     };
     const payload = await deleteShutterValidator.validate(basePayload);
     const response = await this.shutterService.deleteShutter(payload);

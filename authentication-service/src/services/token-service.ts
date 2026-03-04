@@ -1,6 +1,6 @@
 import { IUser } from "../models/models";
 import { UnauthorizedError } from "../models/app-error";
-import generatePassword from "password-generator";
+import { generatePassword } from "password-generator";
 import * as jswonwebtoken from "jsonwebtoken";
 import { ITokenInformations } from "../models/requests";
 import { provide } from "@inversifyjs/binding-decorators";
@@ -8,15 +8,23 @@ import { provide } from "@inversifyjs/binding-decorators";
 export const tokenServiceKey = "TokenService";
 
 export interface ITokenService {
-  validateToken(token: string): ITokenInformations;
+  validateToken(token: string): Promise<ITokenInformations>;
   createToken(user: IUser): Promise<string>;
 }
 
 @provide(tokenServiceKey)
 export class TokenService implements ITokenService {
-  private static signingKey: string = generatePassword(40, false);
+  private static signingKey: string = "";
+
+  async initSigningKey() {
+    if (TokenService.signingKey === "") {
+      TokenService.signingKey = await generatePassword(40, false);
+    }
+  }
 
   async createToken(user: IUser): Promise<string> {
+    await this.initSigningKey();
+
     if (!user.isActive) {
       throw new UnauthorizedError();
     }
@@ -30,7 +38,9 @@ export class TokenService implements ITokenService {
     return token;
   }
 
-  public validateToken(token: string): ITokenInformations {
+  public async validateToken(token: string): Promise<ITokenInformations> {
+    await this.initSigningKey();
+
     if (!token) {
       throw new UnauthorizedError();
     }

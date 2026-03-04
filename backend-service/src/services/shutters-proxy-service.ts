@@ -3,10 +3,13 @@ import { provide } from "@inversifyjs/binding-decorators";
 import {
   IAddShutterRequest,
   IAddShutterResponse,
+  IBaseShutterResponse,
   IDeleteShutterRequest,
   IDeleteShutterResponse,
+  IExportShutterResponse,
   IGetShutterRequest,
   IGetShutterResponse,
+  IImportShuttersRequest,
   IListShuttersResponse,
   ILowerShutterRequest,
   ILowerShutterResponse,
@@ -42,6 +45,10 @@ export interface IShuttersProxyService {
   programShutter(
     request: IProgramShutterRequest,
   ): Promise<IProgramShutterResponse>;
+  exportShutters(): Promise<IExportShutterResponse>;
+  importShutters(
+    request: IImportShuttersRequest,
+  ): Promise<IBaseShutterResponse>;
 }
 
 @provide(shuttersProxyServiceKey)
@@ -190,6 +197,40 @@ export class ShuttersProxyService implements IShuttersProxyService {
   ): Promise<IProgramShutterResponse> {
     const baseUrl = this.appConfig.somfyShuttersServiceURL();
     const fullPath = `${baseUrl}/api/v1/operateShutter/program`;
+    try {
+      const response = await axios.post(
+        fullPath,
+        request,
+        this.prepareAxiosConfig(),
+      );
+      return response.data;
+    } catch (error: unknown) {
+      this.handleError(error);
+      throw new UnauthorizedError();
+    }
+  }
+
+  async exportShutters(): Promise<IExportShutterResponse> {
+    const baseUrl = this.appConfig.somfyShuttersServiceURL();
+    const fullPath = `${baseUrl}/api/v1/shutter/export`;
+    try {
+      const response = await axios.post(
+        fullPath,
+        undefined,
+        this.prepareAxiosConfig(),
+      );
+      return response.data;
+    } catch (error: unknown) {
+      this.handleError(error);
+      throw new UnauthorizedError();
+    }
+  }
+
+  async importShutters(
+    request: IImportShuttersRequest,
+  ): Promise<IBaseShutterResponse> {
+    const baseUrl = this.appConfig.somfyShuttersServiceURL();
+    const fullPath = `${baseUrl}/api/v1/shutter/import`;
     try {
       const response = await axios.post(
         fullPath,

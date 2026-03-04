@@ -3,7 +3,6 @@ import { ValidationError } from "yup";
 import {
   AppError,
   UserNotFoundError,
-  CannotAddUserError,
   CannotDeleteUserError,
   CannotModifyUserError,
   UnauthorizedError,
@@ -36,15 +35,13 @@ export class AppErrorFilter implements ErrorFilter<AppError> {
     _request: express.Request,
     response: express.Response,
   ) {
-    response.status(error.getHttpResponse()).send({
+    response.status(error.getHttpResponse()).json({
       errorCode: error.errorCode,
       description: error.description,
+      payload: error.payload,
     });
   }
 }
-
-@CatchError(CannotAddUserError)
-export class CannotAddUserErrorFilter extends AppErrorFilter {}
 
 @CatchError(CannotModifyUserError)
 export class CannotModifyUserErrorFilter extends AppErrorFilter {}
@@ -80,7 +77,6 @@ export class FinalErrorFilter implements ErrorFilter {
 
 export const errorFilterList: Newable<ErrorFilter>[] = [
   ValidationErrorFilter,
-  CannotAddUserErrorFilter,
   CannotModifyUserErrorFilter,
   CannotDeleteUserErrorFilter,
   UserNotFoundErrorFilter,

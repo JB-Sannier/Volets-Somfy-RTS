@@ -103,7 +103,7 @@ export class CannotDeleteUserError extends AppError {
 
 export class UnauthorizedError extends AppError {
   constructor() {
-    super(ErrorCodes.Unauthorized, ErrorDescriptions.Unauthorized, {});
+    super(ErrorCodes.Unauthorized, ErrorDescriptions.Unauthorized);
   }
   public getHttpResponse(): number {
     return 403;

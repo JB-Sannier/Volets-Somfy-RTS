@@ -27,7 +27,7 @@ export class TokenCheckInterceptor implements ExpressInterceptor {
       throw new UnauthorizedError();
     }
     const tokenService = container.get<ITokenService>(tokenServiceKey);
-    const tokenInfos = tokenService.validateToken(
+    const tokenInfos = await tokenService.validateToken(
       request.headers.authorization,
     );
     if (tokenInfos) {

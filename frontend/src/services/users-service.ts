@@ -1,3 +1,4 @@
+import { processRequest, type IHttpEndpoint } from "./base-api-calls";
 import type {
   IAddUserRequest,
   IAddUserResponse,
@@ -7,17 +8,23 @@ import type {
   IModifyUserRequest,
   IModifyUserResponse,
 } from "./users-service.types";
-import axios from "axios";
 
 declare const BACKEND_URL: string;
 const BASE_PATH = `${BACKEND_URL}/api/v1/user`;
 
 export const useUserApis = () => {
   async function addUser(request: IAddUserRequest): Promise<IAddUserResponse> {
-    const url = BASE_PATH;
+    const addUserEndpoint: IHttpEndpoint = {
+      url: BASE_PATH,
+      method: "post",
+      needsAuth: true,
+    };
     try {
-      const response = await axios.post<IAddUserResponse>(url, request);
-      return response.data;
+      const response = await processRequest<IAddUserRequest, IAddUserResponse>(
+        addUserEndpoint,
+        request,
+      );
+      return response;
     } catch (error: unknown) {
       console.error("Error occured when trying to do : addUser : ", error);
       throw error;
@@ -27,10 +34,17 @@ export const useUserApis = () => {
   async function modifyUser(
     request: IModifyUserRequest,
   ): Promise<IModifyUserResponse> {
-    const url = BASE_PATH;
+    const modifyUserEndpoint: IHttpEndpoint = {
+      url: BASE_PATH,
+      method: "put",
+      needsAuth: true,
+    };
     try {
-      const response = await axios.put<IModifyUserResponse>(url, request);
-      return response.data;
+      const response = await processRequest<
+        IModifyUserRequest,
+        IModifyUserResponse
+      >(modifyUserEndpoint, request);
+      return response;
     } catch (error: unknown) {
       console.error("Error occured when trying to do : modifyUser : ", error);
       throw error;
@@ -40,10 +54,16 @@ export const useUserApis = () => {
   async function deleteUser(
     request: IDeleteUserRequest,
   ): Promise<IDeleteUserResponse> {
-    const url = `${BASE_PATH}/${encodeURI(request.email)}`;
+    const deleteUserEndpoint: IHttpEndpoint = {
+      url: `${BASE_PATH}/${encodeURI(request.email)}`,
+      method: "delete",
+      needsAuth: true,
+    };
     try {
-      const response = await axios.delete<IModifyUserResponse>(url);
-      return response.data;
+      const response = await processRequest<void, IDeleteUserResponse>(
+        deleteUserEndpoint,
+      );
+      return response;
     } catch (error: unknown) {
       console.error("Error occured when trying to do : addUser : ", error);
       throw error;
@@ -51,10 +71,16 @@ export const useUserApis = () => {
   }
 
   async function listUsers(): Promise<IListUsersResponse> {
-    const url = BASE_PATH;
+    const listUsersEndpoint: IHttpEndpoint = {
+      url: BASE_PATH,
+      method: "get",
+      needsAuth: true,
+    };
     try {
-      const response = await axios.get<IListUsersResponse>(url);
-      return response.data;
+      const response = await processRequest<void, IListUsersResponse>(
+        listUsersEndpoint,
+      );
+      return response;
     } catch (error: unknown) {
       console.error("Eror occured when trying to do : listUsers : ", error);
       throw error;

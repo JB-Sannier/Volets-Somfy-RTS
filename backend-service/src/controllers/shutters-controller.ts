@@ -18,6 +18,7 @@ import {
   IAddShutterRequest,
   IDeleteShutterRequest,
   IGetShutterRequest,
+  IImportShuttersRequest,
   IModifyShutterRequest,
 } from "../models/shutters-requests";
 
@@ -25,6 +26,7 @@ import {
   addShutterValidator,
   deleteShutterValidator,
   getShutterValidator,
+  importShuttersValidator,
   modifyShutterValidator,
 } from "../models/shutters-validators";
 import {
@@ -57,7 +59,7 @@ export class ShuttersController {
     @response() res: Response,
   ): Promise<void> {
     const requestPayload: IGetShutterRequest = {
-      shutterId: req.params.shutterId,
+      shutterId: req.params.shutterId as string,
     };
     const getShutterRequest =
       await getShutterValidator.validate(requestPayload);
@@ -94,6 +96,29 @@ export class ShuttersController {
     res.status(200).json(response);
   }
 
+  @Post("/export")
+  @checkUserRole(UserRole.ShuttersProgrammer)
+  async exportShutters(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
+    const response = await this.shutterService.exportShutters();
+    console.log("Response:  ", response);
+    res.status(200).json(response);
+  }
+
+  @Post("/import")
+  @checkUserRole(UserRole.ShuttersProgrammer)
+  async importShutters(
+    @request() req: Request,
+    @response() res: Response,
+  ): Promise<void> {
+    const payload: IImportShuttersRequest = req.body;
+    await importShuttersValidator.validate(payload);
+    const response = await this.shutterService.importShutters(payload);
+    res.status(200).json(response);
+  }
+
   @Delete("/:shutterId")
   @checkUserRole(UserRole.ShuttersProgrammer)
   async deleteUser(
@@ -101,7 +126,7 @@ export class ShuttersController {
     @response() res: Response,
   ): Promise<void> {
     const basePayload: IDeleteShutterRequest = {
-      shutterId: req.params.shutterId,
+      shutterId: req.params.shutterId as string,
     };
     const payload = await deleteShutterValidator.validate(basePayload);
     const response = await this.shutterService.deleteShutter(payload);

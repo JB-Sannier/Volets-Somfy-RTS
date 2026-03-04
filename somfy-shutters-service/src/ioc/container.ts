@@ -51,7 +51,6 @@ export function setupContainer(): Container {
   c.bind<IAppConfigService>(appConfigServiceKey)
     .to(AppConfigServiceFromEnv)
     .inSingletonScope();
-
   c.bind<IShutterProxyService>(shutterProxyServiceKey)
     .to(ShutterProxyService)
     .inSingletonScope();

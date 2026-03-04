@@ -3,10 +3,13 @@ import { provide } from "@inversifyjs/binding-decorators";
 import {
   IAddShutterRequest,
   IAddShutterResponse,
+  IBaseShutterResponse,
   IDeleteShutterRequest,
   IDeleteShutterResponse,
+  IExportShutterResponse,
   IGetShutterRequest,
   IGetShutterResponse,
+  IImportShuttersRequest,
   IListShuttersResponse,
   ILowerShutterRequest,
   ILowerShutterResponse,
@@ -47,6 +50,10 @@ export interface IShutterService {
   programShutter(
     request: IProgramShutterRequest,
   ): Promise<IProgramShutterResponse>;
+  exportShutters(): Promise<IExportShutterResponse>;
+  importShutters(
+    request: IImportShuttersRequest,
+  ): Promise<IBaseShutterResponse>;
 }
 
 export const shutterServiceKey = "ShutterServiceKey";
@@ -165,5 +172,25 @@ export class ShutterService implements IShutterService {
     }
     await this.proxyService.programShutter(shutter.proxyShutterId);
     return { status: "Ok" };
+  }
+
+  async exportShutters(): Promise<IExportShutterResponse> {
+    const shutters = await this.shutterRepository.listShutters();
+    return shutters;
+  }
+
+  async importShutters(
+    request: IImportShuttersRequest,
+  ): Promise<IBaseShutterResponse> {
+    for (const shutter of request) {
+      await this.shutterRepository.importShutter(
+        shutter.shutterId,
+        shutter.shutterName,
+        shutter.proxyShutterId,
+      );
+    }
+    return {
+      status: "Ok",
+    };
   }
 }

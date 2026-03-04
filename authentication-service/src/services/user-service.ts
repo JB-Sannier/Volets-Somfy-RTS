@@ -23,7 +23,7 @@ import {
 } from "../models/app-error";
 import * as bcrypt from "bcryptjs";
 import { IUser, IUserResponse, UserRole } from "../models/models";
-import generatePassword from "password-generator";
+import { generatePassword } from "password-generator";
 import { ITokenService, tokenServiceKey } from "./token-service";
 import {
   IRefreshTokenService,
@@ -152,7 +152,7 @@ export class UserService implements IUserService {
   async setDefaultUserIfNeeded(): Promise<void> {
     const adminUsersCount = await this.userRepository.getAdminUsersCount();
     if (adminUsersCount === 0) {
-      const password = generatePassword(10, false);
+      const password = await generatePassword(12, false);
       this.defaultUser = {
         email: "admin@localhost",
         password,

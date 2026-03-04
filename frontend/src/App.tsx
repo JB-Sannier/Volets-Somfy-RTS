@@ -2,7 +2,7 @@ import "./App.css";
 import { AuthContextProvider } from "./contexts/auth-context";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./config/router";
-import "./config/axios";
+import "./services/base-api-calls";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme/theme";
 import { Suspense, useEffect } from "react";

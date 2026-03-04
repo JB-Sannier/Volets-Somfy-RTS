@@ -40,7 +40,7 @@ export class RefreshTokenService implements IRefreshTokenService {
     request: IRefreshTokenRequest,
   ): Promise<IRefreshTokenResponse> {
     const signingKey = this.appConfig.refreshTokenSigningKey();
-    let email: string = "";
+    let email: string | undefined;
     try {
       const decodedToken = jsonwebtoken.verify(
         request.refreshToken,
@@ -49,7 +49,7 @@ export class RefreshTokenService implements IRefreshTokenService {
           complete: true,
         },
       );
-      let payload: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
+      let payload: Record<string, string> = {};
       if (typeof decodedToken.payload === "string") {
         payload = JSON.parse(decodedToken.payload);
       } else {

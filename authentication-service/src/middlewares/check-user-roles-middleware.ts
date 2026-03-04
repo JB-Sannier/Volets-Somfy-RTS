@@ -23,7 +23,9 @@ async function interceptRole(
     throw new UnauthorizedError();
   }
   const tokenService = container.get<ITokenService>(tokenServiceKey);
-  const tokenInfos = tokenService.validateToken(req.headers.authorization);
+  const tokenInfos = await tokenService.validateToken(
+    req.headers.authorization,
+  );
   if (!tokenInfos.roles.find((r) => r === role)) {
     throw new UnauthorizedError();
   }

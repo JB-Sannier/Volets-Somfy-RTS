@@ -68,7 +68,7 @@ export class UsersController {
     @response() res: Response,
   ): Promise<void> {
     const basePayload: IDeleteUserRequest = {
-      email: req.params.email,
+      email: req.params.email as string,
     };
     const payload = await modifyUserValidator.validate(basePayload);
     const response = await this.userService.deleteUser(payload);

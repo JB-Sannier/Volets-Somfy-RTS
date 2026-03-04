@@ -26,7 +26,7 @@ Also, I'm hosting my own server, different from the RPi3.
 
 ## So, what about Pi-Somfy ?
 
-This project doesn't aim to replace Nickduino's work. If you need a webapp to control your shutters, I would advise you to use his project. It works, really.
+This project doesn't aim to replace Nickduino's work. It will even use it. If you need a webapp to control your shutters, I would advise you to use his project. It works, really.
 
 But if you prefer to add some security, users management, **and** you're not using the entire functionalities of Pi-Somfy, **and** you are hosting your own server, then this project may be for you.
 
@@ -34,7 +34,7 @@ You can also host all these micro-services on your own Raspberry Pi. I just wish
 
 ## Technical solutions
 
-As I'm more used to Typescript, PostgreSQL, Node.js and React, I started each micro-service by using Typescript, inversify and IoC concepts; for the frontend, I made an example using Material UI, as I tried to port the frontend to an Android application (work in progress).
+As I'm more used to Typescript, PostgreSQL, Node.js and React, I started each micro-service by using Typescript, inversify and IoC concepts; for the frontend, I made an example using Material UI, as I tried to port the frontend to an Android application.
 
 **Somfy-shutters-service** : Will provide some means to call Nickduino's project on my RPi3, using the previously set Password. The Node.js webapp will be listening on localhost, and should not be exposed on Internet (typically, listening on 127.0.0.1 in my case)
 
@@ -44,7 +44,7 @@ As I'm more used to Typescript, PostgreSQL, Node.js and React, I started each mi
 
 **Frontend-service**: This is one webapp that will allow you to use your web browser to handle your users and shutters.
 
-**Mobile-frontend-service**: This one is the porting project, to transform the webapp into an application.
+**Mobile-frontend-service**: This one is the porting project, to transform the webapp into an Android application.
 
 ## Initial deployment
 
@@ -269,7 +269,7 @@ mobile-frontend-service/android/app/src/main/res/xml/network_security_config.xml
 Adapt the IP address to the backend server's IP address
 
 ```
-        <domain includeSubdomains="true">192.168.3.5</domain>
+        <domain includeSubdomains="true">192.168.X.X</domain>
 ```
 
 Then, in the mobile-frontend-service, run :
@@ -310,9 +310,25 @@ From the Volets-Somfy-RTS directory, you can use the following commands:
     make build-lan-and-wan
 ```
 
-## TODO
+## DOCKER
 
-- Write some Dockerfile for each micro-service, as well as a Dockerfile for the DB container; assemble all of these into a docker.compose.yml file.
+If you prefer to containerize this application, a docker-compose.yml is ready for you. Feel free to adapt it. However, it will need some environment variables in order to run. Remember, you will still need Nickduino's Pi-Somfy Project running on a RaspBerry Pi.
+
+Copy the .env.example at the root of this repository, into .env into the same directory. Replace the environment variables with the appropriate values:
+
+**REFRESH_TOKEN_SIGNING_KEY**: A security key, of you choice, that will be the signing key for the Refresh Token operations. Make it as long as you like. (for example, there, I created three uuids, concatenated them, remplaced every "-" into "!\_\*" characters...). Used in authentication service.
+
+**SELF_API_KEY**: API Key used to communicate between somfy-shutters-service and backend-service. Place whatever value you want.
+
+**SOMFY_SERVER_HOST_NAME**: Hostname of your Raspberry Pi hosting Nickduino's project.
+
+**SOMFY_SERVER_HOST_PORT**: Port of the Nickduino's project webapp.
+
+**SOMFY_SERVER_HOST_PASSWORD**: Password you previously set on Nickduino's project webapp.
+
+The docker-database repository will be populated by the docker-database container database. As you cannot pair an unlimited number of devices to a shutter, it's wiser to use the same shutter IDs, and not wipe the entire DB everytime, and do too much pairings.
+
+## TODO
 
 - Add some functionalities to the shutters operation, to provide more than raise/lower/stop/program commands.
 

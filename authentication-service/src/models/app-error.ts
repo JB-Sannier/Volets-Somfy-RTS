@@ -54,18 +54,6 @@ export class UserAlreadyExistsError extends AppError {
   }
 }
 
-export class CannotAddUserError extends AppError {
-  constructor(email: string) {
-    super(ErrorCodes.CannotModifyUser, ErrorDescriptions.CannotModifyUser, {
-      email,
-    });
-  }
-
-  public getHttpResponse(): number {
-    return 400;
-  }
-}
-
 export class CannotModifyUserError extends AppError {
   constructor(email: string) {
     super(ErrorCodes.CannotModifyUser, ErrorDescriptions.CannotModifyUser, {
@@ -90,7 +78,7 @@ export class CannotDeleteUserError extends AppError {
 
 export class UnauthorizedError extends AppError {
   constructor() {
-    super(ErrorCodes.Unauthorized, ErrorDescriptions.Unauthorized, {});
+    super(ErrorCodes.Unauthorized, ErrorDescriptions.Unauthorized);
   }
   public getHttpResponse(): number {
     return 403;

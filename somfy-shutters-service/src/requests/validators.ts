@@ -1,15 +1,17 @@
-import { object, ObjectSchema, string } from "yup";
+import { object, ObjectSchema, string, array, Schema } from "yup";
 import {
   IAddShutterRequest,
   IBaseShutterCommand,
   IDeleteShutterRequest,
   IGetShutterRequest,
+  IImportShuttersRequest,
   ILowerShutterRequest,
   IModifyShutterRequest,
   IProgramShutterRequest,
   IRaiseShutterRequest,
   IStopShutterRequest,
 } from "./requests";
+import { IShutter } from "../models/shutter";
 
 /* Used in somfy-shutters-controller */
 
@@ -46,3 +48,15 @@ export const stopShutterValidator: ObjectSchema<IStopShutterRequest> =
   baseShutterCommand;
 export const programShutterValidator: ObjectSchema<IProgramShutterRequest> =
   baseShutterCommand;
+
+const exportedShutterShape: ObjectSchema<IShutter> = object({
+  shutterId: string().required(),
+  shutterName: string().required(),
+  proxyShutterId: string().required(),
+}).defined();
+
+export const importShuttersValidator: Schema<IImportShuttersRequest> = array()
+  .of(exportedShutterShape)
+  .min(1)
+  .defined()
+  .required();

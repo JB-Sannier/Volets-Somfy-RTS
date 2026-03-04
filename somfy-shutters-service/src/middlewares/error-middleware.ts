@@ -35,6 +35,7 @@ export class AppErrorFilter implements ErrorFilter<AppError> {
     response.status(error.getHttpResponseCode()).send({
       errorCode: error.errorCode,
       description: error.description,
+      payload: error.payload,
     });
   }
 }
