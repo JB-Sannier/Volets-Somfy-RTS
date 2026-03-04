@@ -14,9 +14,13 @@ RUN npm run bundle
 
 FROM node:25.6.1-alpine3.23
 
+RUN apk add --no-cache tini
+
+ENV NODE_ENV=production
 
 COPY --from=build /app/bundle/authentication-service.js /bundle/authentication-service.js
 
 WORKDIR /bundle
 
-CMD [ "node", "/bundle/authentication-service.js"]
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["node", "--max-old-space-size=192", "--max-semi-space-size=2", "--optimize-for-size", "/bundle/authentication-service.js"]
