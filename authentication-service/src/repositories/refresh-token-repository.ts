@@ -52,21 +52,12 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
     entity.refreshToken = refreshToken;
     entity.expiration = expiration;
 
-    await connection.manager.transaction(async (manager) => {
-      await manager.save(entity);
-    });
+    await connection.manager.save(entity);
   }
 
   async invalidateRefreshTokens(email: string): Promise<void> {
     const connection = await this.sqlConnectionService.getConnection();
-    await connection.manager.transaction(async (manager) => {
-      const tokenEntitiesForUser = await manager.find(RefreshTokenEntity, {
-        where: {
-          email,
-        },
-      });
-      await manager.delete(RefreshTokenEntity, tokenEntitiesForUser);
-    });
+    await connection.manager.delete(RefreshTokenEntity, { email });
   }
 
   async findRefreshToken(
