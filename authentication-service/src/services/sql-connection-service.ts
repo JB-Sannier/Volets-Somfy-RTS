@@ -1,12 +1,12 @@
-import { inject } from "inversify";
 import { provide } from "@inversifyjs/binding-decorators";
-import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
+import { inject } from "inversify";
 import { DataSource, DataSourceOptions } from "typeorm";
-import { UserEntity } from "../entities/user";
 import { RefreshTokenEntity } from "../entities/refresh-token";
+import { UserEntity } from "../entities/user";
 import { InitialMigration1753360597960 } from "../migrations/1753360597960-InitialMigration";
 import { AddRoleInUserTable1753382072367 } from "../migrations/1753382072367-AddRoleInUserTable";
 import { Migrations1755530698256 } from "../migrations/1755530698256-CreateRefreshTokenTable";
+import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 
 export const sqlConnectionServiceKey = "SqlConnectionService";
 
@@ -17,6 +17,7 @@ export interface ISqlConnectionService {
 @provide(sqlConnectionServiceKey)
 export class SqlConnectionService implements ISqlConnectionService {
   private dataSource: DataSource | undefined;
+  private initPromise: Promise<DataSource> | undefined;
 
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
@@ -26,7 +27,10 @@ export class SqlConnectionService implements ISqlConnectionService {
     if (this.dataSource) {
       return this.dataSource;
     }
-    return this.init();
+    if (!this.initPromise) {
+      this.initPromise = this.init();
+    }
+    return this.initPromise;
   }
 
   private async init(): Promise<DataSource> {
@@ -54,7 +58,7 @@ export class SqlConnectionService implements ISqlConnectionService {
       await ds.initialize();
 
       if (ds.isInitialized) {
-        ds.runMigrations();
+        await ds.runMigrations();
         this.dataSource = ds;
         return ds;
       }

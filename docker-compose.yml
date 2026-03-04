@@ -1,6 +1,7 @@
 services:
   authentication-service:
     build: authentication-service
+    restart: unless-stopped
     depends_on:
       - docker-database
     environment:
@@ -13,8 +14,20 @@ services:
       REFRESH_TOKEN_SIGNING_KEY: ${REFRESH_TOKEN_SIGNING_KEY}
       PORT: 3000
       HOST: authentication-service
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
   somfy-shutters-service:
     build: somfy-shutters-service
+    restart: unless-stopped
     depends_on:
       - docker-database
     environment:
@@ -30,8 +43,20 @@ services:
       SOMFY_SERVER_HOST_NAME: ${SOMFY_SERVER_HOST_NAME}
       SOMFY_SERVER_PORT: ${SOMFY_SERVER_PORT}
       SOMFY_SERVER_PASSWORD: ${SOMFY_SERVER_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
   backend-service:
     build: backend-service
+    restart: unless-stopped
     depends_on:
       - authentication-service
       - somfy-shutters-service
@@ -43,17 +68,52 @@ services:
       SOMFY_SHUTTERS_SERVICE_API_KEY: ${SELF_API_KEY}
     ports:
       - 3002:3002
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
   frontend-service:
     build: frontend
+    restart: unless-stopped
     depends_on:
       - backend-service
     ports:
       - 3000:80
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
   docker-database:
     build: docker-database
+    restart: unless-stopped
     environment:
       POSTGRES_USER: database-user-name
       POSTGRES_PASSWORD: database-password
       POSTGRES_DB: database
     volumes:
       - ./docker-database/data:/var/lib/postgresql:rw
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
