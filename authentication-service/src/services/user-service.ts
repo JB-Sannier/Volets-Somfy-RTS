@@ -1,5 +1,14 @@
 import { provide } from "@inversifyjs/binding-decorators";
+import * as bcrypt from "bcryptjs";
 import { inject } from "inversify";
+import { generatePassword } from "password-generator";
+import {
+  CannotModifyUserError,
+  UnauthorizedError,
+  UserAlreadyExistsError,
+  UserNotFoundError,
+} from "../models/app-error";
+import { IUser, IUserResponse, UserRole } from "../models/models";
 import {
   IAddUserRequest,
   IAddUserResponse,
@@ -16,19 +25,10 @@ import {
   userRepositoryKey,
 } from "../repositories/user-repository";
 import {
-  CannotModifyUserError,
-  UnauthorizedError,
-  UserAlreadyExistsError,
-  UserNotFoundError,
-} from "../models/app-error";
-import * as bcrypt from "bcryptjs";
-import { IUser, IUserResponse, UserRole } from "../models/models";
-import { generatePassword } from "password-generator";
-import { ITokenService, tokenServiceKey } from "./token-service";
-import {
   IRefreshTokenService,
   refreshTokenServiceKey,
 } from "./refresh-token-sevice";
+import { ITokenService, tokenServiceKey } from "./token-service";
 
 export const userServiceKey = "UserService";
 
@@ -77,7 +77,7 @@ export class UserService implements IUserService {
     if (!userFound.isActive) {
       throw new UserNotFoundError(request.email);
     }
-    const result = bcrypt.compareSync(request.password, userFound.password);
+    const result = await bcrypt.compare(request.password, userFound.password);
     if (!result) {
       throw new UnauthorizedError();
     }
@@ -97,7 +97,7 @@ export class UserService implements IUserService {
       throw new UserAlreadyExistsError(user.email);
     }
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = bcrypt.hashSync(user.password, salt);
+    const hashedPassword = await bcrypt.hash(user.password, salt);
     const userToAdd: IUser = {
       email: user.email,
       password: hashedPassword,
