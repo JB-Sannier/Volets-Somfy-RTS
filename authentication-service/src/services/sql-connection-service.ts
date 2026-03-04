@@ -17,6 +17,7 @@ export interface ISqlConnectionService {
 @provide(sqlConnectionServiceKey)
 export class SqlConnectionService implements ISqlConnectionService {
   private dataSource: DataSource | undefined;
+  private initPromise: Promise<DataSource> | undefined;
 
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
@@ -26,7 +27,10 @@ export class SqlConnectionService implements ISqlConnectionService {
     if (this.dataSource) {
       return this.dataSource;
     }
-    return this.init();
+    if (!this.initPromise) {
+      this.initPromise = this.init();
+    }
+    return this.initPromise;
   }
 
   private async init(): Promise<DataSource> {
