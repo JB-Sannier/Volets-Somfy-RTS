@@ -1,11 +1,11 @@
 import { provide } from "@inversifyjs/binding-decorators";
 import { inject } from "inversify";
 import { RefreshTokenEntity } from "../entities/refresh-token";
+import { IRefreshToken } from "../models/models";
 import {
   ISqlConnectionService,
   sqlConnectionServiceKey,
 } from "../services/sql-connection-service";
-import { IRefreshToken } from "../models/models";
 
 export interface IRefreshTokenRepository {
   hasRefreshToken(email: string, refreshToken: string): Promise<boolean>;
@@ -52,14 +52,14 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
     entity.refreshToken = refreshToken;
     entity.expiration = expiration;
 
-    connection.manager.transaction(async (manager) => {
+    await connection.manager.transaction(async (manager) => {
       await manager.save(entity);
     });
   }
 
   async invalidateRefreshTokens(email: string): Promise<void> {
     const connection = await this.sqlConnectionService.getConnection();
-    connection.manager.transaction(async (manager) => {
+    await connection.manager.transaction(async (manager) => {
       const tokenEntitiesForUser = await manager.find(RefreshTokenEntity, {
         where: {
           email,
