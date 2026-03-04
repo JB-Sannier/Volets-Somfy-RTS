@@ -142,3 +142,5 @@ build/
 
 docker-database/*
 !docker-database/Dockerfile
+
+pnpm-lock.yaml

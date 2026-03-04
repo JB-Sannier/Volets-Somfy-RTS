@@ -1,12 +1,13 @@
-import "./App.css";
-import { AuthContextProvider } from "./contexts/auth-context";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./config/router";
-import "./services/base-api-calls";
 import { ThemeProvider } from "@mui/material";
-import { theme } from "./theme/theme";
 import { Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { RouterProvider } from "react-router-dom";
+import "./App.css";
+import { ErrorBoundary } from "./components/error-boundary";
+import { router } from "./config/router";
+import { AuthContextProvider } from "./contexts/auth-context";
+import "./services/base-api-calls";
+import { theme } from "./theme/theme";
 
 declare const BACKEND_URL: string;
 
@@ -27,7 +28,9 @@ function App() {
         <ApplicationTitleComponent />
         <AuthContextProvider>
           <ThemeProvider theme={theme}>
-            <RouterProvider router={router} />
+            <ErrorBoundary>
+              <RouterProvider router={router} />
+            </ErrorBoundary>
           </ThemeProvider>
         </AuthContextProvider>
       </Suspense>
