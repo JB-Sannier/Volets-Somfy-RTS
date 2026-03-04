@@ -17,18 +17,22 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     Component: LoginPage,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/shutters-management",
     Component: ShuttersManagementPage,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/add-shutter",
     Component: AddShutterPage,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/users-management",
     Component: UsersManagementPage,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/users-management/modify-user/:email",
@@ -42,6 +46,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <ErrorPage />,
+    loader: () => {
+      // any unmatched URL should trigger a 404 response captured by ErrorPage
+      throw new Response("Not Found", { status: 404 });
+    },
+    errorElement: <ErrorPage />,
   },
 ]);
