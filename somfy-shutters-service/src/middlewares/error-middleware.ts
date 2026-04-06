@@ -32,7 +32,7 @@ export class AppErrorFilter implements ErrorFilter<AppError> {
     _request: express.Request,
     response: express.Response,
   ) {
-    response.status(error.getHttpResponseCode()).send({
+    response.status(error.getHttpResponseCode()).json({
       errorCode: error.errorCode,
       description: error.description,
       payload: error.payload,
@@ -41,16 +41,16 @@ export class AppErrorFilter implements ErrorFilter<AppError> {
 }
 
 @CatchError(ShutterAlreadyExistsError)
-export class ShutterAlreadyExistsErrorFilter extends AppErrorFilter {}
+export class ShutterAlreadyExistsErrorFilter extends AppErrorFilter { }
 
 @CatchError(ShutterNotFoundError)
-export class ShutterNotFoundErrorFilter extends AppErrorFilter {}
+export class ShutterNotFoundErrorFilter extends AppErrorFilter { }
 
 @CatchError(SomfyProxyServiceError)
-export class SomfyProxyServiceErrorFilter extends AppErrorFilter {}
+export class SomfyProxyServiceErrorFilter extends AppErrorFilter { }
 
 @CatchError(UnauthorizedError)
-export class UnauthorizedErrorFilter extends AppErrorFilter {}
+export class UnauthorizedErrorFilter extends AppErrorFilter { }
 
 @CatchError()
 export class FinalErrorFilter extends AppErrorFilter {
