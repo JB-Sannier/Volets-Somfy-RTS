@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { LoginLayout } from "../layouts/login-layout";
-import { Button, Grid, Paper, TextField } from "@mui/material";
+import { Button, Grid, Paper, Stack, TextField } from "@mui/material";
 import { useAuthContext } from "../contexts/auth-context.types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -27,7 +27,7 @@ export const LoginPage: React.FC = () => {
     <>
       <LoginLayout>
         <Paper sx={{ p: 3 }}>
-          <Grid container direction="column" spacing={3}>
+          <Stack spacing={3}>
             <Grid size="grow">
               <TextField
                 value={email}
@@ -46,12 +46,12 @@ export const LoginPage: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
-            <Grid size="grow" alignSelf="center">
+            <Grid size="grow" sx={{ alignSelf: "center" }}>
               <Button onClick={onSubmit} variant="contained">
                 {t("Login")}
               </Button>
             </Grid>
-          </Grid>
+          </Stack>
         </Paper>
       </LoginLayout>
     </>

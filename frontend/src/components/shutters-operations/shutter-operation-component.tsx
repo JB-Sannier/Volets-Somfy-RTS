@@ -52,10 +52,12 @@ export const ShutterOperationComponent: React.FC<IShutterOperationProps> = (
       <Grid
         container
         direction="row"
-        justifyContent="center"
+        sx={{
+          justifyContent: "center",
+          alignSelf: "flex-end",
+          flex: 1,
+        }}
         size="grow"
-        alignSelf="flex-end"
-        flex={1}
       >
         <Grid>
           <IconButton
