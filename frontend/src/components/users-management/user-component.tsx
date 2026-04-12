@@ -81,8 +81,10 @@ export const UserComponent: React.FC<IUserComponentProps> = (props) => {
             <Grid
               container
               direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
+              sx={{
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
             >
               <Grid>
                 <PersonIcon fontSize="large" sx={{ mt: 0 }} />

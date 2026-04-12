@@ -11,9 +11,9 @@
     "format": "prettier --write src/**/*.{ts,tsx,css} --config ./.prettierrc.json"
   },
   "dependencies": {
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "swagger-ui-react": "^5.32.1"
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "swagger-ui-react": "^5.32.2"
   },
   "scarfSettings": {
     "enabled": false
@@ -22,16 +22,16 @@
     "@types/swagger-ui-react": "^5.18.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.2",
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.2.0",
     "eslint-plugin-react-refresh": "^0.5.2",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "typescript": "~6.0.2",
-    "typescript-eslint": "^8.58.0",
-    "vite": "^8.0.4"
+    "typescript-eslint": "^8.58.1",
+    "vite": "^8.0.8"
   }
 }

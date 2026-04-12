@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/users-management/modify-user/:email",
-    element: <ModifyUserPage />,
+    Component: ModifyUserPage,
   },
   {
     path: "/users-management/add-user",
