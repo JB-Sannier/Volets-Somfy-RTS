@@ -1,4 +1,4 @@
-FROM node:25.6.1-alpine3.23 AS build
+FROM node:25.9-alpine3.23 AS build
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY src /app/src
 RUN npm i
 RUN npm run bundle
 
-FROM node:25.6.1-alpine3.23
+FROM node:25.9-alpine3.23
 
 ENV NODE_ENV=production
 
