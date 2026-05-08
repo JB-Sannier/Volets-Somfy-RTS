@@ -32,7 +32,7 @@ export class AppErrorFilter implements ErrorFilter<AppError> {
     _request: express.Request,
     response: express.Response,
   ) {
-    response.status(error.getHttpResponseCode()).send({
+    response.status(error.getHttpResponseCode()).json({
       errorCode: error.errorCode,
       description: error.description,
       payload: error.payload,

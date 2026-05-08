@@ -42,6 +42,7 @@ import {
   CorsMiddleware,
   corsMiddlewareKey,
 } from "../middlewares/cors-middleware";
+import { UsersController } from "../controllers/users-controller";
 
 export function setupContainer(): Container {
   const c: Container = new Container();
@@ -53,6 +54,7 @@ export function setupContainer(): Container {
   c.bind(AuthenticationController).toSelf().inSingletonScope();
   c.bind(ShuttersController).toSelf().inSingletonScope();
   c.bind(ShuttersOperationsController).toSelf().inSingletonScope();
+  c.bind(UsersController).toSelf().inSingletonScope();
 
   errorFilterList.forEach((efl) => {
     c.bind(efl).toSelf().inSingletonScope();

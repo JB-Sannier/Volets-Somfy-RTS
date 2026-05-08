@@ -159,7 +159,7 @@ export const AddShutterPage: React.FC = () => {
     <GeneralLayout>
       <TitleComponent title={t("PageTitle")} />
 
-      <Grid container justifyContent="center">
+      <Grid container sx={{ justifyContent: "center" }}>
         <Grid sx={{ width: "50%", minWidth: "100px", maxWidth: "900px" }}>
           <Stepper activeStep={currentStep}>
             <Step key={1}>
@@ -188,7 +188,7 @@ export const AddShutterPage: React.FC = () => {
             label={t("StepOneHelperText")}
           />
           <Typography variant="body1">{t("StepOneInstructions2")}</Typography>
-          <Grid container justifyContent="center">
+          <Grid container sx={{ justifyContent: "center" }}>
             <Grid>
               <Button
                 disabled={errorText !== undefined || shutterId !== undefined}
@@ -210,7 +210,7 @@ export const AddShutterPage: React.FC = () => {
           <Typography variant="body1">{t("Step2Instructions1")}</Typography>
           <Typography variant="body1">{t("Step2Instructions2")}</Typography>
           <Typography variant="body1">{t("Step2Instructions3")}</Typography>
-          <Grid container justifyContent="center">
+          <Grid container sx={{ justifyContent: "center" }}>
             <Grid sx={{ ml: 4, mr: 2, mt: 2 }}>
               <Button onClick={() => handleProgramEvent()} variant="contained">
                 {t("Step2SendProgramButton")}
@@ -220,7 +220,7 @@ export const AddShutterPage: React.FC = () => {
           <Typography variant="body1" sx={{ mt: 5, mb: 2 }}>
             {t("Step2Instructions4")}
           </Typography>
-          <Grid container justifyContent="center">
+          <Grid container sx={{ justifyContent: "center" }}>
             <Grid sx={{ ml: 4, mr: 2 }}>
               <Button
                 color="success"
@@ -268,7 +268,7 @@ export const AddShutterPage: React.FC = () => {
               </Typography>
             </>
           )}
-          <Grid container justifyContent="center">
+          <Grid container sx={{ justifyContent: "center" }}>
             <Grid>
               <Button onClick={() => navigate("/")} variant="contained">
                 {t("ButtonHome")}
