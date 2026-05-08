@@ -1,9 +1,9 @@
-import type { IUser } from "../models/models";
-import { UnauthorizedError } from "../models/app-error";
-import { generatePassword } from "password-generator";
-import * as jswonwebtoken from "jsonwebtoken";
-import type { ITokenInformations } from "../models/requests";
 import { provide } from "@inversifyjs/binding-decorators";
+import * as jswonwebtoken from "jsonwebtoken";
+import { generatePassword } from "password-generator";
+import { UnauthorizedError } from "../models/app-error";
+import type { IUser } from "../models/models";
+import type { ITokenInformations } from "../models/requests";
 
 export const tokenServiceKey = "TokenService";
 
@@ -55,6 +55,7 @@ export class TokenService implements ITokenService {
 					complete: true,
 				},
 			);
+			// biome-ignore lint/suspicious/noExplicitAny: eslint-disable-line @typescript-eslint/no-explicit-any
 			let payload: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
 			if (typeof decodedToken.payload === "string") {
 				payload = JSON.parse(decodedToken.payload);
