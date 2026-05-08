@@ -23,7 +23,7 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"formatWithErrors": false,
+		"formatWithErrors": true,
 		"attributePosition": "auto",
 		"indentStyle": "tab",
 		"indentWidth": 2,

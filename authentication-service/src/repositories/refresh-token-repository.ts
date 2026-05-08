@@ -3,81 +3,81 @@ import { inject } from "inversify";
 import { RefreshTokenEntity } from "../entities/refresh-token";
 import type { IRefreshToken } from "../models/models";
 import {
-    type ISqlConnectionService,
-    sqlConnectionServiceKey,
+	type ISqlConnectionService,
+	sqlConnectionServiceKey,
 } from "../services/sql-connection-service";
 
 export interface IRefreshTokenRepository {
-  hasRefreshToken(email: string, refreshToken: string): Promise<boolean>;
-  storeRefreshToken(
-    email: string,
-    refreshToken: string,
-    expiration: Date,
-  ): Promise<void>;
-  invalidateRefreshTokens(email: string): Promise<void>;
-  findRefreshToken(
-    email: string,
-    refreshToken: string,
-  ): Promise<IRefreshToken | undefined>;
+	hasRefreshToken(email: string, refreshToken: string): Promise<boolean>;
+	storeRefreshToken(
+		email: string,
+		refreshToken: string,
+		expiration: Date,
+	): Promise<void>;
+	invalidateRefreshTokens(email: string): Promise<void>;
+	findRefreshToken(
+		email: string,
+		refreshToken: string,
+	): Promise<IRefreshToken | undefined>;
 }
 
 export const refreshTokenRepositoryKey = "RefreshTokenRepositoryKey";
 
 @provide(refreshTokenRepositoryKey)
 export class RefreshTokenRepository implements IRefreshTokenRepository {
-  constructor(
+	constructor(
     @inject(sqlConnectionServiceKey)
     private readonly sqlConnectionService: ISqlConnectionService,
   ) {}
 
-  async hasRefreshToken(email: string, refreshToken: string): Promise<boolean> {
-    const connection = await this.sqlConnectionService.getConnection();
-    const result = await connection.manager.findOne(RefreshTokenEntity, {
-      where: {
-        email,
-        refreshToken,
-      },
-    });
-    return result !== undefined;
-  }
+	async hasRefreshToken(email: string, refreshToken: string): Promise<boolean> {
+		const connection = await this.sqlConnectionService.getConnection();
+		const result = await connection.manager.findOne(RefreshTokenEntity, {
+			where: {
+				email,
+				refreshToken,
+			},
+		});
+		return result !== undefined;
+	}
 
-  async storeRefreshToken(
-    email: string,
-    refreshToken: string,
-    expiration: Date,
-  ): Promise<void> {
-    const connection = await this.sqlConnectionService.getConnection();
-    const entity = new RefreshTokenEntity();
-    entity.email = email;
-    entity.refreshToken = refreshToken;
-    entity.expiration = expiration;
+	async storeRefreshToken(
+		email: string,
+		refreshToken: string,
+		expiration: Date,
+	): Promise<void> {
+		const connection = await this.sqlConnectionService.getConnection();
+		const entity = new RefreshTokenEntity();
+		entity.email = email;
+		entity.refreshToken = refreshToken;
+		entity.expiration = expiration;
 
-    await connection.manager.save(entity);
-  }
+		await connection.manager.save(entity);
+	}
 
-  async invalidateRefreshTokens(email: string): Promise<void> {
-    const connection = await this.sqlConnectionService.getConnection();
-    await connection.manager.delete(RefreshTokenEntity, { email });
-  }
+	async invalidateRefreshTokens(email: string): Promise<void> {
+		const connection = await this.sqlConnectionService.getConnection();
+		await connection.manager.delete(RefreshTokenEntity, { email });
+	}
 
-  async findRefreshToken(
-    email: string,
-    refreshToken: string,
-  ): Promise<IRefreshToken | undefined> {
-    const connection = await this.sqlConnectionService.getConnection();
-    const result = await connection.manager.findOne(RefreshTokenEntity, {
-      where: {
-        email,
-        refreshToken,
-      },
-    });
-    if (!result) {
-      return undefined;
-    }
-    return {
-      email: result.email,
-      expiration: result.expiration.getTime(),
-      token: result.refreshToken,
-    };
-  }
+	async findRefreshToken(
+		email: string,
+		refreshToken: string,
+	): Promise<IRefreshToken | undefined> {
+		const connection = await this.sqlConnectionService.getConnection();
+		const result = await connection.manager.findOne(RefreshTokenEntity, {
+			where: {
+				email,
+				refreshToken,
+			},
+		});
+		if (!result) {
+			return undefined;
+		}
+		return {
+			email: result.email,
+			expiration: result.expiration.getTime(),
+			token: result.refreshToken,
+		};
+	}
 }

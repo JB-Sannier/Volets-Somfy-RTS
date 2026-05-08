@@ -4,31 +4,34 @@ import * as jsonwebtoken from "jsonwebtoken";
 import { UnauthorizedError } from "../models/app-error";
 import type { IRefreshToken } from "../models/models";
 import type {
-    IRefreshTokenRequest,
-    IRefreshTokenResponse,
+	IRefreshTokenRequest,
+	IRefreshTokenResponse,
 } from "../models/requests";
 import {
-    type IRefreshTokenRepository,
-    refreshTokenRepositoryKey,
+	type IRefreshTokenRepository,
+	refreshTokenRepositoryKey,
 } from "../repositories/refresh-token-repository";
 import {
-    type IUserRepository,
-    userRepositoryKey,
+	type IUserRepository,
+	userRepositoryKey,
 } from "../repositories/user-repository";
-import { appConfigServiceKey, type IAppConfigService } from "./app-config-service";
+import {
+	appConfigServiceKey,
+	type IAppConfigService,
+} from "./app-config-service";
 import { type ITokenService, tokenServiceKey } from "./token-service";
 
 export interface IRefreshTokenService {
-  refreshToken(request: IRefreshTokenRequest): Promise<IRefreshTokenResponse>;
-  invalidateRefreshTokens(email: string): Promise<void>;
-  createRefreshToken(email: string): Promise<IRefreshToken>;
+	refreshToken(request: IRefreshTokenRequest): Promise<IRefreshTokenResponse>;
+	invalidateRefreshTokens(email: string): Promise<void>;
+	createRefreshToken(email: string): Promise<IRefreshToken>;
 }
 
 export const refreshTokenServiceKey = Symbol.for("RefreshTokenService");
 
 @provide(refreshTokenServiceKey)
 export class RefreshTokenService implements IRefreshTokenService {
-  constructor(
+	constructor(
     @inject(refreshTokenRepositoryKey)
     private readonly repository: IRefreshTokenRepository,
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
@@ -36,82 +39,82 @@ export class RefreshTokenService implements IRefreshTokenService {
     @inject(userRepositoryKey) private readonly userRepository: IUserRepository,
   ) {}
 
-  async refreshToken(
-    request: IRefreshTokenRequest,
-  ): Promise<IRefreshTokenResponse> {
-    const signingKey = this.appConfig.refreshTokenSigningKey();
-    let email: string | undefined;
-    try {
-      const decodedToken = jsonwebtoken.verify(
-        request.refreshToken,
-        signingKey,
-        {
-          complete: true,
-        },
-      );
-      let payload: Record<string, string> = {};
-      if (typeof decodedToken.payload === "string") {
-        payload = JSON.parse(decodedToken.payload);
-      } else {
-        payload = decodedToken.payload;
-      }
-      email = payload.email;
-    } catch (error) {
-      console.error(
-        "RefreshTokenService: refreshToken() : error while decoding token : ",
-        { request, error },
-      );
-      throw new UnauthorizedError();
-    }
-    const foundToken = await this.repository.findRefreshToken(
-      email,
-      request.refreshToken,
-    );
-    if (!foundToken) {
-      console.error(
-        "RefreshTokenService: refreshToken(): error while searching the RefreshToken for : ",
-        { email, request },
-      );
-      throw new UnauthorizedError();
-    }
-    if (foundToken.expiration < Date.now()) {
-      console.error("RefreshTokenService: refreshToken: token expired : ", {
-        email,
-        foundToken,
-      });
-      throw new UnauthorizedError();
-    }
-    const user = await this.userRepository.getUserByEmail(email);
-    if (!user) {
-      throw new UnauthorizedError();
-    }
-    const accessToken = await this.tokenService.createToken(user);
-    return {
-      token: accessToken,
-      refreshToken: request.refreshToken,
-    };
-  }
+	async refreshToken(
+		request: IRefreshTokenRequest,
+	): Promise<IRefreshTokenResponse> {
+		const signingKey = this.appConfig.refreshTokenSigningKey();
+		let email: string | undefined;
+		try {
+			const decodedToken = jsonwebtoken.verify(
+				request.refreshToken,
+				signingKey,
+				{
+					complete: true,
+				},
+			);
+			let payload: Record<string, string> = {};
+			if (typeof decodedToken.payload === "string") {
+				payload = JSON.parse(decodedToken.payload);
+			} else {
+				payload = decodedToken.payload;
+			}
+			email = payload.email;
+		} catch (error) {
+			console.error(
+				"RefreshTokenService: refreshToken() : error while decoding token : ",
+				{ request, error },
+			);
+			throw new UnauthorizedError();
+		}
+		const foundToken = await this.repository.findRefreshToken(
+			email,
+			request.refreshToken,
+		);
+		if (!foundToken) {
+			console.error(
+				"RefreshTokenService: refreshToken(): error while searching the RefreshToken for : ",
+				{ email, request },
+			);
+			throw new UnauthorizedError();
+		}
+		if (foundToken.expiration < Date.now()) {
+			console.error("RefreshTokenService: refreshToken: token expired : ", {
+				email,
+				foundToken,
+			});
+			throw new UnauthorizedError();
+		}
+		const user = await this.userRepository.getUserByEmail(email);
+		if (!user) {
+			throw new UnauthorizedError();
+		}
+		const accessToken = await this.tokenService.createToken(user);
+		return {
+			token: accessToken,
+			refreshToken: request.refreshToken,
+		};
+	}
 
-  async invalidateRefreshTokens(email: string): Promise<void> {
-    await this.repository.invalidateRefreshTokens(email);
-  }
+	async invalidateRefreshTokens(email: string): Promise<void> {
+		await this.repository.invalidateRefreshTokens(email);
+	}
 
-  async createRefreshToken(email: string): Promise<IRefreshToken> {
-    const user = await this.userRepository.getUserByEmail(email);
-    if (!user?.isActive) {
-      throw new UnauthorizedError();
-    }
+	async createRefreshToken(email: string): Promise<IRefreshToken> {
+		const user = await this.userRepository.getUserByEmail(email);
+		if (!user?.isActive) {
+			throw new UnauthorizedError();
+		}
 
-    const signingKey = this.appConfig.refreshTokenSigningKey();
-    const expiration = Date.now() + 1000 * 60 * 60 * 24 * 7 * 5;
-    const expirationDate = new Date(expiration);
+		const signingKey = this.appConfig.refreshTokenSigningKey();
+		const expiration = Date.now() + 1000 * 60 * 60 * 24 * 7 * 5;
+		const expirationDate = new Date(expiration);
 
-    const token = jsonwebtoken.sign({ email }, signingKey, { expiresIn: "5w" });
-    await this.repository.storeRefreshToken(email, token, expirationDate);
-    return {
-      email,
-      expiration,
-      token,
-    };
-  }
+		const token = jsonwebtoken.sign({ email }, signingKey, { expiresIn: "5w" });
+		await this.repository.storeRefreshToken(email, token, expirationDate);
+		return {
+			email,
+			expiration,
+			token,
+		};
+	}
 }

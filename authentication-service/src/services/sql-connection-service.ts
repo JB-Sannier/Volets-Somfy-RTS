@@ -6,64 +6,67 @@ import { UserEntity } from "../entities/user";
 import { InitialMigration1753360597960 } from "../migrations/1753360597960-InitialMigration";
 import { AddRoleInUserTable1753382072367 } from "../migrations/1753382072367-AddRoleInUserTable";
 import { Migrations1755530698256 } from "../migrations/1755530698256-CreateRefreshTokenTable";
-import { appConfigServiceKey, type IAppConfigService } from "./app-config-service";
+import {
+	appConfigServiceKey,
+	type IAppConfigService,
+} from "./app-config-service";
 
 export const sqlConnectionServiceKey = "SqlConnectionService";
 
 export interface ISqlConnectionService {
-  getConnection(): Promise<DataSource>;
+	getConnection(): Promise<DataSource>;
 }
 
 @provide(sqlConnectionServiceKey)
 export class SqlConnectionService implements ISqlConnectionService {
-  private dataSource: DataSource | undefined;
-  private initPromise: Promise<DataSource> | undefined;
+	private dataSource: DataSource | undefined;
+	private initPromise: Promise<DataSource> | undefined;
 
-  constructor(
+	constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
   ) {}
 
-  async getConnection(): Promise<DataSource> {
-    if (this.dataSource) {
-      return this.dataSource;
-    }
-    if (!this.initPromise) {
-      this.initPromise = this.init();
-    }
-    return this.initPromise;
-  }
+	async getConnection(): Promise<DataSource> {
+		if (this.dataSource) {
+			return this.dataSource;
+		}
+		if (!this.initPromise) {
+			this.initPromise = this.init();
+		}
+		return this.initPromise;
+	}
 
-  private async init(): Promise<DataSource> {
-    if (!this.dataSource) {
-      const connectionOptions: DataSourceOptions = {
-        type: "postgres",
-        host: this.appConfig.dbHostName(),
-        port: this.appConfig.dbPort(),
-        username: this.appConfig.dbUserName(),
-        password: this.appConfig.dbPassword(),
-        database: this.appConfig.dbName(),
-        schema: this.appConfig.dbSchema(),
-        migrationsRun: true,
-        logger: "simple-console",
-        logNotifications: true,
-        logging: ["log", "migration", "warn", "error"],
-        entities: [UserEntity, RefreshTokenEntity],
-        migrations: [
-          InitialMigration1753360597960,
-          AddRoleInUserTable1753382072367,
-          Migrations1755530698256,
-        ],
-      };
-      const ds = new DataSource(connectionOptions);
-      await ds.initialize();
+	private async init(): Promise<DataSource> {
+		if (!this.dataSource) {
+			const connectionOptions: DataSourceOptions = {
+				type: "postgres",
+				host: this.appConfig.dbHostName(),
+				port: this.appConfig.dbPort(),
+				username: this.appConfig.dbUserName(),
+				password: this.appConfig.dbPassword(),
+				database: this.appConfig.dbName(),
+				schema: this.appConfig.dbSchema(),
+				migrationsRun: true,
+				logger: "simple-console",
+				logNotifications: true,
+				logging: ["log", "migration", "warn", "error"],
+				entities: [UserEntity, RefreshTokenEntity],
+				migrations: [
+					InitialMigration1753360597960,
+					AddRoleInUserTable1753382072367,
+					Migrations1755530698256,
+				],
+			};
+			const ds = new DataSource(connectionOptions);
+			await ds.initialize();
 
-      if (ds.isInitialized) {
-        await ds.runMigrations();
-        this.dataSource = ds;
-        return ds;
-      }
-      throw new Error();
-    }
-    return this.dataSource;
-  }
+			if (ds.isInitialized) {
+				await ds.runMigrations();
+				this.dataSource = ds;
+				return ds;
+			}
+			throw new Error();
+		}
+		return this.dataSource;
+	}
 }
