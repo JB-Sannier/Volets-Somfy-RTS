@@ -3,32 +3,32 @@ import * as bcrypt from "bcryptjs";
 import { inject } from "inversify";
 import { generatePassword } from "password-generator";
 import {
-  CannotModifyUserError,
-  UnauthorizedError,
-  UserAlreadyExistsError,
-  UserNotFoundError,
+    CannotModifyUserError,
+    UnauthorizedError,
+    UserAlreadyExistsError,
+    UserNotFoundError,
 } from "../models/app-error";
-import { IUser, IUserResponse, UserRole } from "../models/models";
-import {
-  IAddUserRequest,
-  IAddUserResponse,
-  IAuthenticateRequest,
-  IAuthenticateResponse,
-  IDeleteUserRequest,
-  IDeleteUserResponse,
-  IListUsersResponse,
-  IModifyUserRequest,
-  IModifyUserResponse,
+import { type IUser, type IUserResponse, UserRole } from "../models/models";
+import type {
+    IAddUserRequest,
+    IAddUserResponse,
+    IAuthenticateRequest,
+    IAuthenticateResponse,
+    IDeleteUserRequest,
+    IDeleteUserResponse,
+    IListUsersResponse,
+    IModifyUserRequest,
+    IModifyUserResponse,
 } from "../models/requests";
 import {
-  IUserRepository,
-  userRepositoryKey,
+    type IUserRepository,
+    userRepositoryKey,
 } from "../repositories/user-repository";
 import {
-  IRefreshTokenService,
-  refreshTokenServiceKey,
+    type IRefreshTokenService,
+    refreshTokenServiceKey,
 } from "./refresh-token-sevice";
-import { ITokenService, tokenServiceKey } from "./token-service";
+import { type ITokenService, tokenServiceKey } from "./token-service";
 
 export const userServiceKey = "UserService";
 

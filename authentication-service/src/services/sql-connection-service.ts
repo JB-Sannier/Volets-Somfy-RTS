@@ -1,12 +1,12 @@
 import { provide } from "@inversifyjs/binding-decorators";
 import { inject } from "inversify";
-import { DataSource, DataSourceOptions } from "typeorm";
+import { DataSource, type DataSourceOptions } from "typeorm";
 import { RefreshTokenEntity } from "../entities/refresh-token";
 import { UserEntity } from "../entities/user";
 import { InitialMigration1753360597960 } from "../migrations/1753360597960-InitialMigration";
 import { AddRoleInUserTable1753382072367 } from "../migrations/1753382072367-AddRoleInUserTable";
 import { Migrations1755530698256 } from "../migrations/1755530698256-CreateRefreshTokenTable";
-import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
+import { appConfigServiceKey, type IAppConfigService } from "./app-config-service";
 
 export const sqlConnectionServiceKey = "SqlConnectionService";
 

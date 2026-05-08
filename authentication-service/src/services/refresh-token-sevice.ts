@@ -1,22 +1,22 @@
 import { provide } from "@inversifyjs/binding-decorators";
 import { inject } from "inversify";
-import { IRefreshToken } from "../models/models";
-import {
-  IRefreshTokenRepository,
-  refreshTokenRepositoryKey,
-} from "../repositories/refresh-token-repository";
 import * as jsonwebtoken from "jsonwebtoken";
-import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 import { UnauthorizedError } from "../models/app-error";
-import { ITokenService, tokenServiceKey } from "./token-service";
-import {
-  IUserRepository,
-  userRepositoryKey,
-} from "../repositories/user-repository";
-import {
-  IRefreshTokenRequest,
-  IRefreshTokenResponse,
+import type { IRefreshToken } from "../models/models";
+import type {
+    IRefreshTokenRequest,
+    IRefreshTokenResponse,
 } from "../models/requests";
+import {
+    type IRefreshTokenRepository,
+    refreshTokenRepositoryKey,
+} from "../repositories/refresh-token-repository";
+import {
+    type IUserRepository,
+    userRepositoryKey,
+} from "../repositories/user-repository";
+import { appConfigServiceKey, type IAppConfigService } from "./app-config-service";
+import { type ITokenService, tokenServiceKey } from "./token-service";
 
 export interface IRefreshTokenService {
   refreshToken(request: IRefreshTokenRequest): Promise<IRefreshTokenResponse>;
@@ -98,7 +98,7 @@ export class RefreshTokenService implements IRefreshTokenService {
 
   async createRefreshToken(email: string): Promise<IRefreshToken> {
     const user = await this.userRepository.getUserByEmail(email);
-    if (!user || !user.isActive) {
+    if (!user?.isActive) {
       throw new UnauthorizedError();
     }
 

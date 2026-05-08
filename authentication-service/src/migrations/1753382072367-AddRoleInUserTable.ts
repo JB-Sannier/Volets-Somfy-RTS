@@ -1,21 +1,25 @@
-import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
+import {
+	type MigrationInterface,
+	type QueryRunner,
+	TableColumn,
+} from "typeorm";
 
 export class AddRoleInUserTable1753382072367 implements MigrationInterface {
-  name = "AddRoleInUserTable1753382072367";
+	name = "AddRoleInUserTable1753382072367";
 
-  public async up(queryRunner: QueryRunner): Promise<void> {
-    const column: TableColumn = new TableColumn({
-      name: "roles",
-      type: "character varying",
-      comment: "User Roles",
-      isArray: true,
-    });
-    console.log("Adding 'roles' column in table User");
-    await queryRunner.addColumn("User", column);
-  }
+	public async up(queryRunner: QueryRunner): Promise<void> {
+		const column: TableColumn = new TableColumn({
+			name: "roles",
+			type: "character varying",
+			comment: "User Roles",
+			isArray: true,
+		});
+		console.log("Adding 'roles' column in table User");
+		await queryRunner.addColumn("User", column);
+	}
 
-  public async down(queryRunner: QueryRunner): Promise<void> {
-    console.log("Dropping 'roles' column in table User");
-    await queryRunner.dropColumn("User", "roles");
-  }
+	public async down(queryRunner: QueryRunner): Promise<void> {
+		console.log("Dropping 'roles' column in table User");
+		await queryRunner.dropColumn("User", "roles");
+	}
 }

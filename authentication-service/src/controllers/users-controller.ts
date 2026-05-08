@@ -1,25 +1,25 @@
-import "reflect-metadata";
-import { inject } from "inversify";
 import {
   Controller,
+  Delete,
   Get,
   Post,
   Put,
-  Delete,
   Request as request,
   Response as response,
 } from "@inversifyjs/http-core";
+import { inject } from "inversify";
+import "reflect-metadata";
 
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import { checkUserRole } from "../middlewares/check-user-roles-middleware";
+import { UserRole } from "../models/models";
+import type {
   IAddUserRequest,
   IDeleteUserRequest,
   IModifyUserRequest,
 } from "../models/requests";
 import { addUserValidator, modifyUserValidator } from "../models/validators";
-import { IUserService, userServiceKey } from "../services/user-service";
-import { UserRole } from "../models/models";
-import { checkUserRole } from "../middlewares/check-user-roles-middleware";
+import { type IUserService, userServiceKey } from "../services/user-service";
 
 export const usersControllerKey = Symbol.for("UsersController");
 

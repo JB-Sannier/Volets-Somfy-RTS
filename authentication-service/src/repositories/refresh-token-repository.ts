@@ -1,10 +1,10 @@
 import { provide } from "@inversifyjs/binding-decorators";
 import { inject } from "inversify";
 import { RefreshTokenEntity } from "../entities/refresh-token";
-import { IRefreshToken } from "../models/models";
+import type { IRefreshToken } from "../models/models";
 import {
-  ISqlConnectionService,
-  sqlConnectionServiceKey,
+    type ISqlConnectionService,
+    sqlConnectionServiceKey,
 } from "../services/sql-connection-service";
 
 export interface IRefreshTokenRepository {

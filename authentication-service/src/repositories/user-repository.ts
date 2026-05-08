@@ -1,18 +1,18 @@
 import { provide } from "@inversifyjs/binding-decorators";
 import { inject } from "inversify";
+import { ArrayContains } from "typeorm";
 import { UserEntity } from "../entities/user";
 import {
-  IUser,
-  IUserResponse,
-  toUser,
-  toUserResponse,
-  UserRole,
+    type IUser,
+    type IUserResponse,
+    toUser,
+    toUserResponse,
+    UserRole,
 } from "../models/models";
 import {
-  ISqlConnectionService,
-  sqlConnectionServiceKey,
+    type ISqlConnectionService,
+    sqlConnectionServiceKey,
 } from "../services/sql-connection-service";
-import { ArrayContains } from "typeorm";
 
 export const userRepositoryKey = "UserRepository";
 

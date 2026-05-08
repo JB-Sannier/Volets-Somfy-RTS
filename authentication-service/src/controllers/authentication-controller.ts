@@ -1,5 +1,3 @@
-import "reflect-metadata";
-import { inject } from "inversify";
 import {
   Controller,
   Get,
@@ -7,26 +5,28 @@ import {
   Request as request,
   Response as response,
 } from "@inversifyjs/http-core";
+import { inject } from "inversify";
+import "reflect-metadata";
 
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
-  appConfigServiceKey,
-  IAppConfigService,
-} from "../services/app-config-service";
-import { IAuthenticateRequest, IRefreshTokenRequest } from "../models/requests";
+  checkToken,
+  type IAuthentifiedRequest,
+} from "../middlewares/check-token-middleware";
+import type { IAuthenticateRequest, IRefreshTokenRequest } from "../models/requests";
 import {
   authenticateValidator,
   refreshTokenValidator,
 } from "../models/validators";
-import { IUserService, userServiceKey } from "../services/user-service";
 import {
-  checkToken,
-  IAuthentifiedRequest,
-} from "../middlewares/check-token-middleware";
+  appConfigServiceKey,
+  type IAppConfigService,
+} from "../services/app-config-service";
 import {
-  IRefreshTokenService,
+  type IRefreshTokenService,
   refreshTokenServiceKey,
 } from "../services/refresh-token-sevice";
+import { type IUserService, userServiceKey } from "../services/user-service";
 
 @Controller("/api/v1/auth")
 export class AuthenticationController {

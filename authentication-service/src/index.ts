@@ -6,13 +6,13 @@ import { container } from "./ioc/container";
 import { errorFilterList } from "./middlewares/error-middleware";
 import {
   appConfigServiceKey,
-  IAppConfigService,
+  type IAppConfigService,
 } from "./services/app-config-service";
 import {
-  ISqlConnectionService,
+  type ISqlConnectionService,
   sqlConnectionServiceKey,
 } from "./services/sql-connection-service";
-import { IUserService, userServiceKey } from "./services/user-service";
+import { type IUserService, userServiceKey } from "./services/user-service";
 
 async function init() {
   const appConfig = container.get<IAppConfigService>(appConfigServiceKey);
