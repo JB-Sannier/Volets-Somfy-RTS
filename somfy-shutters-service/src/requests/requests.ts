@@ -1,26 +1,26 @@
-import { IShutter } from "../models/shutter";
+import type { IShutter } from "../models/shutter";
 
 /* Used in somfy-shutters-controller */
 export interface IAddShutterRequest {
-  shutterName: string;
+	shutterName: string;
 }
 
 export interface IGetShutterRequest {
-  shutterId: string;
+	shutterId: string;
 }
 
 export interface IModifyShutterRequest {
-  shutterId: string;
-  shutterName: string;
+	shutterId: string;
+	shutterName: string;
 }
 
 export interface IDeleteShutterRequest {
-  shutterId: string;
+	shutterId: string;
 }
 
 export interface IShutterResponse {
-  shutterId: string;
-  shutterName: string;
+	shutterId: string;
+	shutterName: string;
 }
 
 export type IAddShutterResponse = IShutterResponse;
@@ -33,7 +33,7 @@ export type IListShuttersResponse = IShutterResponse[];
 /* Used in somfy-operate-controller */
 
 export interface IBaseShutterCommand {
-  shutterId: string;
+	shutterId: string;
 }
 
 export type IRaiseShutterRequest = IBaseShutterCommand;
@@ -42,7 +42,7 @@ export type IStopShutterRequest = IBaseShutterCommand;
 export type IProgramShutterRequest = IBaseShutterCommand;
 
 export type IBaseShutterResponse = {
-  status: "Ok";
+	status: "Ok";
 };
 export type IRaiseShutterResponse = IBaseShutterResponse;
 export type ILowerShutterResponse = IBaseShutterResponse;
