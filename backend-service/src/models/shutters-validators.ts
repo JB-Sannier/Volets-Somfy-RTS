@@ -1,62 +1,62 @@
 import { object, type ObjectSchema, string, type Schema, array } from "yup";
 import type {
-  IAddShutterRequest,
-  IBaseShutterCommand,
-  IDeleteShutterRequest,
-  IGetShutterRequest,
-  IImportShuttersRequest,
-  ILowerShutterRequest,
-  IModifyShutterRequest,
-  IProgramShutterRequest,
-  IRaiseShutterRequest,
-  IShutter,
-  IStopShutterRequest,
+	IAddShutterRequest,
+	IBaseShutterCommand,
+	IDeleteShutterRequest,
+	IGetShutterRequest,
+	IImportShuttersRequest,
+	ILowerShutterRequest,
+	IModifyShutterRequest,
+	IProgramShutterRequest,
+	IRaiseShutterRequest,
+	IShutter,
+	IStopShutterRequest,
 } from "./shutters-requests";
 
 /* Used in somfy-shutters-controller */
 
 export const addShutterValidator: ObjectSchema<IAddShutterRequest> = object({
-  shutterName: string().required(),
+	shutterName: string().required(),
 });
 
 export const modifyShutterValidator: ObjectSchema<IModifyShutterRequest> =
-  object({
-    shutterId: string().required(),
-    shutterName: string().required(),
-  });
+	object({
+		shutterId: string().required(),
+		shutterName: string().required(),
+	});
 
 export const deleteShutterValidator: ObjectSchema<IDeleteShutterRequest> =
-  object({
-    shutterId: string().required(),
-  });
+	object({
+		shutterId: string().required(),
+	});
 
 export const getShutterValidator: ObjectSchema<IGetShutterRequest> = object({
-  shutterId: string().required(),
+	shutterId: string().required(),
 });
 
 /* used in somfy-operate-controller */
 
 export const baseShutterCommand: ObjectSchema<IBaseShutterCommand> = object({
-  shutterId: string().required(),
+	shutterId: string().required(),
 }).defined();
 
 export const raiseShutterValidator: ObjectSchema<IRaiseShutterRequest> =
-  baseShutterCommand;
+	baseShutterCommand;
 export const lowerShutterValidator: ObjectSchema<ILowerShutterRequest> =
-  baseShutterCommand;
+	baseShutterCommand;
 export const stopShutterValidator: ObjectSchema<IStopShutterRequest> =
-  baseShutterCommand;
+	baseShutterCommand;
 export const programShutterValidator: ObjectSchema<IProgramShutterRequest> =
-  baseShutterCommand;
+	baseShutterCommand;
 
 const exportedShutterShape: ObjectSchema<IShutter> = object({
-  shutterId: string().required(),
-  shutterName: string().required(),
-  proxyShutterId: string().required(),
+	shutterId: string().required(),
+	shutterName: string().required(),
+	proxyShutterId: string().required(),
 }).defined();
 
 export const importShuttersValidator: Schema<IImportShuttersRequest> = array()
-  .of(exportedShutterShape)
-  .min(1)
-  .defined()
-  .required();
+	.of(exportedShutterShape)
+	.min(1)
+	.defined()
+	.required();

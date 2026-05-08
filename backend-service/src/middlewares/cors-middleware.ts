@@ -9,14 +9,14 @@ export const appCors = cors({ origin: "*" });
 
 @provide(corsMiddlewareKey)
 export class CorsMiddleware implements ExpressMiddleware {
-  public execute(
-    request: express.Request,
-    response: express.Response,
-    next: express.NextFunction,
-  ): void {
-    const method = request.method;
-    const path = request.path;
-    console.log("Applying cors (%s : %s)", method, path);
-    appCors(request, response, next);
-  }
+	public execute(
+		request: express.Request,
+		response: express.Response,
+		next: express.NextFunction,
+	): void {
+		const method = request.method;
+		const path = request.path;
+		console.log("Applying cors (%s : %s)", method, path);
+		appCors(request, response, next);
+	}
 }

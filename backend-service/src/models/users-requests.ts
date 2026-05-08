@@ -1,55 +1,55 @@
 import type { UserRole } from "./models";
 
 export interface IAddUserRequest {
-  email: string;
-  password: string;
-  roles: UserRole[];
+	email: string;
+	password: string;
+	roles: UserRole[];
 }
 
 export interface IAddUserResponse {
-  ok: boolean;
+	ok: boolean;
 }
 
 export interface IDeleteUserRequest {
-  email: string;
+	email: string;
 }
 
 export interface IDeleteUserResponse {
-  email: string;
+	email: string;
 }
 
 export interface IModifyUserRequest {
-  email: string;
-  password?: string;
-  roles?: UserRole[];
-  isActive?: boolean;
+	email: string;
+	password?: string;
+	roles?: UserRole[];
+	isActive?: boolean;
 }
 
 export interface IModifyUserResponse {
-  email: string;
-  roles: UserRole[];
+	email: string;
+	roles: UserRole[];
 }
 
 export interface IAuthenticateRequest {
-  email: string;
-  password: string;
+	email: string;
+	password: string;
 }
 
 export interface IAuthenticateResponse {
-  token: string;
-  refreshToken: string;
+	token: string;
+	refreshToken: string;
 }
 
 export interface IRefreshTokenRequest {
-  refreshToken: string;
+	refreshToken: string;
 }
 
 export type IRefreshTokenResponse = IAuthenticateResponse;
 
 export interface IUserResponse {
-  email: string;
-  roles: UserRole[];
-  isActive: boolean;
+	email: string;
+	roles: UserRole[];
+	isActive: boolean;
 }
 
 export type IListUsersResponse = IUserResponse[];
