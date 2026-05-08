@@ -1,5 +1,5 @@
 export interface IBaseShutterCommand {
-  shutterId: string;
+	shutterId: string;
 }
 
 export type IRaiseShutterRequest = IBaseShutterCommand;
@@ -8,7 +8,7 @@ export type IStopShutterRequest = IBaseShutterCommand;
 export type IProgramShutterRequest = IBaseShutterCommand;
 
 export type IBaseShutterResponse = {
-  status: "Ok";
+	status: "Ok";
 };
 export type IRaiseShutterResponse = IBaseShutterResponse;
 export type ILowerShutterResponse = IBaseShutterResponse;
