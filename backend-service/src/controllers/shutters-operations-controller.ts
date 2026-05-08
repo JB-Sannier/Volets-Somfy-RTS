@@ -7,12 +7,12 @@ import {
   Response as response,
 } from "@inversifyjs/http-core";
 
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
-  IShuttersProxyService,
+  type IShuttersProxyService,
   shuttersProxyServiceKey,
 } from "../services/shutters-proxy-service";
-import {
+import type {
   ILowerShutterRequest,
   IProgramShutterRequest,
   IRaiseShutterRequest,

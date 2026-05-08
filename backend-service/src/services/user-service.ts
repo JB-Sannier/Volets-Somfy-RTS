@@ -1,6 +1,6 @@
 import { provide } from "@inversifyjs/binding-decorators";
 import { inject } from "inversify";
-import {
+import type {
   IAddUserRequest,
   IAddUserResponse,
   IAuthenticateRequest,
@@ -20,7 +20,7 @@ import {
   UserAlreadyExistsError,
   UserNotFoundError,
 } from "../models/app-error";
-import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
+import { appConfigServiceKey, type IAppConfigService } from "./app-config-service";
 import axios, { isAxiosError } from "axios";
 
 export const userServiceKey = "UserService";

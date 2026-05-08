@@ -1,12 +1,12 @@
-import * as express from "express";
+import type * as express from "express";
 import { UserRole } from "../models/models";
 import { UnauthorizedError } from "../models/app-error";
-import { ITokenService, tokenServiceKey } from "../services/token-service";
+import { type ITokenService, tokenServiceKey } from "../services/token-service";
 import { container } from "../ioc/container";
 import { provide } from "@inversifyjs/binding-decorators";
 import {
-  Interceptor,
-  InterceptorTransformObject,
+  type Interceptor,
+  type InterceptorTransformObject,
   UseInterceptor,
 } from "@inversifyjs/http-core";
 

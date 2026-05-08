@@ -2,25 +2,25 @@ import { Container } from "inversify";
 import {
   AppConfigServiceFromEnv,
   appConfigServiceKey,
-  IAppConfigService,
+  type IAppConfigService,
 } from "../services/app-config-service";
 import "../controllers/authentication-controller";
 import "../controllers/shutters-controller";
 import "../controllers/shutters-operations-controller";
 import {
-  IUserService,
+  type IUserService,
   UserService,
   userServiceKey,
 } from "../services/user-service";
 import {
-  ITokenService,
+  type ITokenService,
   TokenService,
   tokenServiceKey,
 } from "../services/token-service";
 import "../controllers/authentication-controller";
 import "../controllers/users-controller";
 import {
-  IShuttersProxyService,
+  type IShuttersProxyService,
   ShuttersProxyService,
   shuttersProxyServiceKey,
 } from "../services/shutters-proxy-service";

@@ -7,12 +7,12 @@ import {
   Request as request,
   Response as response,
 } from "@inversifyjs/http-core";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   appConfigServiceKey,
-  IAppConfigService,
+  type IAppConfigService,
 } from "../services/app-config-service";
-import {
+import type {
   IAuthenticateRequest,
   IRefreshTokenRequest,
 } from "../models/users-requests";
@@ -20,9 +20,9 @@ import {
   authenticateValidator,
   refreshTokenValidator,
 } from "../models/users-validators";
-import { IUserService, userServiceKey } from "../services/user-service";
+import { type IUserService, userServiceKey } from "../services/user-service";
 import { checkToken } from "../middlewares/check-token-middleware";
-import { ITokenService, tokenServiceKey } from "../services/token-service";
+import { type ITokenService, tokenServiceKey } from "../services/token-service";
 
 @Controller("/api/v1/auth")
 export class AuthenticationController {

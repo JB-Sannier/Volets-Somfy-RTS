@@ -1,7 +1,7 @@
-import * as express from "express";
+import type * as express from "express";
 import { ValidationError } from "yup";
 import {
-  AppError,
+  type AppError,
   UserNotFoundError,
   CannotDeleteUserError,
   CannotModifyUserError,
@@ -11,8 +11,8 @@ import {
   SomfyProxyError,
   ShutterNotFoundError,
 } from "../models/app-error";
-import { CatchError, ErrorFilter } from "@inversifyjs/http-core";
-import { Newable } from "inversify";
+import { CatchError, type ErrorFilter } from "@inversifyjs/http-core";
+import type { Newable } from "inversify";
 
 @CatchError(ValidationError)
 export class ValidationErrorFilter implements ErrorFilter<ValidationError> {

@@ -9,8 +9,8 @@ import {
   Delete,
   Get,
 } from "@inversifyjs/http-core";
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import type {
   IAddUserRequest,
   IDeleteUserRequest,
   IModifyUserRequest,
@@ -19,7 +19,7 @@ import {
   addUserValidator,
   modifyUserValidator,
 } from "../models/users-validators";
-import { IUserService, userServiceKey } from "../services/user-service";
+import { type IUserService, userServiceKey } from "../services/user-service";
 import { UserRole } from "../models/models";
 import { checkUserRole } from "../middlewares/check-user-roles-middleware";
 

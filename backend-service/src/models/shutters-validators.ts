@@ -1,5 +1,5 @@
-import { object, ObjectSchema, string, Schema, array } from "yup";
-import {
+import { object, type ObjectSchema, string, type Schema, array } from "yup";
+import type {
   IAddShutterRequest,
   IBaseShutterCommand,
   IDeleteShutterRequest,

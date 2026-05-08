@@ -1,6 +1,6 @@
-import * as express from "express";
+import type * as express from "express";
 import { provide } from "@inversifyjs/binding-decorators";
-import { ExpressMiddleware } from "@inversifyjs/http-express";
+import type { ExpressMiddleware } from "@inversifyjs/http-express";
 import cors from "cors";
 
 export const corsMiddlewareKey = Symbol.for("CorsInterceptor");

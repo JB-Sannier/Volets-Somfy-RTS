@@ -1,7 +1,7 @@
 import { provide } from "@inversifyjs/binding-decorators";
-import { UserRole } from "../models/models";
+import type { UserRole } from "../models/models";
 import { UnauthorizedError } from "../models/app-error";
-import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
+import { appConfigServiceKey, type IAppConfigService } from "./app-config-service";
 import { inject } from "inversify";
 import axios, { isAxiosError } from "axios";
 

@@ -1,6 +1,6 @@
 import { inject } from "inversify";
 import { provide } from "@inversifyjs/binding-decorators";
-import {
+import type {
   IAddShutterRequest,
   IAddShutterResponse,
   IBaseShutterResponse,
@@ -22,9 +22,9 @@ import {
   IStopShutterRequest,
   IStopShutterResponse,
 } from "../models/shutters-requests";
-import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
+import { appConfigServiceKey, type IAppConfigService } from "./app-config-service";
 import { SomfyProxyError, UnauthorizedError } from "../models/app-error";
-import axios, { AxiosRequestConfig, isAxiosError } from "axios";
+import axios, { type AxiosRequestConfig, isAxiosError } from "axios";
 
 export const shuttersProxyServiceKey = Symbol.for("ShuttersProxyService");
 

@@ -1,17 +1,17 @@
-import * as express from "express";
+import type * as express from "express";
 import { UnauthorizedError } from "../models/app-error";
 import { container } from "../ioc/container";
 import {
-  ITokenInformations,
-  ITokenService,
+  type ITokenInformations,
+  type ITokenService,
   tokenServiceKey,
 } from "../services/token-service";
 import { provide } from "@inversifyjs/binding-decorators";
 import {
-  InterceptorTransformObject,
+  type InterceptorTransformObject,
   UseInterceptor,
 } from "@inversifyjs/http-core";
-import { ExpressInterceptor } from "@inversifyjs/http-express";
+import type { ExpressInterceptor } from "@inversifyjs/http-express";
 
 export const tokenCheckInterceptorKey = Symbol.for("TokenCheckInterceptor");
 

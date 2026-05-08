@@ -1,5 +1,5 @@
-import { string, object, ObjectSchema, mixed, array, boolean } from "yup";
-import {
+import { string, object, type ObjectSchema, mixed, array, boolean } from "yup";
+import type {
   IAddUserRequest,
   IAuthenticateRequest,
   IDeleteUserRequest,

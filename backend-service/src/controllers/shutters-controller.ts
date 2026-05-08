@@ -11,10 +11,10 @@ import {
 } from "@inversifyjs/http-core";
 import {} from "@inversifyjs/http-express";
 
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { UserRole } from "../models/models";
 import { checkUserRole } from "../middlewares/check-user-roles-middleware";
-import {
+import type {
   IAddShutterRequest,
   IDeleteShutterRequest,
   IGetShutterRequest,
@@ -30,7 +30,7 @@ import {
   modifyShutterValidator,
 } from "../models/shutters-validators";
 import {
-  IShuttersProxyService,
+  type IShuttersProxyService,
   shuttersProxyServiceKey,
 } from "../services/shutters-proxy-service";
 import { checkToken } from "../middlewares/check-token-middleware";
