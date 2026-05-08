@@ -22,7 +22,7 @@
 		}
 	},
 	"formatter": {
-		"enabled": false,
+		"enabled": true,
 		"formatWithErrors": false,
 		"attributePosition": "auto",
 		"indentStyle": "tab",
