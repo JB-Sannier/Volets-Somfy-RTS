@@ -155,9 +155,7 @@ export class UserService implements IUserService {
 				name: error.name,
 			});
 			if (
-				error.response &&
-				error.response.data &&
-				error.response.data.errorCode &&
+				error.response?.data?.errorCode &&
 				error.response.data.description
 			) {
 				if (error.response.data.errorCode === ErrorCodes.UserAlreadyExists) {

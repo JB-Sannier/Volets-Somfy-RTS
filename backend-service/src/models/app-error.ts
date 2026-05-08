@@ -165,6 +165,7 @@ export class ShutterNotFoundError extends AppError {
 export function createErrorFromErrorCode(
 	code: ErrorCodes,
 	description?: string,
+	// biome-ignore lint/suspicious/noExplicitAny: eslint-disable-line @typescript-eslint/no-explicit-any
 	payload?: any, // eslint-disable-line @typescript-eslint/no-explicit-any
 ) {
 	switch (code) {

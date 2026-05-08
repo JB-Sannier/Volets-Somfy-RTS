@@ -265,8 +265,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
 				name: error.name,
 			});
 			if (
-				error.response &&
-				error.response.data.errorCode &&
+				error.response?.data.errorCode &&
 				error.response.data.description
 			) {
 				throw new SomfyProxyError({

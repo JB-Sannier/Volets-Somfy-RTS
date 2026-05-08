@@ -9,7 +9,6 @@ import {
 	Request as request,
 	Response as response,
 } from "@inversifyjs/http-core";
-import {} from "@inversifyjs/http-express";
 
 import type { Request, Response } from "express";
 import { UserRole } from "../models/models";

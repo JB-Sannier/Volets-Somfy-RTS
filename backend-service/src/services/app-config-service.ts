@@ -1,4 +1,4 @@
-import * as process from "process";
+import * as process from "node:process";
 import * as dotenv from "dotenv";
 import { provide } from "@inversifyjs/binding-decorators";
 
@@ -25,7 +25,7 @@ export class AppConfigServiceFromEnv implements IAppConfigService {
 	}
 
 	port(): number {
-		return parseInt(process.env.PORT || "3001");
+		return parseInt(process.env.PORT || "3001", 10);
 	}
 
 	host(): string {

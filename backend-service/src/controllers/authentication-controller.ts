@@ -27,7 +27,7 @@ import { type ITokenService, tokenServiceKey } from "../services/token-service";
 @Controller("/api/v1/auth")
 export class AuthenticationController {
 	constructor(
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+    @inject(appConfigServiceKey) readonly _appConfig: IAppConfigService,
     @inject(tokenServiceKey) private readonly tokenService: ITokenService,
     @inject(userServiceKey) private readonly userService: IUserService,
   ) {}
