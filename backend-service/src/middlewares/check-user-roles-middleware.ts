@@ -1,67 +1,67 @@
-import * as express from "express";
+import type * as express from "express";
 import { UserRole } from "../models/models";
 import { UnauthorizedError } from "../models/app-error";
-import { ITokenService, tokenServiceKey } from "../services/token-service";
+import { type ITokenService, tokenServiceKey } from "../services/token-service";
 import { container } from "../ioc/container";
 import { provide } from "@inversifyjs/binding-decorators";
 import {
-  Interceptor,
-  InterceptorTransformObject,
-  UseInterceptor,
+	type Interceptor,
+	type InterceptorTransformObject,
+	UseInterceptor,
 } from "@inversifyjs/http-core";
 
 export const checkUserManagerRoleKey = Symbol.for("CheckUserManagerRole");
 export const checkShutterManagerRoleKey = Symbol.for("CheckShutterManagerRole");
 
 async function interceptRole(
-  role: UserRole,
-  req: express.Request,
-  _res: express.Response,
-  next: () => Promise<InterceptorTransformObject>,
+	role: UserRole,
+	req: express.Request,
+	_res: express.Response,
+	next: () => Promise<InterceptorTransformObject>,
 ): Promise<void> {
-  if (!req.headers.authorization) {
-    throw new UnauthorizedError();
-  }
-  const tokenService = container.get<ITokenService>(tokenServiceKey);
-  const tokenInfos = await tokenService.validateToken(
-    req.headers.authorization,
-  );
-  if (!tokenInfos.roles.find((r) => r === role)) {
-    throw new UnauthorizedError();
-  }
-  await next();
+	if (!req.headers.authorization) {
+		throw new UnauthorizedError();
+	}
+	const tokenService = container.get<ITokenService>(tokenServiceKey);
+	const tokenInfos = await tokenService.validateToken(
+		req.headers.authorization,
+	);
+	if (!tokenInfos.roles.find((r) => r === role)) {
+		throw new UnauthorizedError();
+	}
+	await next();
 }
 
 @provide(checkUserManagerRoleKey)
 export class CheckUserManagerRole implements Interceptor {
-  async intercept(
-    req: express.Request,
-    res: express.Response,
-    next: () => Promise<InterceptorTransformObject>,
-  ): Promise<void> {
-    return interceptRole(UserRole.UserManager, req, res, next);
-  }
+	async intercept(
+		req: express.Request,
+		res: express.Response,
+		next: () => Promise<InterceptorTransformObject>,
+	): Promise<void> {
+		return interceptRole(UserRole.UserManager, req, res, next);
+	}
 }
 
 @provide(checkShutterManagerRoleKey)
 export class CheckShutterManagerRole implements Interceptor {
-  async intercept(
-    req: express.Request,
-    res: express.Response,
-    next: () => Promise<InterceptorTransformObject>,
-  ): Promise<void> {
-    return interceptRole(UserRole.ShuttersProgrammer, req, res, next);
-  }
+	async intercept(
+		req: express.Request,
+		res: express.Response,
+		next: () => Promise<InterceptorTransformObject>,
+	): Promise<void> {
+		return interceptRole(UserRole.ShuttersProgrammer, req, res, next);
+	}
 }
 
 export function checkUserRole(
-  role: UserRole,
+	role: UserRole,
 ): ClassDecorator & MethodDecorator {
-  if (role === UserRole.ShuttersProgrammer) {
-    return UseInterceptor(checkShutterManagerRoleKey);
-  } else if (role === UserRole.UserManager) {
-    return UseInterceptor(checkUserManagerRoleKey);
-  } else {
-    throw new UnauthorizedError();
-  }
+	if (role === UserRole.ShuttersProgrammer) {
+		return UseInterceptor(checkShutterManagerRoleKey);
+	} else if (role === UserRole.UserManager) {
+		return UseInterceptor(checkUserManagerRoleKey);
+	} else {
+		throw new UnauthorizedError();
+	}
 }

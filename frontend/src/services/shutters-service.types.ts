@@ -1,24 +1,24 @@
 /* Used in somfy-shutters-controller */
 export interface IAddShutterRequest {
-  shutterName: string;
+	shutterName: string;
 }
 
 export interface IGetShutterRequest {
-  shutterId: string;
+	shutterId: string;
 }
 
 export interface IModifyShutterRequest {
-  shutterId: string;
-  shutterName: string;
+	shutterId: string;
+	shutterName: string;
 }
 
 export interface IDeleteShutterRequest {
-  shutterId: string;
+	shutterId: string;
 }
 
 export interface IShutter {
-  shutterId: string;
-  shutterName: string;
+	shutterId: string;
+	shutterName: string;
 }
 
 export type IAddShutterResponse = IShutter;

@@ -1,122 +1,122 @@
 import "reflect-metadata";
 import { inject } from "inversify";
 import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Request as request,
-  Response as response,
+	Controller,
+	Get,
+	Post,
+	Put,
+	Delete,
+	Request as request,
+	Response as response,
 } from "@inversifyjs/http-core";
-import { Request, Response } from "express";
-import {
-  IAddShutterRequest,
-  IDeleteShutterRequest,
-  IGetShutterRequest,
-  IImportShuttersRequest,
-  IModifyShutterRequest,
+import type { Request, Response } from "express";
+import type {
+	IAddShutterRequest,
+	IDeleteShutterRequest,
+	IGetShutterRequest,
+	IImportShuttersRequest,
+	IModifyShutterRequest,
 } from "../requests/requests";
 import {
-  addShutterValidator,
-  deleteShutterValidator,
-  getShutterValidator,
-  importShuttersValidator,
-  modifyShutterValidator,
+	addShutterValidator,
+	deleteShutterValidator,
+	getShutterValidator,
+	importShuttersValidator,
+	modifyShutterValidator,
 } from "../requests/validators";
 import {
-  shutterServiceKey,
-  IShutterService,
+	shutterServiceKey,
+	type IShutterService,
 } from "../services/shutters-service";
 import { checkApiKey } from "../middlewares/check-api-key-middleware";
 
 @Controller("/api/v1/shutter")
 @checkApiKey()
 export class SomfyShuttersController {
-  constructor(
-    @inject(shutterServiceKey) private readonly shutterService: IShutterService,
-  ) {}
+	constructor(
+		@inject(shutterServiceKey) private readonly shutterService: IShutterService,
+	) {}
 
-  @Get("/")
-  async listShutters(
-    @request() req: Request,
-    @response() res: Response,
-  ): Promise<void> {
-    const shutters = await this.shutterService.listShutters();
-    res.status(200).json(shutters);
-  }
+	@Get("/")
+	async listShutters(
+		@request() req: Request,
+		@response() res: Response,
+	): Promise<void> {
+		const shutters = await this.shutterService.listShutters();
+		res.status(200).json(shutters);
+	}
 
-  @Get("/:shutterId")
-  async getShutter(
-    @request() req: Request,
-    @response() res: Response,
-  ): Promise<void> {
-    const requestPayload: IGetShutterRequest = {
-      shutterId: req.params.shutterId as string,
-    };
-    const getShutterRequest =
-      await getShutterValidator.validate(requestPayload);
-    const shutter = await this.shutterService.getShutter(getShutterRequest);
-    res.status(200).json(shutter);
-  }
+	@Get("/:shutterId")
+	async getShutter(
+		@request() req: Request,
+		@response() res: Response,
+	): Promise<void> {
+		const requestPayload: IGetShutterRequest = {
+			shutterId: req.params.shutterId as string,
+		};
+		const getShutterRequest =
+			await getShutterValidator.validate(requestPayload);
+		const shutter = await this.shutterService.getShutter(getShutterRequest);
+		res.status(200).json(shutter);
+	}
 
-  @Post("/")
-  async addShutter(
-    @request() req: Request,
-    @response() res: Response,
-  ): Promise<void> {
-    const basePayload: IAddShutterRequest = {
-      shutterName: req.body.shutterName,
-    };
-    const payload = await addShutterValidator.validate(basePayload);
-    const response = await this.shutterService.addShutter(payload);
-    res.status(201).json(response);
-  }
+	@Post("/")
+	async addShutter(
+		@request() req: Request,
+		@response() res: Response,
+	): Promise<void> {
+		const basePayload: IAddShutterRequest = {
+			shutterName: req.body.shutterName,
+		};
+		const payload = await addShutterValidator.validate(basePayload);
+		const response = await this.shutterService.addShutter(payload);
+		res.status(201).json(response);
+	}
 
-  @Post("/export")
-  async exportShutters(
-    @request() req: Request,
-    @response() res: Response,
-  ): Promise<void> {
-    const response = await this.shutterService.exportShutters();
-    res.status(200).json(response);
-  }
+	@Post("/export")
+	async exportShutters(
+		@request() req: Request,
+		@response() res: Response,
+	): Promise<void> {
+		const response = await this.shutterService.exportShutters();
+		res.status(200).json(response);
+	}
 
-  @Post("/import")
-  async importShutters(
-    @request() req: Request,
-    @response() res: Response,
-  ): Promise<void> {
-    const request: IImportShuttersRequest = req.body;
-    await importShuttersValidator.validate(request);
-    const response = await this.shutterService.importShutters(request);
-    res.status(200).json(response);
-  }
+	@Post("/import")
+	async importShutters(
+		@request() req: Request,
+		@response() res: Response,
+	): Promise<void> {
+		const request: IImportShuttersRequest = req.body;
+		await importShuttersValidator.validate(request);
+		const response = await this.shutterService.importShutters(request);
+		res.status(200).json(response);
+	}
 
-  @Put("/")
-  async modifyShutter(
-    @request() req: Request,
-    @response() res: Response,
-  ): Promise<void> {
-    const basePayload: IModifyShutterRequest = {
-      shutterId: req.body.shutterId,
-      shutterName: req.body.shutterName,
-    };
-    const payload = await modifyShutterValidator.validate(basePayload);
-    const response = await this.shutterService.modifyShutter(payload);
-    res.status(200).json(response);
-  }
+	@Put("/")
+	async modifyShutter(
+		@request() req: Request,
+		@response() res: Response,
+	): Promise<void> {
+		const basePayload: IModifyShutterRequest = {
+			shutterId: req.body.shutterId,
+			shutterName: req.body.shutterName,
+		};
+		const payload = await modifyShutterValidator.validate(basePayload);
+		const response = await this.shutterService.modifyShutter(payload);
+		res.status(200).json(response);
+	}
 
-  @Delete("/:shutterId")
-  async deleteShutter(
-    @request() req: Request,
-    @response() res: Response,
-  ): Promise<void> {
-    const basePayload: IDeleteShutterRequest = {
-      shutterId: req.params.shutterId as string,
-    };
-    const payload = await deleteShutterValidator.validate(basePayload);
-    const response = await this.shutterService.deleteShutter(payload);
-    res.status(200).json(response);
-  }
+	@Delete("/:shutterId")
+	async deleteShutter(
+		@request() req: Request,
+		@response() res: Response,
+	): Promise<void> {
+		const basePayload: IDeleteShutterRequest = {
+			shutterId: req.params.shutterId as string,
+		};
+		const payload = await deleteShutterValidator.validate(basePayload);
+		const response = await this.shutterService.deleteShutter(payload);
+		res.status(200).json(response);
+	}
 }

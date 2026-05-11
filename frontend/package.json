@@ -10,6 +10,10 @@
     "build:lan": "tsc --project tsconfig.lan.json && vite build -c vite.config.lan.ts",
     "build:wan": "tsc --project tsconfig.wan.json && vite build -c vite.config.wan.ts",
     "lint": "eslint src/",
+    "biome-lint:fix": "npx @biomejs/biome lint src/**/*.ts --write",
+    "biome-format:fix": "npx @biomejs/biome format src/**/*.ts --write",
+    "biome-lint": "npx @biomejs/biome lint src/**/*.ts",
+    "biome-format": "npx @biomejs/biome format src/**/*.ts",
     "preview": "vite preview",
     "format": "prettier --config ./.prettierrc.json --write ./src"
   },
