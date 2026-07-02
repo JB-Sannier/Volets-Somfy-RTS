@@ -10,15 +10,17 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     int port = 0;
-    int pin = 0;
+    int pin433 = 0;
+    int pin315 = 0;
     QString executablePath = "";
     QString apiKey = "";
 
     QStringList envVariables ;
     envVariables
         << "BACKEND_PORT"
-        << "BACKEND_PIN"
-        << "SEND_COMMAND_433_EXECUTABLE"
+        << "BACKEND_PIN_433"
+        << "BACKEND_PIN_315"
+        << "SEND_COMMAND_EXECUTABLE"
         << "BACKEND_APIKEY";
 
     for (int i=0; i<envVariables.count(); i++) {
@@ -30,11 +32,12 @@ int main(int argc, char *argv[])
     }
 
     port = qgetenv("BACKEND_PORT").toInt();
-    pin = qgetenv("BACKEND_PIN").toInt();
-    executablePath = QString(qgetenv("BACKEND_EXECUTABLE"));
+    pin433 = qgetenv("BACKEND_PIN_433").toInt();
+    pin315 = qgetenv("BACKEND_PIN_315").toInt();
+    executablePath = QString(qgetenv("SEND_COMMAND_EXECUTABLE"));
     apiKey = QString(qgetenv("BACKEND_APIKEY"));
 
-    AppConfig::setDefaultConfig(port, apiKey, executablePath, pin);
+    AppConfig::setDefaultConfig(port, apiKey, executablePath, pin433, pin315);
 
     HttpServer server;
 

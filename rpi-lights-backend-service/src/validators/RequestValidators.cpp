@@ -8,6 +8,7 @@ SendCommandRequest RequestValidators::buildSendRequest(const QHttpServerRequest&
         .code =  0,
         .protocol =  0,
         .pulseDelay =  0,
+        .frequency = 0,
     };
 
     QJsonDocument doc = QJsonDocument::fromJson(request.body());
@@ -17,7 +18,13 @@ SendCommandRequest RequestValidators::buildSendRequest(const QHttpServerRequest&
     }
 
     QJsonObject object = doc.object();
-    if (!object.contains("code") || !object.contains("protocol") || !object.contains("pulseDelay")) {
+    if (!object.contains("code") || !object.contains("protocol") || !object.contains("pulseDelay") || !object.contains("frequency")) {
+        *ok = false;
+        return returnedRequest;
+    }
+
+    int frequency = object.value("frequency").toInt(); 
+    if (frequency != 315 && frequency != 433) {
         *ok = false;
         return returnedRequest;
     }
@@ -26,6 +33,7 @@ SendCommandRequest RequestValidators::buildSendRequest(const QHttpServerRequest&
         .code = object.value("code").toInt(),
         .protocol = object.value("protocol").toInt(),
         .pulseDelay = object.value("pulseDelay").toInt(),
+        .frequency = object.value("frequency").toInt(),
     };
     *ok = true;
     return returnedRequest;

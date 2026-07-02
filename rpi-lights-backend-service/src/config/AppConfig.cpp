@@ -7,11 +7,13 @@ AppConfig::AppConfig(
     unsigned short int paramPort,
     const QString& paramApiKey,
     const QString& paramExecutableName,
-    unsigned short int paramPin) :
+    unsigned short int paramPin433,
+    unsigned short int paramPin315) :
     _port(paramPort),
     _apiKey(paramApiKey),
     _executableName(paramExecutableName),
-    _pin(paramPin)
+    _pin433(paramPin433),
+    _pin315(paramPin315)
 {
 }
 
@@ -24,11 +26,12 @@ void AppConfig::setDefaultConfig(
     unsigned short int paramPort,
     const QString& paramApiKey,
     const QString& paramExecutableName,
-    unsigned short int paramPin
+    unsigned short int paramPin433,
+    unsigned short int paramPin315
     )
 {
     if (!_defaultConfig) {
-        _defaultConfig = new AppConfig(paramPort, paramApiKey, paramExecutableName, paramPin);
+        _defaultConfig = new AppConfig(paramPort, paramApiKey, paramExecutableName, paramPin433, paramPin315);
     } else {
         qDebug() << "Error: AppConfig already defined...";
     }
@@ -48,6 +51,10 @@ const QString& AppConfig::executableName() const {
     return _executableName;
 }
 
-unsigned short int AppConfig::pin() const {
-    return _pin;
+unsigned short int AppConfig::pin433() const {
+    return _pin433;
+}
+
+unsigned short int AppConfig::pin315() const {
+    return _pin315;
 }
