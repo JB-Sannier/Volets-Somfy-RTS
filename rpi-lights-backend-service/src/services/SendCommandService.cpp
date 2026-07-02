@@ -13,7 +13,8 @@ void SendCommandService::sendCommand(const SendCommandRequest& scr)
     AppConfig* appConfig = AppConfig::getDefaultConfig();
     QProcess process;
     QStringList arguments;
-    arguments << QString::number(appConfig->pin());
+    int pinNumber = scr.frequency == 315 ? appConfig->pin315() : appConfig->pin433();
+    arguments << QString::number(pinNumber);
     arguments << QString::number(scr.code);
     arguments << QString::number(scr.protocol);
     arguments << QString::number(scr.pulseDelay);
