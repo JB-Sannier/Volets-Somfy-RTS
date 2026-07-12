@@ -14,8 +14,18 @@ RUN npm run bundle
 
 FROM node:25.9-alpine3.23 
 
+RUN apk add --no-cache tini
+
 COPY --from=build /app/bundle/somfy-shutters-service.js /bundle/somfy-shutters-service.js
 
 WORKDIR /bundle
 
-CMD [ "node", "/bundle/somfy-shutters-service.js"]
+CMD [ \
+  "/sbin/tini", \
+  "--", \
+  "node", \
+  "--max-old-space-size=192", \
+  "--max-semi-space-size=2", \
+  "--optimize-for-size", \
+  "/bundle/somfy-shutters-service.js" \
+]
