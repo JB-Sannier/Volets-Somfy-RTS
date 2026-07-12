@@ -27,8 +27,8 @@ import { checkUserRole } from "../middlewares/check-user-roles-middleware";
 @checkUserRole(UserRole.UserManager)
 export class UsersController {
 	constructor(
-    @inject(userServiceKey) private readonly userService: IUserService,
-  ) {}
+		@inject(userServiceKey) private readonly userService: IUserService,
+	) {}
 
 	@Post("/")
 	async addUser(

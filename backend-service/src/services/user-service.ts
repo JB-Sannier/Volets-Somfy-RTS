@@ -46,8 +46,8 @@ export interface IUserService {
 @provide(userServiceKey)
 export class UserService implements IUserService {
 	constructor(
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-  ) {}
+		@inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+	) {}
 
 	async authenticate(
 		request: IAuthenticateRequest,
@@ -154,10 +154,7 @@ export class UserService implements IUserService {
 				message: error.message,
 				name: error.name,
 			});
-			if (
-				error.response?.data?.errorCode &&
-				error.response.data.description
-			) {
+			if (error.response?.data?.errorCode && error.response.data.description) {
 				if (error.response.data.errorCode === ErrorCodes.UserAlreadyExists) {
 					throw new UserAlreadyExistsError(
 						error.response.data.payload.email || "",

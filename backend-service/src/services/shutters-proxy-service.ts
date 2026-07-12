@@ -57,8 +57,8 @@ export interface IShuttersProxyService {
 @provide(shuttersProxyServiceKey)
 export class ShuttersProxyService implements IShuttersProxyService {
 	constructor(
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-  ) {}
+		@inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+	) {}
 
 	async addShutter(request: IAddShutterRequest): Promise<IAddShutterResponse> {
 		const baseUrl = this.appConfig.somfyShuttersServiceURL();
@@ -264,10 +264,7 @@ export class ShuttersProxyService implements IShuttersProxyService {
 				message: error.message,
 				name: error.name,
 			});
-			if (
-				error.response?.data.errorCode &&
-				error.response.data.description
-			) {
+			if (error.response?.data.errorCode && error.response.data.description) {
 				throw new SomfyProxyError({
 					errorCode: error.response.data.errorCode,
 					errorDescription: error.response.data.description,

@@ -37,9 +37,9 @@ import { checkToken } from "../middlewares/check-token-middleware";
 @Controller("/api/v1/shutter")
 export class ShuttersController {
 	constructor(
-    @inject(shuttersProxyServiceKey)
-    private readonly shutterService: IShuttersProxyService,
-  ) {}
+		@inject(shuttersProxyServiceKey)
+		private readonly shutterService: IShuttersProxyService,
+	) {}
 
 	@Get("/")
 	@checkToken()
