@@ -3,6 +3,8 @@ import type { UserEntity } from "../entities/user";
 export enum UserRole {
 	UserManager = "user_manager",
 	ShuttersProgrammer = "shutters_programmer",
+	LightsUser = "lights_user",
+	LightsProgrammer = "lights_programmer",
 }
 
 export interface IUser {

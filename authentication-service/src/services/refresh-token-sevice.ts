@@ -32,12 +32,12 @@ export const refreshTokenServiceKey = Symbol.for("RefreshTokenService");
 @provide(refreshTokenServiceKey)
 export class RefreshTokenService implements IRefreshTokenService {
 	constructor(
-    @inject(refreshTokenRepositoryKey)
-    private readonly repository: IRefreshTokenRepository,
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-    @inject(tokenServiceKey) private readonly tokenService: ITokenService,
-    @inject(userRepositoryKey) private readonly userRepository: IUserRepository,
-  ) {}
+		@inject(refreshTokenRepositoryKey)
+		private readonly repository: IRefreshTokenRepository,
+		@inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+		@inject(tokenServiceKey) private readonly tokenService: ITokenService,
+		@inject(userRepositoryKey) private readonly userRepository: IUserRepository,
+	) {}
 
 	async refreshToken(
 		request: IRefreshTokenRequest,

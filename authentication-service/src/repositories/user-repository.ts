@@ -28,9 +28,9 @@ export interface IUserRepository {
 @provide(userRepositoryKey)
 export class UserRepository implements IUserRepository {
 	constructor(
-    @inject(sqlConnectionServiceKey)
-    private readonly connectionService: ISqlConnectionService,
-  ) {}
+		@inject(sqlConnectionServiceKey)
+		private readonly connectionService: ISqlConnectionService,
+	) {}
 
 	async getUserByEmail(email: string): Promise<IUser | undefined> {
 		const dataSource = await this.connectionService.getConnection();

@@ -34,11 +34,11 @@ import { type IUserService, userServiceKey } from "../services/user-service";
 @Controller("/api/v1/auth")
 export class AuthenticationController {
 	constructor(
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-    @inject(userServiceKey) private readonly userService: IUserService,
-    @inject(refreshTokenServiceKey)
-    private readonly refreshTokenService: IRefreshTokenService,
-  ) {}
+		@inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+		@inject(userServiceKey) private readonly userService: IUserService,
+		@inject(refreshTokenServiceKey)
+		private readonly refreshTokenService: IRefreshTokenService,
+	) {}
 
 	@Post("/token")
 	async authenticate(
