@@ -14,13 +14,22 @@ RUN npm run bundle
 
 FROM node:25.9-alpine3.23
 
+RUN apk add --no-cache tini
+
 COPY --from=build /app/bundle/backend-service.js /bundle/backend-service.js
 
 WORKDIR /bundle
 
 EXPOSE 80
 
-CMD [ "node", "/bundle/backend-service.js"]
-
+CMD [ \
+  "/sbin/tini",\
+  "--", \
+  "node", \
+  "--max-old-space-size=192", \
+  "--max-semi-space-size=2", \
+  "--optimize-for-size", \
+  "/bundle/backend-service.js" \
+]
 
 

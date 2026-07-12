@@ -12,6 +12,8 @@ import {
 
 export const checkUserManagerRoleKey = Symbol.for("CheckUserManagerRole");
 export const checkShutterManagerRoleKey = Symbol.for("CheckShutterManagerRole");
+export const checkLightManagerRoleKey = Symbol.for("CheckLightManagerRole");
+export const checkLightOperatorRoleKey = Symbol.for("CheckLightOperatorRole");
 
 async function interceptRole(
 	role: UserRole,
@@ -54,6 +56,28 @@ export class CheckShutterManagerRole implements Interceptor {
 	}
 }
 
+@provide(checkLightManagerRoleKey)
+export class CheckLightManagerRole implements Interceptor {
+	async intercept(
+		req: express.Request,
+		res: express.Response,
+		next: () => Promise<InterceptorTransformObject>,
+	): Promise<void> {
+		return interceptRole(UserRole.LightsProgrammer, req, res, next);
+	}
+}
+
+@provide(checkLightOperatorRoleKey)
+export class CheckLightOperatorRole implements Interceptor {
+	async intercept(
+		req: express.Request,
+		res: express.Response,
+		next: () => Promise<InterceptorTransformObject>,
+	): Promise<void> {
+		return interceptRole(UserRole.LightsUser, req, res, next);
+	}
+}
+
 export function checkUserRole(
 	role: UserRole,
 ): ClassDecorator & MethodDecorator {
@@ -61,6 +85,10 @@ export function checkUserRole(
 		return UseInterceptor(checkShutterManagerRoleKey);
 	} else if (role === UserRole.UserManager) {
 		return UseInterceptor(checkUserManagerRoleKey);
+	} else if (role === UserRole.LightsProgrammer) {
+		return UseInterceptor(checkLightManagerRoleKey);
+	} else if (role === UserRole.LightsUser) {
+		return UseInterceptor(checkLightOperatorRoleKey);
 	} else {
 		throw new UnauthorizedError();
 	}

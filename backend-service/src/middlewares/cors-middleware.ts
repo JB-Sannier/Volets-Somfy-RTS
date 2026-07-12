@@ -14,9 +14,6 @@ export class CorsMiddleware implements ExpressMiddleware {
 		response: express.Response,
 		next: express.NextFunction,
 	): void {
-		const method = request.method;
-		const path = request.path;
-		console.log("Applying cors (%s : %s)", method, path);
 		appCors(request, response, next);
 	}
 }

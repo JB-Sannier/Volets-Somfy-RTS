@@ -12,6 +12,8 @@ export interface IAppConfigService {
 	authenticationServiceURL(): string;
 	somfyShuttersServiceURL(): string;
 	somfyShuttersServiceApiKey(): string;
+	lightsServiceURL(): string;
+	lightsServiceApiKey(): string;
 }
 
 @provide(appConfigServiceKey)
@@ -42,5 +44,13 @@ export class AppConfigServiceFromEnv implements IAppConfigService {
 
 	somfyShuttersServiceApiKey(): string {
 		return process.env.SOMFY_SHUTTERS_SERVICE_API_KEY || "";
+	}
+
+	lightsServiceURL(): string {
+		return process.env.LIGHTS_SERVICE_URL || "";
+	}
+
+	lightsServiceApiKey(): string {
+		return process.env.LIGHTS_SERVICE_API_KEY || "";
 	}
 }

@@ -9,6 +9,7 @@ export enum ErrorCodes {
 	ShutterNotFound = "SHUTTER_NOT_FOUND",
 	ShutterAlreadyExists = "SHUTTER_ALREADY_EXISTS",
 	SomfyProxyServiceError = "SOMFY_PROXY_SERVICE_ERROR",
+	LightsProxyServiceError = "LIGHTS_PROXY_SERVICE_ERROR",
 	InternalServerError = "INTERNAL_SERVER_ERROR",
 }
 
@@ -21,7 +22,8 @@ export enum ErrorDescriptions {
 	MalformedRequest = "Malformed request",
 	ShutterNotFound = "Shutter not found",
 	ShutterAlreadyExists = "Shutter already exists",
-	SomfyProxyServiceError = "An error occured when contacting proxy.",
+	SomfyProxyServiceError = "An error occured when contacting somfy proxy.",
+	LightsProxyServiceError = "An error occured when contacting lights proxy.",
 	InternalServerError = "Internal server error.",
 }
 
@@ -149,6 +151,19 @@ export class SomfyProxyError extends AppError {
 	}
 }
 
+export class LightsProxyError extends AppError {
+	constructor(payload?: object) {
+		super(
+			ErrorCodes.LightsProxyServiceError,
+			ErrorDescriptions.LightsProxyServiceError,
+			payload,
+		);
+	}
+	public getHttpResponse(): number {
+		return 500;
+	}
+}
+
 export class ShutterNotFoundError extends AppError {
 	constructor(payload: object) {
 		super(
@@ -182,7 +197,9 @@ export function createErrorFromErrorCode(
 		case ErrorCodes.UserAlreadyExists:
 			return new UserAlreadyExistsError(payload!.email || "");
 		case ErrorCodes.SomfyProxyServiceError:
-			return new InternalServerError();
+			return new SomfyProxyError(payload);
+		case ErrorCodes.LightsProxyServiceError:
+			return new LightsProxyError(payload);
 		case ErrorCodes.InternalServerError:
 			return new InternalServerError();
 		case ErrorCodes.ValidationError:

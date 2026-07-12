@@ -10,6 +10,7 @@ import {
 	ErrorCodes,
 	SomfyProxyError,
 	ShutterNotFoundError,
+	LightsProxyError,
 } from "../models/app-error";
 import { CatchError, type ErrorFilter } from "@inversifyjs/http-core";
 import type { Newable } from "inversify";
@@ -64,6 +65,9 @@ export class ShutterNotFoundErrorFilter extends AppErrorFilter {}
 @CatchError(SomfyProxyError)
 export class SomfyProxyErrorFilter extends AppErrorFilter {}
 
+@CatchError(LightsProxyError)
+export class LightsProxyErrorFilter extends AppErrorFilter {}
+
 @CatchError(Error)
 export class FinalErrorFilter implements ErrorFilter {
 	catch(error: unknown, request: express.Request, response: express.Response) {
@@ -84,5 +88,6 @@ export const errorFilterList: Newable<ErrorFilter>[] = [
 	UnauthorizedErrorFilter,
 	ShutterNotFoundErrorFilter,
 	SomfyProxyErrorFilter,
+	LightsProxyErrorFilter,
 	FinalErrorFilter,
 ];
