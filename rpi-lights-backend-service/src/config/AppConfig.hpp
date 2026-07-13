@@ -21,9 +21,8 @@ private:
     unsigned short int _pin433;
     unsigned short int _pin315;
     unsigned short int _port;
-    const QString& _apiKey;
-    const QString& _executableName;
-
+    QString _apiKey;
+    QString _executableName;
 };
 
 #endif // APPCONFIG_HPP
