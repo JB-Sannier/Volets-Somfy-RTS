@@ -29,8 +29,7 @@ import {
 	refreshTokenServiceKey,
 } from "./refresh-token-sevice";
 import { type ITokenService, tokenServiceKey } from "./token-service";
-import { appConfigServiceKey } from "./app-config-service";
-import { IAppConfig } from "../config/config";
+import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 
 export const userServiceKey = "UserService";
 
@@ -54,7 +53,7 @@ export class UserService implements IUserService {
 		@inject(tokenServiceKey) private readonly tokenService: ITokenService,
 		@inject(refreshTokenServiceKey)
 		private readonly refreshTokenService: IRefreshTokenService,
-		@inject(appConfigServiceKey) private readonly appConfig: IAppConfig,
+		@inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
 	) {
 		this.defaultUser = undefined;
 	}
@@ -80,7 +79,7 @@ export class UserService implements IUserService {
 		if (!userFound.isActive) {
 			throw new UserNotFoundError(request.email);
 		}
-		if (this.appConfig.lightsExtensionPresent) {
+		if (this.appConfig.lightsExtensionPresent()) {
 			userFound.roles.push(UserRole.LightsUser);
 		}
 		const result = await bcrypt.compare(request.password, userFound.password);
