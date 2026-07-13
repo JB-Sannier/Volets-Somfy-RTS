@@ -6,7 +6,7 @@ COPY package.json /app/
 COPY package-lock.json /app/
 COPY tsconfig.json /app/
 COPY eslint.config.mjs /app/
-COPY .prettier-rc.json /app/
+COPY .prettierrc.json /app/
 COPY src /app/src
 
 RUN npm i
