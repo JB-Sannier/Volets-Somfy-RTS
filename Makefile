@@ -1,6 +1,7 @@
 clean:
 	$(MAKE) -C authentication-service clean
 	$(MAKE) -C somfy-shutters-service clean
+	$(MAKE) -C lights-proxy-service clean
 	$(MAKE) -C backend-service clean
 	$(MAKE) -C frontend clean
 	$(MAKE) -C mobile-frontend-service clean
@@ -9,6 +10,7 @@ clean:
 distclean:
 	$(MAKE) -C authentication-service distclean
 	$(MAKE) -C somfy-shutters-service distclean
+	$(MAKE) -C lights-proxy-service distclean
 	$(MAKE) -C backend-service distclean
 	$(MAKE) -C frontend clean
 	$(MAKE) -C mobile-frontend-service clean
@@ -18,6 +20,7 @@ distclean:
 build-lan:
 	$(MAKE) -C authentication-service build
 	$(MAKE) -C somfy-shutters-service build
+	$(MAKE) -C lights-proxy-service build
 	$(MAKE) -C backend-service build
 	$(MAKE) -C frontend build-lan
 	$(MAKE) -C mobile-frontend-service build-lan
@@ -26,6 +29,7 @@ build-lan:
 build-wan:
 	$(MAKE) -C authentication-service build
 	$(MAKE) -C somfy-shutters-service build
+	$(MAKE) -C lights-proxy-service build
 	$(MAKE) -C backend-service build
 	$(MAKE) -C frontend build-wan
 	$(MAKE) -C mobile-frontend-service build-wan
@@ -34,6 +38,7 @@ build-wan:
 build-lan-and-wan:
 	$(MAKE) -C authentication-service build
 	$(MAKE) -C somfy-shutters-service build
+	$(MAKE) -C lights-proxy-service build
 	$(MAKE) -C backend-service build
 	$(MAKE) -C frontend build-lan-and-wan
 	$(MAKE) -C mobile-frontend-service build-lan-and-wan

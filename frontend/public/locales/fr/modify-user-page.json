@@ -14,5 +14,9 @@
   "UpdateUser": "Mettre à jour l'utilisateur",
   "UserUpdated": "Utilisateur mis à jour",
   "UserUpdatedDescription": "L'utilisateur a été mis à jour avec succès.",
-  "ReturnToUsersManagement": "Revenir à la gestion des utilisateurs"
+  "ReturnToUsersManagement": "Revenir à la gestion des utilisateurs",
+  "LightsUser": "Utilisateur des lumières",
+  "LightsUserDescription": "L'utilisateur des lumières peut allumer et éteindre les lumières.",
+  "LightsProgrammer": "Gestionnaire des lumières",
+  "LightsProgrammerDescription": "Le gestionnaire des lumières peut inscrire ou retirer des lumières."
 }

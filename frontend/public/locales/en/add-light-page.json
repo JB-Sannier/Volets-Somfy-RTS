@@ -1,0 +1,8 @@
+{
+    "AddLight": "Add light",
+    "LightAddedSuccessfully": "Light successfully added.",
+    "ErrorAddingLight": "An error occured while adding the light.",
+    "LightUpdatedSuccessfully": "Light successfully updated.",
+    "ErrorUpdatingLight": "An error occured while updating the light.",
+    "Return": "Back"
+}

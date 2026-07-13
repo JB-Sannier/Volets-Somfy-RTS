@@ -3,5 +3,7 @@
   "Home": "Accueil",
   "ManageShutters": "Gérer les volets",
   "ManageUsers": "Gérer les utilisateurs",
-  "Logout": "Déconnexion"
+  "Logout": "Déconnexion",
+  "OperateLights": "Utilisation des lumières",
+  "ProgramLights": "Gestion des lumières"
 }

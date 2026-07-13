@@ -6,6 +6,10 @@ import { AddShutterPage } from "../pages/add-shutter-page";
 import { UsersManagementPage } from "../pages/users-management-page";
 import { AddUserPage } from "../pages/add-user-page";
 import { ModifyUserPage } from "../pages/modify-user-page";
+import { LightsManagementPage } from "../pages/lights-management-page";
+import { AddLightPage } from "../pages/add-light-page";
+import { LightsListPage } from "../pages/lights-list-page";
+import { EditLightPage } from "../pages/edit-light-page";
 
 export const router = createBrowserRouter([
   {
@@ -35,5 +39,21 @@ export const router = createBrowserRouter([
   {
     path: "/users-management/add-user",
     Component: AddUserPage,
+  },
+  {
+    path: "/lights-operations",
+    Component: LightsListPage,
+  },
+  {
+    path: "/lights-management",
+    Component: LightsManagementPage,
+  },
+  {
+    path: "/lights-management/add-light",
+    Component: AddLightPage,
+  },
+  {
+    path: "/lights-management/edit-light/:lightId",
+    Component: EditLightPage,
   },
 ]);

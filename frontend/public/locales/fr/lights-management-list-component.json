@@ -1,0 +1,13 @@
+{
+    "Title" : "Gestion des lumières",
+    "Edit": "Modifier la lumière",
+    "NewLight": "Nouvelle lumière",
+    "Delete": "Supprimer la lumière",
+    "DeleteLightTitle": "Suppression de lumière",
+    "LightToDeleteName": "Nom de la lumière : {{lightName}}",
+    "AskLightDeletionConfirmation": "Etes-vous sûr(e) de vouloir supprimer cette lumière ?",
+    "ConfirmDeleteLight": "Oui, supprimer",
+    "Cancel": "Annuler",
+    "LightDeleted": "Lumière supprimée",
+    "ErrorDeletingLight": "Erreur survenue à la suppression de la lumière"
+}

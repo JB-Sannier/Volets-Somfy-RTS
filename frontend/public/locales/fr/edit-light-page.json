@@ -1,0 +1,7 @@
+{
+    "AddLight": "Ajout de lumière",
+    "LightAddedSuccessfully": "Lumière ajoutée avec succès.",
+    "ErrorAddingLight": "Un problème est survenu à l'ajout de la lumière.",
+    "LightUpdatedSuccessfully": "Lumière mise à jour avec succès.",
+    "ErrorUpdatingLight": "Un problème est survenu lors de la mise à jour de la lumière."
+}

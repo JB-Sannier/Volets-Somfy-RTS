@@ -53,6 +53,10 @@ export const UserComponent: React.FC<IUserComponentProps> = (props) => {
         result.push(t("RoleShutterManager"));
       } else if (role === UserRole.UserManager) {
         result.push(t("RoleUserManager"));
+      } else if (role === UserRole.LightsUser) {
+        result.push(t("RoleLightsUser"));
+      } else if (role === UserRole.LightsProgrammer) {
+        result.push(t("RoleLightsProgrammer"));
       }
     });
     if (result.length === 0) {

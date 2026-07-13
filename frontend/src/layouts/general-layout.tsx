@@ -3,12 +3,14 @@ import React, { type PropsWithChildren } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/auth-context.types";
 import { UserRole } from "../services/users-service.types";
+import { useTranslation } from "react-i18next";
 
 import BlindsIcon from "@mui/icons-material/Blinds";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
-import { useTranslation } from "react-i18next";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 
 export const GeneralLayout: React.FC<PropsWithChildren> = (props) => {
   const navigate = useNavigate();
@@ -58,6 +60,24 @@ export const GeneralLayout: React.FC<PropsWithChildren> = (props) => {
               color="inherit"
             >
               <ManageAccountsIcon />
+            </IconButton>
+          )}
+          {authContext.hasRole(UserRole.LightsUser) && (
+            <IconButton
+              title={t("OperateLights")}
+              onClick={() => navigate("/lights-operations")}
+              color="inherit"
+            >
+              <LightbulbIcon />
+            </IconButton>
+          )}
+          {authContext.hasRole(UserRole.LightsProgrammer) && (
+            <IconButton
+              title={t("ProgramLights")}
+              onClick={() => navigate("/lights-management")}
+              color="inherit"
+            >
+              <TipsAndUpdatesIcon />
             </IconButton>
           )}
           <IconButton

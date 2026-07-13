@@ -11,6 +11,8 @@
   "CancelAction": "Annuler",
   "RoleShutterManager": "Gestionnaire de volets",
   "RoleUserManager": "Gestionnaire d'utilisateurs",
+  "RoleLightsUser": "Utilisateur des lumières",
+  "RoleLightsProgrammer": "Gestionnaire des lumières",
   "RoleNone": "Aucun rôle attribué",
   "MessageUserDeleted": "L'utilisateur {{email}} a été effacé de l'application.",
   "FabTitle": "Ajouter un utilisateur"

@@ -35,6 +35,9 @@ export const AddUserPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [roleShutterManager, setRoleShutterManager] = useState<boolean>(false);
   const [roleUserManager, setRoleUserManager] = useState<boolean>(false);
+  const [roleLightsUser, setRoleLightsUser] = useState<boolean>(false);
+  const [roleLightsProgrammer, setRoleLightsProgrammer] =
+    useState<boolean>(false);
   const [password1, setPassword1] = useState<string>("");
   const [password2, setPassword2] = useState<string>("");
 
@@ -105,6 +108,12 @@ export const AddUserPage: React.FC = () => {
     if (roleUserManager) {
       roles.push(UserRole.UserManager);
     }
+    if (roleLightsUser) {
+      roles.push(UserRole.LightsUser);
+    }
+    if (roleLightsProgrammer) {
+      roles.push(UserRole.LightsProgrammer);
+    }
 
     const addUserRequest: IAddUserRequest = {
       email,
@@ -137,7 +146,7 @@ export const AddUserPage: React.FC = () => {
 
   return (
     <GeneralLayout>
-      <TitleComponent title="Add a user" />
+      <TitleComponent title={t("AddUser")} />
       <Typography variant="body1">{t("UserEmail")}</Typography>
       <TextField
         value={email}
@@ -172,6 +181,25 @@ export const AddUserPage: React.FC = () => {
         <FormHelperText sx={{ ml: 3 }}>
           {t("RoleShuttersManagerDescription")}
         </FormHelperText>
+        <FormControlLabel
+          control={<Switch />}
+          checked={roleLightsUser}
+          onChange={(_e, checked) => setRoleLightsUser(checked)}
+          label={t("LightsUser")}
+        />
+        <FormHelperText sx={{ ml: 3 }}>
+          {t("LightsUserDescription")}
+        </FormHelperText>
+        <FormControlLabel
+          control={<Switch />}
+          checked={roleLightsProgrammer}
+          onChange={(_e, checked) => setRoleLightsProgrammer(checked)}
+          label={t("LightsProgrammer")}
+        />
+        <FormHelperText sx={{ ml: 3 }}>
+          {t("LightsProgrammerDescription")}
+        </FormHelperText>
+
         <FormControlLabel
           control={<Switch />}
           checked={roleUserManager}

@@ -1,4 +1,5 @@
 {
+  "AddUser": "New user",
   "ErrorEmailAddressRequired": "Email address required.",
   "ErrorEmailInvalidFormat": "Invalid email address.",
   "ErrorPasswordEmpty": "Password cannot be empty.",
@@ -12,6 +13,10 @@
   "RoleShuttersManagerDescription": "The Shutters Manager can rename, add and remove shutters from the application.",
   "RoleUsersManager": "Users Manager",
   "RoleUsersManagerDescription": "The Users Manager can add, modify and remove users.",
+  "LightsUser": "Lights user",
+  "LightsUserDescription": "The lights user can switch on/off the lights.",
+  "LightsProgrammer": "Lights manager",
+  "LightsProgrammerDescription": "The lights manager can add and remove lights.",
   "ButtonAddUser": "Add user",
   "ButtonCancel": "Cancel",
   "DialogTitle": "User added",

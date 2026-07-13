@@ -1,0 +1,22 @@
+{
+  "LightName": "Light name",
+  "Description": "Description",
+  "ErrorLightNameEmpty": "Light name cannot be empty.",
+  "ErrorLightAlreadyExists": "A light already exists with this name.",
+  "ErrorLightDescriptionEmpty": "Description cannot be empty.",
+  "PulseDelayNotZero": "Pulse length must be greater than 0.",
+  "SwitchOnCodeNotZero": "Switch on code must be greater than 0.",
+  "SwitchOffCodeNotZero": "Switch off code must be greater than 0.",
+  "Frequency": "Frequency",
+  "315-Mhz": "315 MHz",
+  "433dot92Mhz": "433.92 MHz",
+  "868Mhz": "868 MHz",
+  "Type": "Type",
+  "TypeSwitch": "One-button switch",
+  "TypeTwoButtons": "Two-buttons light (on, off)",
+  "Protocol": "Protocol",
+  "PulseDelay": "Pulse length",
+  "SwitchOnCode": "Switch on code",
+  "SwitchOffCode": "Switch off code",
+  "SaveLight": "Save light"
+}

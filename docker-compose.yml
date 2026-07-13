@@ -39,7 +39,7 @@ services:
       DB_SCHEMA: shutters
       PORT: 3001
       HOST: somfy-shutters-service
-      SELF_API_KEY: ${SELF_API_KEY}
+      SELF_API_KEY: ${SOMFY_PROXY_API_KEY}
       SOMFY_SERVER_HOST_NAME: ${SOMFY_SERVER_HOST_NAME}
       SOMFY_SERVER_PORT: ${SOMFY_SERVER_PORT}
       SOMFY_SERVER_PASSWORD: ${SOMFY_SERVER_PASSWORD}
@@ -54,6 +54,37 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+  lights-proxy-service:
+    build: lights-proxy-service
+    restart: unless-stopped
+    depends_on:
+      - docker-database
+    environment:
+      DB_HOSTNAME: docker-database
+      DB_PORT: 5432
+      DB_USERNAME: database-user-name
+      DB_PASSWORD: database-password
+      DB_NAME: database
+      DB_SCHEMA: lights
+      PORT: 3003
+      HOST: lights-proxy-service
+      SELF_API_KEY: ${LIGHTS_PROXY_API_KEY}
+      LIGHTS_SERVER_HOST_NAME: ${LIGHTS_PROXY_SERVER_HOST_NAME}
+      LIGHTS_SERVER_PORT: ${LIGHTS_PROXY_SERVER_PORT}
+      LIGHTS_SERVER_API_KEY: ${LIGHTS_PROXY_SERVER_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    profiles:
+      - lights-proxy-present
   backend-service:
     build: backend-service
     restart: unless-stopped
@@ -65,7 +96,9 @@ services:
       PORT: 3002
       AUTHENTICATION_SERVICE_URL: http://authentication-service:3000
       SOMFY_SHUTTERS_SERVICE_URL: http://somfy-shutters-service:3001
-      SOMFY_SHUTTERS_SERVICE_API_KEY: ${SELF_API_KEY}
+      SOMFY_SHUTTERS_SERVICE_API_KEY: ${SOMFY_PROXY_API_KEY}
+      LIGHTS_SERVICE_URL: http://lights-proxy-service:3003
+      LIGHTS_SERVICE_API_KEY: ${LIGHTS_PROXY_API_KEY}
     ports:
       - 3002:3002
     deploy:
@@ -85,11 +118,11 @@ services:
     depends_on:
       - backend-service
     ports:
-      - 3000:80
+      - 3000:3000
     deploy:
       resources:
         limits:
-          memory: 128M
+          memory: 1024M
         reservations:
           memory: 64M
     logging:
@@ -112,6 +145,16 @@ services:
           memory: 512M
         reservations:
           memory: 256M
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "psql -U database-user-name -d database -c 'SELECT 1' || exit 1",
+        ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
     logging:
       driver: "json-file"
       options:
