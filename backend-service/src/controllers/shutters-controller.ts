@@ -102,7 +102,6 @@ export class ShuttersController {
 		@response() res: Response,
 	): Promise<void> {
 		const response = await this.shutterService.exportShutters();
-		console.log("Response:  ", response);
 		res.status(200).json(response);
 	}
 

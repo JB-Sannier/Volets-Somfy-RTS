@@ -2,7 +2,7 @@ import { inject } from "inversify";
 import { provide } from "@inversifyjs/binding-decorators";
 
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
-import {} from "../models/app-error";
+import { } from "../models/app-error";
 import {
 	IAddLightRequest,
 	IDeleteLightRequest,
@@ -32,7 +32,7 @@ export class LightsProxyService implements ILightsProxyService {
 	constructor(
 		@inject(appConfigServiceKey)
 		private readonly appConfigService: IAppConfigService,
-	) {}
+	) { }
 
 	async getAllLights(): Promise<ILight[]> {
 		const lightsServiceURL = this.appConfigService.lightsServiceURL();
@@ -84,11 +84,6 @@ export class LightsProxyService implements ILightsProxyService {
 		const lightsServiceURL = this.appConfigService.lightsServiceURL();
 		const lightsServiceApiKey = this.appConfigService.lightsServiceApiKey();
 
-		console.log("LightsServiceApiKey : ", lightsServiceApiKey);
-		const url = `${lightsServiceURL}/api/v1/lights-management/`;
-
-		console.log("About to call proxy service with : ", { url, request });
-
 		const response = await fetch(
 			`${lightsServiceURL}/api/v1/lights-management/`,
 			{
@@ -100,7 +95,6 @@ export class LightsProxyService implements ILightsProxyService {
 				body: JSON.stringify(request),
 			},
 		);
-		console.log("response : ", response);
 
 		if (!response.ok) {
 			throw new Error(`Failed to add light: ${response.statusText}`);
@@ -115,7 +109,7 @@ export class LightsProxyService implements ILightsProxyService {
 		const lightsServiceApiKey = this.appConfigService.lightsServiceApiKey();
 
 		const response = await fetch(
-			` ${lightsServiceURL}/api/v1/lights-management/`,
+			`${lightsServiceURL}/api/v1/lights-management/`,
 			{
 				method: "PUT",
 				headers: {

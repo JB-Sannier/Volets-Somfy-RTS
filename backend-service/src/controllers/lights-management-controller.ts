@@ -71,7 +71,6 @@ export class LightsManagementController {
 		@request() req: Request,
 		@response() res: Response,
 	): Promise<void> {
-		console.log("Adding light with payload:", req.body);
 		const basePayload: IAddLightRequest = {
 			lightName: req.body.lightName,
 			description: req.body.description,
@@ -83,7 +82,6 @@ export class LightsManagementController {
 			frequency: req.body.frequency,
 		};
 		const payload = await addLightValidator.validate(basePayload);
-		console.log("Validated payload:", payload);
 		const response = await this.lightsService.addLight(payload);
 		res.status(201).json(response);
 	}
