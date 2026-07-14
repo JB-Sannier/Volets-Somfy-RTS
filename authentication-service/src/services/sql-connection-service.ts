@@ -23,8 +23,8 @@ export class SqlConnectionService implements ISqlConnectionService {
 	private initPromise: Promise<DataSource> | undefined;
 
 	constructor(
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-  ) {}
+		@inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+	) {}
 
 	async getConnection(): Promise<DataSource> {
 		if (this.dataSource) {

@@ -49,6 +49,9 @@ export const ModifyUserPage: React.FC = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [roleShutterManager, setRoleShutterManager] = useState<boolean>(false);
   const [roleUserManager, setRoleUserManager] = useState<boolean>(false);
+  const [roleLightsUser, setRoleLightsUser] = useState<boolean>(false);
+  const [roleLightsProgrammer, setRoleLightsProgrammer] =
+    useState<boolean>(false);
   const [newPassword, setNewPassword] = useState<string | undefined>(undefined);
 
   const [showPasswordDialog, setShowPasswordDialog] = useState<boolean>(false);
@@ -77,6 +80,12 @@ export const ModifyUserPage: React.FC = () => {
         );
         setRoleUserManager(
           user.roles.find((r) => r === UserRole.UserManager) !== undefined,
+        );
+        setRoleLightsUser(
+          user.roles.find((r) => r === UserRole.LightsUser) !== undefined,
+        );
+        setRoleLightsProgrammer(
+          user.roles.find((r) => r === UserRole.LightsProgrammer) !== undefined,
         );
       }
     }
@@ -108,6 +117,12 @@ export const ModifyUserPage: React.FC = () => {
     }
     if (roleUserManager) {
       allRoles.push(UserRole.UserManager);
+    }
+    if (roleLightsUser) {
+      allRoles.push(UserRole.LightsUser);
+    }
+    if (roleLightsProgrammer) {
+      allRoles.push(UserRole.LightsProgrammer);
     }
 
     const modifyRequest: IModifyUserRequest = {
@@ -171,6 +186,24 @@ export const ModifyUserPage: React.FC = () => {
         />
         <FormHelperText sx={{ ml: 3 }}>
           {t("UsersManagerDescription")}
+        </FormHelperText>
+        <FormControlLabel
+          control={<Switch />}
+          checked={roleLightsUser}
+          onChange={(_e, checked) => setRoleLightsUser(checked)}
+          label={t("LightsUser")}
+        />
+        <FormHelperText sx={{ ml: 3 }}>
+          {t("LightsUserDescription")}
+        </FormHelperText>
+        <FormControlLabel
+          control={<Switch />}
+          checked={roleLightsProgrammer}
+          onChange={(_e, checked) => setRoleLightsProgrammer(checked)}
+          label={t("LightsProgrammer")}
+        />
+        <FormHelperText sx={{ ml: 3 }}>
+          {t("LightsProgrammerDescription")}
         </FormHelperText>
       </FormGroup>
       <Button onClick={updateUser} variant="contained" sx={{ mt: 3 }}>

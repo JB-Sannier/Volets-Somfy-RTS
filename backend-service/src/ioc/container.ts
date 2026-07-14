@@ -29,6 +29,10 @@ import { ShuttersController } from "../controllers/shutters-controller";
 import { ShuttersOperationsController } from "../controllers/shutters-operations-controller";
 import { errorFilterList } from "../middlewares/error-middleware";
 import {
+	CheckLightManagerRole,
+	checkLightManagerRoleKey,
+	CheckLightOperatorRole,
+	checkLightOperatorRoleKey,
 	CheckShutterManagerRole,
 	checkShutterManagerRoleKey,
 	CheckUserManagerRole,
@@ -43,6 +47,13 @@ import {
 	corsMiddlewareKey,
 } from "../middlewares/cors-middleware";
 import { UsersController } from "../controllers/users-controller";
+import { LightsManagementController } from "../controllers/lights-management-controller";
+import { LightsOperationsController } from "../controllers/lights-operations-controller";
+import {
+	ILightsProxyService,
+	LightsProxyService,
+	lightsProxyServiceKey,
+} from "../services/lights-proxy-service";
 
 export function setupContainer(): Container {
 	const c: Container = new Container();
@@ -55,6 +66,8 @@ export function setupContainer(): Container {
 	c.bind(ShuttersController).toSelf().inSingletonScope();
 	c.bind(ShuttersOperationsController).toSelf().inSingletonScope();
 	c.bind(UsersController).toSelf().inSingletonScope();
+	c.bind(LightsManagementController).toSelf().inSingletonScope();
+	c.bind(LightsOperationsController).toSelf().inSingletonScope();
 
 	errorFilterList.forEach((efl) => {
 		c.bind(efl).toSelf().inSingletonScope();
@@ -65,6 +78,12 @@ export function setupContainer(): Container {
 		.inSingletonScope();
 	c.bind<CheckShutterManagerRole>(checkShutterManagerRoleKey)
 		.to(CheckShutterManagerRole)
+		.inSingletonScope();
+	c.bind<CheckLightManagerRole>(checkLightManagerRoleKey)
+		.to(CheckLightManagerRole)
+		.inSingletonScope();
+	c.bind<CheckLightOperatorRole>(checkLightOperatorRoleKey)
+		.to(CheckLightOperatorRole)
 		.inSingletonScope();
 	c.bind<TokenCheckInterceptor>(tokenCheckInterceptorKey)
 		.to(TokenCheckInterceptor)
@@ -81,7 +100,9 @@ export function setupContainer(): Container {
 	c.bind<IShuttersProxyService>(shuttersProxyServiceKey)
 		.to(ShuttersProxyService)
 		.inSingletonScope();
-
+	c.bind<ILightsProxyService>(lightsProxyServiceKey)
+		.to(LightsProxyService)
+		.inSingletonScope();
 	return c;
 }
 

@@ -26,9 +26,9 @@ export const refreshTokenRepositoryKey = "RefreshTokenRepositoryKey";
 @provide(refreshTokenRepositoryKey)
 export class RefreshTokenRepository implements IRefreshTokenRepository {
 	constructor(
-    @inject(sqlConnectionServiceKey)
-    private readonly sqlConnectionService: ISqlConnectionService,
-  ) {}
+		@inject(sqlConnectionServiceKey)
+		private readonly sqlConnectionService: ISqlConnectionService,
+	) {}
 
 	async hasRefreshToken(email: string, refreshToken: string): Promise<boolean> {
 		const connection = await this.sqlConnectionService.getConnection();

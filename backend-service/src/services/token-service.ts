@@ -22,8 +22,8 @@ export interface ITokenService {
 @provide(tokenServiceKey)
 export class TokenService implements ITokenService {
 	constructor(
-    @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-  ) {}
+		@inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+	) {}
 
 	async validateToken(token: string): Promise<ITokenInformations> {
 		if (!token) {

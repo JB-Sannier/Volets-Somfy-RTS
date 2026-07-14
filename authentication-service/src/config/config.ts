@@ -7,4 +7,5 @@ export interface IAppConfig {
 	dbPassword: string;
 	dbName: string;
 	refreshTokenSigningKey: string;
+	lightsExtensionPresent: boolean;
 }

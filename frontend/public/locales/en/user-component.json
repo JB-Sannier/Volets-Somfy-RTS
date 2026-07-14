@@ -11,6 +11,8 @@
   "CancelAction": "Cancel",
   "RoleShutterManager": "Shutters Manager",
   "RoleUserManager": "Users Manager",
+  "RoleLightsUser": "Lights User",
+  "RoleLightsProgrammer": "Lights Manager",
   "RoleNone": "No role applied.",
   "MessageUserDeleted": "The user {{email}} has been removed from the application.",
   "FabTitle": "Add user"

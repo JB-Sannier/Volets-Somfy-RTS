@@ -1,0 +1,13 @@
+{
+    "Title" : "Lights management",
+    "Edit": "Modify light",
+    "NewLight": "New light",
+    "Delete": "Delete light",
+    "DeleteLightTitle": "Light deletion",
+    "LightToDeleteName": "Light name : {{lightName}}",
+    "AskLightDeletionConfirmation": "Are you sure you want to delete this light ?",
+    "ConfirmDeleteLight": "Yes, delete",
+    "Cancel": "Cancel",
+    "LightDeleted": "Light deleted.",
+    "ErrorDeletingLight": "An error occured while deleting the light."
+}

@@ -15,6 +15,7 @@ export interface IAppConfigService {
 	dbName(): string;
 	dbSchema(): string;
 	refreshTokenSigningKey(): string;
+	lightsExtensionPresent(): boolean;
 }
 
 @provide(appConfigServiceKey)
@@ -61,5 +62,9 @@ export class AppConfigServiceFromEnv implements IAppConfigService {
 
 	refreshTokenSigningKey(): string {
 		return process.env.REFRESH_TOKEN_SIGNING_KEY || "";
+	}
+
+	lightsExtensionPresent(): boolean {
+		return process.env.LIGHTS_EXTENSION_PRESENT === "true";
 	}
 }

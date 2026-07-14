@@ -9,4 +9,3 @@ build-wan:
 
 build-lan-and-wan:
 	npm i && npm run build:lan && npm run build:wan && npm run format && npm run lint
-

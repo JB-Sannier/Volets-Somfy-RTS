@@ -1,0 +1,22 @@
+{
+  "LightName": "Nom de la lumière",
+  "Description": "Description",
+  "ErrorLightNameEmpty": "Le nom de la lumière ne peut pas être vide.",
+  "ErrorLightAlreadyExists": "Une lumière avec ce nom existe déjà.",
+  "ErrorLightDescriptionEmpty": "La description ne peut pas être vide.",
+  "PulseDelayNotZero": "La durée de pulsation doit être supérieure à 0.",
+  "SwitchOnCodeNotZero": "Le code d'allumage doit être supérieur à 0.",
+  "SwitchOffCodeNotZero": "Le code d'extinction doit être supérieur à 0.",
+  "Frequency": "Fréquence",
+  "315-Mhz": "315 MHz",
+  "433dot92Mhz": "433,92 MHz",
+  "868Mhz": "868 MHz",
+  "Type": "Type",
+  "TypeSwitch": "Interrupteur à un bouton (switch)",
+  "TypeTwoButtons": "Interrupteur à deux boutons (on, off)",
+  "Protocol": "Protocole",
+  "PulseDelay": "Durée de l'impulsion",
+  "SwitchOnCode": "Code d'allumage",
+  "SwitchOffCode": "Code d'extinction",
+  "SaveLight": "Sauvegarder la lumière"
+}

@@ -1,4 +1,5 @@
 {
+  "AddUser": "Nouvel utilisateur",
   "ErrorEmailAddressRequired": "Adresse email nécessaire.",
   "ErrorEmailInvalidFormat": "Adresse email invalide.",
   "ErrorPasswordEmpty": "Le mot de passe ne peut pas être vide.",
@@ -12,6 +13,10 @@
   "RoleShuttersManagerDescription": "Le gestionnaire de volet peut ajouter, renommer et retirer des volets à l'application.",
   "RoleUsersManager": "Gestionnaire des utilisateurs",
   "RoleUsersManagerDescription": "Le gestionnaire des utilisateurs peut créer, modifier et retirer des utilisateurs de l'application.",
+  "LightsUser": "Utilisateur des lumières",
+  "LightsUserDescription": "L'utilisateur des lumières peut allumer et éteindre les lumières.",
+  "LightsProgrammer": "Gestionnaire des lumières",
+  "LightsProgrammerDescription": "Le gestionnaire des lumières peut inscrire ou retirer des lumières.",
   "ButtonAddUser": "Ajouter l'utilisateur",
   "ButtonCancel": "Annuler",
   "DialogTitle": "Utilisateur ajouté",

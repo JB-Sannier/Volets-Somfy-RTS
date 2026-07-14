@@ -30,9 +30,9 @@ import { checkToken } from "../middlewares/check-token-middleware";
 @checkToken()
 export class ShuttersOperationsController {
 	constructor(
-    @inject(shuttersProxyServiceKey)
-    private readonly shutterService: IShuttersProxyService,
-  ) {}
+		@inject(shuttersProxyServiceKey)
+		private readonly shutterService: IShuttersProxyService,
+	) {}
 
 	@Post("/raise")
 	async raiseShutter(

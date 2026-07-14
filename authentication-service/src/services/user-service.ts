@@ -29,6 +29,7 @@ import {
 	refreshTokenServiceKey,
 } from "./refresh-token-sevice";
 import { type ITokenService, tokenServiceKey } from "./token-service";
+import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
 
 export const userServiceKey = "UserService";
 
@@ -48,13 +49,14 @@ export class UserService implements IUserService {
 	private defaultUser: IUser | undefined;
 
 	constructor(
-    @inject(userRepositoryKey) private readonly userRepository: IUserRepository,
-    @inject(tokenServiceKey) private readonly tokenService: ITokenService,
-    @inject(refreshTokenServiceKey)
-    private readonly refreshTokenService: IRefreshTokenService,
-  ) {
-    this.defaultUser = undefined;
-  }
+		@inject(userRepositoryKey) private readonly userRepository: IUserRepository,
+		@inject(tokenServiceKey) private readonly tokenService: ITokenService,
+		@inject(refreshTokenServiceKey)
+		private readonly refreshTokenService: IRefreshTokenService,
+		@inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
+	) {
+		this.defaultUser = undefined;
+	}
 
 	async authenticate(
 		request: IAuthenticateRequest,
@@ -76,6 +78,9 @@ export class UserService implements IUserService {
 		}
 		if (!userFound.isActive) {
 			throw new UserNotFoundError(request.email);
+		}
+		if (this.appConfig.lightsExtensionPresent()) {
+			userFound.roles.push(UserRole.LightsUser);
 		}
 		const result = await bcrypt.compare(request.password, userFound.password);
 		if (!result) {
@@ -101,7 +106,7 @@ export class UserService implements IUserService {
 		const userToAdd: IUser = {
 			email: user.email,
 			password: hashedPassword,
-			roles: user.roles,
+			roles: user.roles.filter((role) => role !== UserRole.LightsUser),
 			isActive: true,
 		};
 		const result = await this.userRepository.addUser(userToAdd);

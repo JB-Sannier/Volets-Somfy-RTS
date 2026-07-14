@@ -14,5 +14,9 @@
   "UpdateUser": "Update user",
   "UserUpdated": "User updated.",
   "UserUpdatedDescription": "The user has been successfully updated.",
-  "ReturnToUsersManagement": "Back to Users Management"
+  "ReturnToUsersManagement": "Back to Users Management",
+  "LightsUser": "Lights user",
+  "LightsUserDescription": "A Lights User can switch on/off the lights.",
+  "LightsProgrammer": "Lights manager",
+  "LightsProgrammerDescription": "The Lights Manager can add and delete lights."
 }

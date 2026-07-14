@@ -1,6 +1,8 @@
 vite.config.local.ts
 vite.config.lan-values.ts
 vite.config.wan-values.ts
+vite.config.docker-values.ts
 build-lan
 build-wan
+build-docker
 build

@@ -3,5 +3,7 @@
   "Home": "Home",
   "ManageShutters": "Manage shutters",
   "ManageUsers": "Manage users",
-  "Logout": "Logout"
+  "Logout": "Logout",
+  "OperateLights": "Lights operation",
+  "ProgramLights": "Manage lights"
 }
