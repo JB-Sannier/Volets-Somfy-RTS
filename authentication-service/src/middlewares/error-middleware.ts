@@ -1,12 +1,12 @@
 import type * as express from "express";
 import {
-	type AppError,
-	UserNotFoundError,
-	CannotDeleteUserError,
-	CannotModifyUserError,
-	UnauthorizedError,
-	UserAlreadyExistsError,
-	ErrorCodes,
+  type AppError,
+  UserNotFoundError,
+  CannotDeleteUserError,
+  CannotModifyUserError,
+  UnauthorizedError,
+  UserAlreadyExistsError,
+  ErrorCodes,
 } from "../models/app-error";
 import { ValidationError } from "yup";
 import { CatchError, type ErrorFilter } from "@inversifyjs/http-core";
@@ -14,31 +14,31 @@ import type { Newable } from "inversify";
 
 @CatchError(ValidationError)
 export class ValidationErrorFilter implements ErrorFilter<ValidationError> {
-	catch(
-		error: ValidationError,
-		_request: express.Request,
-		response: express.Response,
-	) {
-		response.status(400).json({
-			errorCode: ErrorCodes.ValidationError,
-			description: error.message,
-			payload: error.errors,
-		});
-	}
+  catch(
+    error: ValidationError,
+    _request: express.Request,
+    response: express.Response,
+  ) {
+    response.status(400).json({
+      errorCode: ErrorCodes.ValidationError,
+      description: error.message,
+      payload: error.errors,
+    });
+  }
 }
 
 export class AppErrorFilter implements ErrorFilter<AppError> {
-	catch(
-		error: AppError,
-		_request: express.Request,
-		response: express.Response,
-	) {
-		response.status(error.getHttpResponse()).json({
-			errorCode: error.errorCode,
-			description: error.description,
-			payload: error.payload,
-		});
-	}
+  catch(
+    error: AppError,
+    _request: express.Request,
+    response: express.Response,
+  ) {
+    response.status(error.getHttpResponse()).json({
+      errorCode: error.errorCode,
+      description: error.description,
+      payload: error.payload,
+    });
+  }
 }
 
 @CatchError(UserNotFoundError)
@@ -58,21 +58,21 @@ export class UserAlreadyExistsErrorFilter extends AppErrorFilter {}
 
 @CatchError(Error)
 export class FinalErrorFilter implements ErrorFilter {
-	catch(error: unknown, _request: express.Request, response: express.Response) {
-		console.error("Unhandled error : ", error);
-		response.status(500).json({
-			errorCode: "INTERNAL_SERVER_ERROR",
-			description: "Internal Server Error",
-		});
-	}
+  catch(error: unknown, _request: express.Request, response: express.Response) {
+    console.error("Unhandled error : ", error);
+    response.status(500).json({
+      errorCode: "INTERNAL_SERVER_ERROR",
+      description: "Internal Server Error",
+    });
+  }
 }
 
 export const errorFilterList: Newable<ErrorFilter>[] = [
-	ValidationErrorFilter,
-	UserNotFoundErrorFilter,
-	CannotDeleteUserErrorFilter,
-	CannotModifyUserErrorFilter,
-	UnauthorizedErrorFilter,
-	UserAlreadyExistsErrorFilter,
-	FinalErrorFilter,
+  ValidationErrorFilter,
+  UserNotFoundErrorFilter,
+  CannotDeleteUserErrorFilter,
+  CannotModifyUserErrorFilter,
+  UnauthorizedErrorFilter,
+  UserAlreadyExistsErrorFilter,
+  FinalErrorFilter,
 ];

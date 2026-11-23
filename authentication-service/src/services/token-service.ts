@@ -8,68 +8,68 @@ import type { ITokenInformations } from "../models/requests";
 export const tokenServiceKey = "TokenService";
 
 export interface ITokenService {
-	validateToken(token: string): Promise<ITokenInformations>;
-	createToken(user: IUser): Promise<string>;
+  validateToken(token: string): Promise<ITokenInformations>;
+  createToken(user: IUser): Promise<string>;
 }
 
 @provide(tokenServiceKey)
 export class TokenService implements ITokenService {
-	private static signingKey: string = "";
+  private static signingKey: string = "";
 
-	async initSigningKey() {
-		if (TokenService.signingKey === "") {
-			TokenService.signingKey = await generatePassword(40, false);
-		}
-	}
+  async initSigningKey() {
+    if (TokenService.signingKey === "") {
+      TokenService.signingKey = await generatePassword(40, false);
+    }
+  }
 
-	async createToken(user: IUser): Promise<string> {
-		await this.initSigningKey();
+  async createToken(user: IUser): Promise<string> {
+    await this.initSigningKey();
 
-		if (!user.isActive) {
-			throw new UnauthorizedError();
-		}
-		const tokenInfos: ITokenInformations = {
-			email: user.email,
-			roles: user.roles,
-		};
-		const token = jswonwebtoken.sign(tokenInfos, TokenService.signingKey, {
-			expiresIn: "1h",
-		});
-		return token;
-	}
+    if (!user.isActive) {
+      throw new UnauthorizedError();
+    }
+    const tokenInfos: ITokenInformations = {
+      email: user.email,
+      roles: user.roles,
+    };
+    const token = jswonwebtoken.sign(tokenInfos, TokenService.signingKey, {
+      expiresIn: "1h",
+    });
+    return token;
+  }
 
-	public async validateToken(token: string): Promise<ITokenInformations> {
-		await this.initSigningKey();
+  public async validateToken(token: string): Promise<ITokenInformations> {
+    await this.initSigningKey();
 
-		if (!token) {
-			throw new UnauthorizedError();
-		}
-		try {
-			if (token.startsWith("Bearer ")) {
-				token = token.replace("Bearer ", "");
-			}
-			const decodedToken = jswonwebtoken.verify(
-				token,
-				TokenService.signingKey,
-				{
-					complete: true,
-				},
-			);
-			// biome-ignore lint/suspicious/noExplicitAny: eslint-disable-line @typescript-eslint/no-explicit-any
-			let payload: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
-			if (typeof decodedToken.payload === "string") {
-				payload = JSON.parse(decodedToken.payload);
-			} else {
-				payload = decodedToken.payload;
-			}
-			const tokenInfos: ITokenInformations = {
-				email: payload.email,
-				roles: payload.roles,
-			};
-			return tokenInfos;
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		} catch (_error) {
-			throw new UnauthorizedError();
-		}
-	}
+    if (!token) {
+      throw new UnauthorizedError();
+    }
+    try {
+      if (token.startsWith("Bearer ")) {
+        token = token.replace("Bearer ", "");
+      }
+      const decodedToken = jswonwebtoken.verify(
+        token,
+        TokenService.signingKey,
+        {
+          complete: true,
+        },
+      );
+      // biome-ignore lint/suspicious/noExplicitAny: eslint-disable-line @typescript-eslint/no-explicit-any
+      let payload: any = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (typeof decodedToken.payload === "string") {
+        payload = JSON.parse(decodedToken.payload);
+      } else {
+        payload = decodedToken.payload;
+      }
+      const tokenInfos: ITokenInformations = {
+        email: payload.email,
+        roles: payload.roles,
+      };
+      return tokenInfos;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
+      throw new UnauthorizedError();
+    }
+  }
 }
