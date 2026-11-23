@@ -35,12 +35,11 @@ export const EditLightPage: React.FC = () => {
     useState<RemoteData<ILight>>(REMOTE_DATA_INIT);
   const [lightUpdated, setLightUpdated] = useState<boolean>(false);
 
-  useEffect( ()=> {
+  useEffect(() => {
     if (!authContext.hasRole(UserRole.LightsProgrammer)) {
       navigate("/");
     }
   }, []);
-
 
   function updateFetchLightRD(newRD: RemoteData<ILight>) {
     setFetchLightRD(newRD);
