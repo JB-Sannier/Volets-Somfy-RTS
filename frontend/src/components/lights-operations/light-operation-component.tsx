@@ -6,8 +6,8 @@ import {
 } from "../../services/lights-management-service.types";
 import { useLightsOperationApis } from "../../services/lights-operations-service";
 import { Grid, Paper, Typography, IconButton } from "@mui/material";
-import FlashOffIcon from '@mui/icons-material/FlashOff';
-import FlashOnIcon from '@mui/icons-material/FlashOn';
+import FlashOffIcon from "@mui/icons-material/FlashOff";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
 
 export interface ILightOperationComponentProps {
   light: ILight;
@@ -51,20 +51,20 @@ export const LightOperationComponent: React.FC<
         {props.light.type === LightTypes.TYPE_TWO_BUTTONS && (
           <>
             <IconButton
-              onClick={()=>switchLightOn()}
+              onClick={() => switchLightOn()}
               title={t("Switch_On")}
               size="large"
               color="primary"
             >
-              <FlashOnIcon fontSize="large"/>
+              <FlashOnIcon fontSize="large" />
             </IconButton>
             <IconButton
-              onClick={()=>switchLightOff()}
+              onClick={() => switchLightOff()}
               title={t("Switch_Off")}
               size="large"
               color="primary"
             >
-              <FlashOffIcon fontSize="large"/>
+              <FlashOffIcon fontSize="large" />
             </IconButton>
           </>
         )}
@@ -75,7 +75,7 @@ export const LightOperationComponent: React.FC<
             size="large"
             color="primary"
           >
-            <FlashOnIcon fontSize="large"/>
+            <FlashOnIcon fontSize="large" />
           </IconButton>
         )}
       </Grid>

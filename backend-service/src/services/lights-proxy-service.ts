@@ -2,7 +2,7 @@ import { inject } from "inversify";
 import { provide } from "@inversifyjs/binding-decorators";
 
 import { appConfigServiceKey, IAppConfigService } from "./app-config-service";
-import { } from "../models/app-error";
+import {} from "../models/app-error";
 import {
 	IAddLightRequest,
 	IDeleteLightRequest,
@@ -32,7 +32,7 @@ export class LightsProxyService implements ILightsProxyService {
 	constructor(
 		@inject(appConfigServiceKey)
 		private readonly appConfigService: IAppConfigService,
-	) { }
+	) {}
 
 	async getAllLights(): Promise<ILight[]> {
 		const lightsServiceURL = this.appConfigService.lightsServiceURL();

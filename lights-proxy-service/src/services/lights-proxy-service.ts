@@ -19,7 +19,7 @@ export interface ILightProxyService {
 export class LightProxyService implements ILightProxyService {
   constructor(
     @inject(appConfigServiceKey) private readonly appConfig: IAppConfigService,
-  ) { }
+  ) {}
 
   async switchOn(light: ILight): Promise<boolean> {
     return this.sendCommand(light, true);
